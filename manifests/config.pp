@@ -4,6 +4,7 @@ class trafficserver::config {
 
   augeas { 'trafficserver.records_port':
     context => "/files/${trafficserver::sysconfdir}/records.config",
+    incl    => "${trafficserver::sysconfdir}/records.config",
     changes => [
       "set proxy.config.http.server_ports ${trafficserver::port}"
     ],
@@ -11,6 +12,7 @@ class trafficserver::config {
 
   augeas { 'trafficserver.records_debug':
     context => "/files/${trafficserver::sysconfdir}/records.config",
+    incl    => "${trafficserver::sysconfdir}/records.config",
     changes => [
       "set proxy.config.http.insert_request_via_str ${trafficserver::debug}",
       "set proxy.config.http.insert_response_via_str ${trafficserver::debug}"
@@ -39,21 +41,25 @@ class trafficserver::config {
 
   augeas { 'trafficserver.records_mode':
     context => "/files/${trafficserver::sysconfdir}/records.config",
+    incl    => "${trafficserver::sysconfdir}/records.config",
     changes => $changes_mode,
   }
 
   augeas { 'trafficserver.records_records':
     context => "/files/${trafficserver::sysconfdir}/records.config",
+    incl    => "${trafficserver::sysconfdir}/records.config",
     changes => $trafficserver::records,
   }
 
   augeas { 'trafficserver.remap':
     context => "/files/${trafficserver::sysconfdir}/remap.config",
+    incl    => "${trafficserver::sysconfdir}/remap.config",
     changes =>  template('trafficserver/remap.config.erb'),
   }
 
   augeas { 'trafficserver.plugins':
     context => "/files/${trafficserver::sysconfdir}/plugin.config",
+    incl    => "${trafficserver::sysconfdir}/plugin.config",
     changes =>  template('trafficserver/plugin.config.erb'),
   }
 }

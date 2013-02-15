@@ -9,6 +9,7 @@ class trafficserver::storage {
 
   augeas { 'trafficserver.storage':
     context => "/files/${trafficserver::sysconfdir}/storage.config",
+    incl    => "${trafficserver::sysconfdir}/storage.config",
     changes => template('trafficserver/storage.config.erb'),
   }
   file { '/etc/udev/rules.d/51-cache-disk.rules':
