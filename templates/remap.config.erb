@@ -1,0 +1,55 @@
+rm #comment
+set #comment[1] "This file managed by Puppet. Local changes will be overwritten"
+set #comment[2] "during the next Puppet run."
+rm redirect
+<% if @url_redirect and not @url_redirect.empty? -%>
+<% i = 0 %>
+<% @url_redirect.each do |line| -%>
+<% url = line.keys.first -%>
+<% replacement = line.values.first -%>
+<% i += 1 %>
+set redirect[<%= i -%>] <%= url %>
+<% if replacement and not replacement.empty? -%>
+set redirect[<%= i -%>]/replacement <%= replacement %>
+<% end -%>
+<% end -%>
+<% end -%>
+rm map
+<% if @url_map and not @url_map.empty? -%>
+<% i = 0 %>
+<% @url_map.each do |line| -%>
+<% url = line.keys.first -%>
+<% replacement = line.values.first -%>
+<% i += 1 %>
+set map[<%= i -%>] <%= url %>
+<% if replacement and not replacement.empty? -%>
+set map[<%= i -%>]/replacement <%= replacement %>
+<% end -%>
+<% end -%>
+<% end -%>
+rm regex_map
+<% if @url_regex_map and not @url_regex_map.empty? -%>
+<% i = 0 %>
+<% @url_regex_map.each do |line| -%>
+<% url = line.keys.first -%>
+<% replacement = line.values.first -%>
+<% i += 1 %>
+set regex_map[<%= i -%>] <%= url %>
+<% if replacement and not replacement.empty? -%>
+set regex_map[<%= i -%>]/replacement <%= replacement %>
+<% end -%>
+<% end -%>
+<% end -%>
+rm reverse_map
+<% if @url_reverse_map and not @url_reverse_map.empty? -%>
+<% i = 0 %>
+<% @url_reverse_map.each do |line| -%>
+<% url = line.keys.first -%>
+<% replacement = line.values.first -%>
+<% i += 1 %>
+set reverse_map[<%= i -%>] <%= url %>
+<% if replacement and not replacement.empty? -%>
+set reverse_map[<%= i -%>]/replacement <%= replacement %>
+<% end -%>
+<% end -%>
+<% end -%>

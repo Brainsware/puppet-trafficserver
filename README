@@ -1,0 +1,20 @@
+trafficserver
+
+This is the trafficserver module. \o/
+
+manage installation and configuration of trafficserver.
+
+Currently supported modes: Forward, Reverse and mixed. Supported Platforms: Debuntu.
+
+License
+-------
+
+
+Contact
+-------
+
+
+Support
+-------
+
+Please log tickets and issues at our [Projects site](http://projects.example.com)

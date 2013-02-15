@@ -1,0 +1,12 @@
+# Assign cache disks to tserver group
+# make the assignment final, no later changes allowed to the group!
+#
+# Don't modify this file! It's manged by puppet and will be overwritten!
+#
+<% if @storage and not @storage.empty? -%>
+<% @storage.each do |path,size| -%>
+<% if not size or size.empty? -%>
+SUBSYSTEM=="block", KERNEL=="<%= path -%>", GROUP:="tserver"
+<% end -%>
+<% end -%>
+<% end -%>
