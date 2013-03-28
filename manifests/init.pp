@@ -9,7 +9,7 @@
 # === Examples
 #
 #   class {'trafficserver':
-#     port                           => '80 443:ssl'
+#     ssl                            => true,
 #     storage                        => [ '/dev/vdb' ],
 #     url_map                        => [
 #       { 'http://pypi.es.at/pypi'   => 'https://pypi.python.org/pypi' },
