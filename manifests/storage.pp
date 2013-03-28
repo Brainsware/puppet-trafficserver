@@ -8,8 +8,8 @@ class trafficserver::storage {
   }
 
   augeas { 'trafficserver.storage':
-    lens    => 'Trafficserver_storage',
-    context => "/files/${trafficserver::sysconfdir}/storage.config",
+    lens    => 'Trafficserver_storage.storage_lns',
+    context => "/files${trafficserver::sysconfdir}/storage.config",
     incl    => "${trafficserver::sysconfdir}/storage.config",
     changes => template('trafficserver/storage.config.erb'),
   }

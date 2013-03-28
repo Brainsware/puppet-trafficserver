@@ -3,8 +3,8 @@ class trafficserver::config {
   include 'trafficserver::storage'
 
   augeas { 'trafficserver.records_port':
-    lens    => 'Trafficserver_records',
-    context => "/files/${trafficserver::sysconfdir}/records.config",
+    lens    => 'Trafficserver_records.records_lns',
+    context => "/files${trafficserver::sysconfdir}/records.config",
     incl    => "${trafficserver::sysconfdir}/records.config",
     changes => [
       "set proxy.config.http.server_ports ${trafficserver::port}"
@@ -12,8 +12,8 @@ class trafficserver::config {
   }
 
   augeas { 'trafficserver.records_debug':
-    lens    => 'Trafficserver_records',
-    context => "/files/${trafficserver::sysconfdir}/records.config",
+    lens    => 'Trafficserver_records.records_lns',
+    context => "/files${trafficserver::sysconfdir}/records.config",
     incl    => "${trafficserver::sysconfdir}/records.config",
     changes => [
       "set proxy.config.http.insert_request_via_str ${trafficserver::debug}",
@@ -42,29 +42,29 @@ class trafficserver::config {
   }
 
   augeas { 'trafficserver.records_mode':
-    lens    => 'Trafficserver_records',
-    context => "/files/${trafficserver::sysconfdir}/records.config",
+    lens    => 'Trafficserver_records.records_lns',
+    context => "/files${trafficserver::sysconfdir}/records.config",
     incl    => "${trafficserver::sysconfdir}/records.config",
     changes => $changes_mode,
   }
 
   augeas { 'trafficserver.records_records':
-    lens    => 'Trafficserver_records',
-    context => "/files/${trafficserver::sysconfdir}/records.config",
+    lens    => 'Trafficserver_records.records_lns',
+    context => "/files${trafficserver::sysconfdir}/records.config",
     incl    => "${trafficserver::sysconfdir}/records.config",
     changes => $trafficserver::records,
   }
 
   augeas { 'trafficserver.remap':
-    lens    => 'Trafficserver_remap',
-    context => "/files/${trafficserver::sysconfdir}/remap.config",
+    lens    => 'Trafficserver_remap.remap_lns',
+    context => "/files${trafficserver::sysconfdir}/remap.config",
     incl    => "${trafficserver::sysconfdir}/remap.config",
     changes =>  template('trafficserver/remap.config.erb'),
   }
 
   augeas { 'trafficserver.plugins':
-    lens    => 'Trafficserver_plugin',
-    context => "/files/${trafficserver::sysconfdir}/plugin.config",
+    lens    => 'Trafficserver_plugin.plugin_lns',
+    context => "/files${trafficserver::sysconfdir}/plugin.config",
     incl    => "${trafficserver::sysconfdir}/plugin.config",
     changes =>  template('trafficserver/plugin.config.erb'),
   }

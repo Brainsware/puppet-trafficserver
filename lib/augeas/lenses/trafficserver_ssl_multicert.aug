@@ -11,7 +11,7 @@ module Trafficserver_ssl_multicert =
     let var = Build.key_value Rx.word  Sep.equal (store Rx.no_spaces)
     in [ indent . seq "entry" . Build.opt_list var Sep.space . Util.eol ]
 
-  let lns = (Util.empty | Util.comment | entry)*
+  let ssl_multicert_lns = (Util.empty | Util.comment | entry)*
 
   let ssl_multicert_xfm = transform lns storage_filter
 
