@@ -3,11 +3,17 @@ set #comment[2] "during the next Puppet run."
 rm plugin
 <% if @plugins and not @plugins.empty? -%>
 <% i = 0 -%>
-<% @plugins.each do |plugin,args| -%>
+<% @plugins.each do |line| -%>
+<% if line.class == 'Hash' -%>
+<% plugin = line.keys.first -%>
+<% args = line.values.first -%>
+<% else -%>
+<% plugin = line -%>
+<% end -%>
 <% i += 1 -%>
 set plugin[<%= i -%>] <%= plugin %>
 <% if args and not args.empty? -%>
-set plugin[<%= i -%>]/args <%= args %>
+set plugin[<%= i -%>]/args <%= args -%>
 <% end -%>
 <% end -%>
 <% end -%>

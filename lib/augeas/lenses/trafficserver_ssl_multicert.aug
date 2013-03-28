@@ -13,5 +13,5 @@ module Trafficserver_ssl_multicert =
 
   let ssl_multicert_lns = (Util.empty | Util.comment | entry)*
 
-  let ssl_multicert_xfm = transform lns storage_filter
+  let ssl_multicert_xfm = transform ssl_multicert_lns storage_filter
 
