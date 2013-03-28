@@ -48,10 +48,10 @@ class trafficserver::params {
   #
   # SUBSYSTEM=="block", KERNEL=="vd[bc]", GROUP:="tserver"
 
-  $url_redirect    = []
-  $url_map         = []
-  $url_reverse_map = []
-  $url_regex_map   = []
+  $redirects   = []
+  $url_map     = []
+  $reverse_map = []
+  $regex_map   = []
   # array of url maps or redirects. Each entry corresponds
   # to a line in remap.config. n.b.: The traffic server
   # internal order of processing is: redirects, maps, regex remaps

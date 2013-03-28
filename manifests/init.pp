@@ -16,7 +16,7 @@
 #       { 'http://pypi.es.at'        => 'http://c.pypi.python.org' },
 #       { 'http://mypypi.risedev.at' => 'http://localhost:8080' }
 #     ],
-#     url_reverse_map                         => [
+#     reverse_map                    => [
 #       { 'http://localhost:8080'           => 'http://mypypi.risedev.at' },
 #       { 'https://pypi.python.org' => 'http://pypi.es.at' },
 #     ],
@@ -26,18 +26,18 @@
 #
 #
 class trafficserver (
-  $ssl             = false,
-  $user            = $trafficserver::params::user,
-  $group           = $trafficserver::params::group,
-  $debug           = $trafficserver::params::debug,
-  $mode            = $trafficserver::params::mode,
-  $plugins         = $trafficserver::params::plugins,
-  $storage         = $trafficserver::params::storage,
-  $records         = $trafficserver::params::records,
-  $url_redirect    = $trafficserver::params::url_redirect,
-  $url_map         = $trafficserver::params::url_map,
-  $url_reverse_map = $trafficserver::params::url_reverse_map,
-  $url_regex_map   = $trafficserver::params::url_regex_map,
+  $ssl         = false,
+  $user        = $trafficserver::params::user,
+  $group       = $trafficserver::params::group,
+  $debug       = $trafficserver::params::debug,
+  $mode        = $trafficserver::params::mode,
+  $plugins     = $trafficserver::params::plugins,
+  $storage     = $trafficserver::params::storage,
+  $records     = $trafficserver::params::records,
+  $redirects   = $trafficserver::params::redirects,
+  $url_map     = $trafficserver::params::url_map,
+  $reverse_map = $trafficserver::params::reverse_map,
+  $regex_map   = $trafficserver::params::regex_map,
 ) inherits trafficserver::params {
 
   include 'trafficserver::install'
