@@ -5,6 +5,9 @@ class trafficserver::params {
   # To enable ssl termination also, we set this to:
   $port_ssl = '80 443:ssl'
 
+  $user  = 'tserver'
+  $group = 'tserver'
+
   $debug = '3'  # default (highest).
   # Can go from 0 (disabled) to 3.
   # It's applied to both, in coming and outgoing Via headers.

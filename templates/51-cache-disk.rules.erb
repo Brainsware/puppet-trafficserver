@@ -6,7 +6,7 @@
 <% if @storage and not @storage.empty? -%>
 <% @storage.each do |path,size| -%>
 <% if not size or size.empty? -%>
-SUBSYSTEM=="block", KERNEL=="<%= path -%>", GROUP:="tserver"
+SUBSYSTEM=="block", KERNEL=="<%= path -%>", GROUP:="<%= @group -%>"
 <% end -%>
 <% end -%>
 <% end -%>

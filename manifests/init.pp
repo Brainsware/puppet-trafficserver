@@ -27,6 +27,8 @@
 #
 class trafficserver (
   $ssl             = false,
+  $user            = $trafficserver::params::user,
+  $group           = $trafficserver::params::group,
   $debug           = $trafficserver::params::debug,
   $mode            = $trafficserver::params::mode,
   $plugins         = $trafficserver::params::plugins,
