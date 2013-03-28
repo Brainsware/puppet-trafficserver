@@ -45,9 +45,9 @@ class trafficserver (
   include 'trafficserver::service'
 
   if $ssl {
-    $port = $trafficserver::params::port
-  } else {
     $port = $trafficserver::params::ssl_port
+  } else {
+    $port = $trafficserver::params::port
   }
 
   anchor { 'traffiserver::begin': } ->
