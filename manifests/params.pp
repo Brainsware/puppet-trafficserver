@@ -2,8 +2,8 @@ class trafficserver::params {
   # Basic configurations
 
   $port = '80'
-  # To enable ssl termination also, set this to:
-  # $port = '80 443:ssl'
+  # To enable ssl termination also, we set this to:
+  $port_ssl = '80 443:ssl'
 
   $debug = '3'  # default (highest).
   # Can go from 0 (disabled) to 3.

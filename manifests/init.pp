@@ -1,46 +1,32 @@
 # == Class: trafficserver
 #
-# Full description of class trafficserver here.
+# Install and configure trafficserver.
 #
 # === Parameters
 #
-# Document parameters here.
-#
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
-#
-# === Variables
-#
-# Here you should define a list of variables that this module would require.
-#
-# [*sample_variable*]
-#   Explanation of how this variable affects the funtion of this class and if it
-#   has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
-#   global variables should not be used in preference to class parameters  as of
-#   Puppet 2.6.)
+# All parameters are documented in trafficserver::params
 #
 # === Examples
 #
-#  class { trafficserver:
-#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ]
-#  }
+#   class {'trafficserver':
+#     port                           => '80 443:ssl'
+#     storage                        => [ '/dev/vdb' ],
+#     url_map                        => [
+#       { 'http://pypi.es.at/pypi'   => 'https://pypi.python.org/pypi' },
+#       { 'http://pypi.es.at'        => 'http://c.pypi.python.org' },
+#       { 'http://mypypi.risedev.at' => 'http://localhost:8080' }
+#     ],
+#     url_reverse_map                         => [
+#       { 'http://localhost:8080'           => 'http://mypypi.risedev.at' },
+#       { 'https://pypi.python.org' => 'http://pypi.es.at' },
+#     ],
+#     records => [ 'set proxy.config.url_remap.pristine_host_hdr 0' ]
+#   }
 #
-# === Authors
 #
-# Author Name <author@domain.com>
 #
-# === Copyright
-#
-# Copyright 2013 Your name here, unless otherwise noted.
-#
-class trafficserver {
-
-
-}
 class trafficserver (
-  $port            = $trafficserver::params::port,
+  $ssl             = false,
   $debug           = $trafficserver::params::debug,
   $mode            = $trafficserver::params::mode,
   $plugins         = $trafficserver::params::plugins,
@@ -55,6 +41,12 @@ class trafficserver (
   include 'trafficserver::install'
   include 'trafficserver::config'
   include 'trafficserver::service'
+
+  if $ssl {
+    $port = $trafficserver::params::port
+  } else {
+    $port = $trafficserver::params::ssl_port
+  }
 
   anchor { 'traffiserver::begin': } ->
   Class['trafficserver::install'] ->
