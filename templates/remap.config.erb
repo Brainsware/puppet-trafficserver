@@ -3,9 +3,7 @@ set #comment[2] "during the next Puppet run."
 rm redirect
 <% if @redirects and not @redirects.empty? -%>
 <% i = 0 %>
-<% @redirects.each do |line| -%>
-<% url = line.keys.first -%>
-<% replacement = line.values.first -%>
+<% @redirects.each do |url,replacement| -%>
 <% i += 1 %>
 set redirect[<%= i -%>] <%= url %>
 <% if replacement and not replacement.empty? -%>
@@ -16,9 +14,7 @@ set redirect[<%= i -%>]/replacement <%= replacement %>
 rm map
 <% if @url_map and not @url_map.empty? -%>
 <% i = 0 %>
-<% @url_map.each do |line| -%>
-<% url = line.keys.first -%>
-<% replacement = line.values.first -%>
+<% @url_map.each do |url,replacement| -%>
 <% i += 1 %>
 set map[<%= i -%>] <%= url %>
 <% if replacement and not replacement.empty? -%>
@@ -29,9 +25,7 @@ set map[<%= i -%>]/replacement <%= replacement %>
 rm regex_map
 <% if @regex_map and not @regex_map.empty? -%>
 <% i = 0 %>
-<% @regex_map.each do |line| -%>
-<% url = line.keys.first -%>
-<% replacement = line.values.first -%>
+<% @regex_map.each do |url,replacement| -%>
 <% i += 1 %>
 set regex_map[<%= i -%>] <%= url %>
 <% if replacement and not replacement.empty? -%>
@@ -42,9 +36,7 @@ set regex_map[<%= i -%>]/replacement <%= replacement %>
 rm reverse_map
 <% if @url_reverse_map and not @url_reverse_map.empty? -%>
 <% i = 0 %>
-<% @url_reverse_map.each do |line| -%>
-<% url = line.keys.first -%>
-<% replacement = line.values.first -%>
+<% @url_reverse_map.each do |rul,replacement| -%>
 <% i += 1 %>
 set reverse_map[<%= i -%>] <%= url %>
 <% if replacement and not replacement.empty? -%>

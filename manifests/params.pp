@@ -25,7 +25,7 @@ class trafficserver::params {
   #   'set proxy.config.url_remap.pristine_host_hdr 1'
   # ]
 
-  $plugins = []
+  $plugins = {}
   # This an array of plugin names, e.g.:
   # $plugins = ['http_stats.so', 'gzip.so']
   #
@@ -48,34 +48,34 @@ class trafficserver::params {
   #
   # SUBSYSTEM=="block", KERNEL=="vd[bc]", GROUP:="tserver"
 
-  $redirects   = []
-  $url_map     = []
-  $reverse_map = []
-  $regex_map   = []
+  $redirects   = {}
+  $url_map     = {}
+  $reverse_map = {}
+  $regex_map   = {}
   # array of url maps or redirects. Each entry corresponds
   # to a line in remap.config. n.b.: The traffic server
   # internal order of processing is: redirects, maps, regex remaps
   #
   # Example:
   #
-  # $url_redirect = [
-  #     { 'http://www.example.org' => 'http://example.org', },
-  #     { 'http://git.example.org' => 'https://git.example.org', },
-  #   ],
+  # $redirects = {
+  #     'http://www.example.org' => 'http://example.org',
+  #     'http://git.example.org' => 'https://git.example.org',
+  #   },
   #   # n.b.: We allow all methods on git.
-  # $url_map => [
+  # $url_map => {
   #     # This currently doesn't work:
-  #     'http://example.org http://app04-dev.dev.rz01.riseops.at:9001 @method=GET @method=POST @method=HEAD @method=OPTIONS @action=allow',
-  #     { 'https://git.example.org' => 'http://app05-dev.rz01.riseops.at:9002', },
-  #   ],
-  # $url_reverse_map => [
-  #    { http://app04-dev.dev.rz01.riseops.at:9001 => http://example.org },
-  # ]
+  #     # 'http://example.org http://app04-dev.dev.rz01.riseops.at:9001 @method=GET @method=POST @method=HEAD @method=OPTIONS @action=allow',
+  #     'https://git.example.org' => 'http://app05-dev.rz01.riseops.at:9002',
+  #   },
+  # $reverse_map => {
+  #    'http://app04-dev.dev.rz01.riseops.at:9001' => 'http://example.org',
+  # }
   #   # map everything else to:',
-  # $url_regex_map => [
-  #     { 'http://.*\.dev.example\.org' => 'http://app06-dev.rz01.riseops.at:8000', }, # @method=GET @method=POST @method=HEAD @method=OPTIONS @action=allow',
-  #     { 'https://.*\.dev.example\.org' => 'http://app06-dev.rz01.riseops.at:8000, }, # @method=GET @method=POST @method=HEAD @method=OPTIONS @action=allow',
-  #   ],
+  # $regex_map => {
+  #     'http://.*\.dev.example\.org' => 'http://app06-dev.rz01.riseops.at:8000', }, # @method=GET @method=POST @method=HEAD @method=OPTIONS @action=allow',
+  #     'https://.*\.dev.example\.org' => 'http://app06-dev.rz01.riseops.at:8000, }, # @method=GET @method=POST @method=HEAD @method=OPTIONS @action=allow',
+  #   },
   #
 
   # change this setting, if your sysconfdir is somewhere else.
