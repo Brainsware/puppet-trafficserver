@@ -42,6 +42,7 @@ class trafficserver (
   $url_map     = $trafficserver::params::url_map,
   $reverse_map = $trafficserver::params::reverse_map,
   $regex_map   = $trafficserver::params::regex_map,
+  $sysconfdir  = $trafficserver::params::sysconfdir,
 ) inherits trafficserver::params {
 
   include 'trafficserver::install'

@@ -78,6 +78,8 @@ class trafficserver::params {
   #   },
   #
 
-  # change this setting, if your sysconfdir is somewhere else.
-  $sysconfdir = '/etc/bw/trafficserver'
+  case $::operatingsystem {
+    '/(Darwin|FreeBSD)/': { $sysconfdir = '/usr/local/etc/trafficserver' }
+    default: { $sysconfdir = '/etc/trafficserver' }
+  }
 }

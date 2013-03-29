@@ -1,4 +1,5 @@
 class trafficserver::config {
+
   include 'trafficserver::params'
   include 'trafficserver::storage'
 
