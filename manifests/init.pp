@@ -25,11 +25,11 @@
 #         'stats_over_http.so' => '',
 #         'gzip.so'            => 'gzip.config',
 #     }
-#     ssl_hosts           => {
+#     ssl_hosts           => [
 #       { 'ssl_cert_name' => 'foo.pem' },
 #       { 'dst_ip'        => '*',             'ssl_cert_name' => 'bar.pem',    'ssl_key_name' => 'barKey.pem' },
 #       { dest_ip'        => '209.131.48.79', 'ssl_cert_name' => 'server.pem', 'ssl_key_name' => 'serverKey.pem' },
-#     }
+#     ]
 #   }
 #
 #
@@ -48,6 +48,7 @@ class trafficserver (
   $reverse_map = $trafficserver::params::reverse_map,
   $regex_map   = $trafficserver::params::regex_map,
   $sysconfdir  = $trafficserver::params::sysconfdir,
+  $ssl_hosts   = $trafficserver::params::ssl_hosts,
 ) inherits trafficserver::params {
 
   include 'trafficserver::install'

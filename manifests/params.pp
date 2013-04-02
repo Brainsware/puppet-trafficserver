@@ -78,6 +78,8 @@ class trafficserver::params {
   #   },
   #
 
+  $ssl_hosts = []
+
   case $::operatingsystem {
     '/(Darwin|FreeBSD)/': { $sysconfdir = '/usr/local/etc/trafficserver' }
     default: { $sysconfdir = '/etc/trafficserver' }
