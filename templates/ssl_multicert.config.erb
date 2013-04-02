@@ -1,10 +1,10 @@
 # This file managed by Puppet. Local changes will be overwritten
 # during the next Puppet run.
-<% if @ssl_hosts and not @ssl_hosts.empty? -%>
-	<% @ssl_hosts.each do |ssl_host| -%>
-		<%- @ssl_host.each do |k,v| -%>
-			<%= k -%>=<%= v -%><%= ' ' -%>
-		<% end -%>
-		<%= "\n" -%>
+<%- if @ssl_hosts and not @ssl_hosts.empty? -%>
+	<%- @ssl_hosts.each do |host| -%>
+    <%- host.each do |k,v| -%>
+<%= k %>=<%= v -%><%= ' ' -%>
+    <%- end -%>
+<%= "\n" -%>
 	<%- end -%>
-<% end -%>
+<%- end -%>
