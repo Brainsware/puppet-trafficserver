@@ -2,7 +2,7 @@ class trafficserver::config {
 
   include 'trafficserver::params'
   include 'trafficserver::storage'
-  include 'trafficserver::config'
+  include 'trafficserver::ssl'
 
   augeas { 'trafficserver.records_port':
     lens    => 'Trafficserver_records.records_lns',
@@ -70,4 +70,10 @@ class trafficserver::config {
     incl    => "${trafficserver::sysconfdir}/plugin.config",
     changes =>  template('trafficserver/plugin.config.erb'),
   }
+
+  anchor { 'tserver::config::begin': } ->
+  Class['trafficserver::params'] ->
+  Class['trafficserver::storage'] ->
+  Class['trafficserver::ssl'] ->
+  anchor { 'tserver::config::end': }
 }
