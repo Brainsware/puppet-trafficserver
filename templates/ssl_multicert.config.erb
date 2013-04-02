@@ -1,2 +1,10 @@
-set #comment[1] "This file managed by Puppet. Local changes will be overwritten"
-set #comment[2] "during the next Puppet run."
+# This file managed by Puppet. Local changes will be overwritten
+# during the next Puppet run.
+<% if @ssl_hosts and not @ssl_hosts.empty? -%>
+	<% @ssl_hosts.each do |ssl_host| -%>
+		<%- @ssl_host.each do |k,v| -%>
+			<%= k -%>=<%= v -%><%= ' ' -%>
+		<% end -%>
+		<%= "\n" -%>
+	<%- end -%>
+<% end -%>

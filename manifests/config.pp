@@ -2,6 +2,7 @@ class trafficserver::config {
 
   include 'trafficserver::params'
   include 'trafficserver::storage'
+  include 'trafficserver::config'
 
   augeas { 'trafficserver.records_port':
     lens    => 'Trafficserver_records.records_lns',
