@@ -2,12 +2,12 @@
 # Don't modify this file! It's manged by puppet and will be overwritten!
 #
 # Assign cache disks to <%= @group %> group
-# make the assignment final, no later changes allowed to the group!
+# We cannot make the assignment final for some reason :S
 #
 <% if @storage and not @storage.empty? -%>
 <% @storage.each do |path,size| -%>
 <% if not size or size.empty? -%>
-SUBSYSTEM=="block", KERNEL=="<%= path -%>", GROUP:="<%= @group -%>"
+SUBSYSTEM=="block", KERNEL=="<%= path -%>", GROUP="<%= @group -%>"
 <% end -%>
 <% end -%>
 <% end -%>
