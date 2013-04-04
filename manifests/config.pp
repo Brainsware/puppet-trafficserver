@@ -9,7 +9,7 @@ class trafficserver::config {
     context => "/files${trafficserver::sysconfdir}/records.config",
     incl    => "${trafficserver::sysconfdir}/records.config",
     changes => [
-      "set proxy.config.http.server_ports ${trafficserver::port}"
+      "set proxy.config.http.server_ports \"${trafficserver::port}\""
     ],
   }
 
