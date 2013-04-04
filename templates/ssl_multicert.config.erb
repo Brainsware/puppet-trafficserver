@@ -4,10 +4,9 @@
   <%- @ssl_hosts.each do |host| -%>
     <%- fail("Host does not contain a ssl_cert_name!") unless host.has_key?("ssl_cert_name") -%>
     <%- host.each do |k,v| -%>
-      <%- fail("#{k} is not a valid Traffic Server SSL directive")
-          unless ['dest_ip', 'ssl_cert_name', 'ssl_ca_name', 'ssl_key_name'].include?(k) -%>
+      <%- fail("#{k} is not a valid Traffic Server SSL directive") unless ['dest_ip', 'ssl_cert_name', 'ssl_ca_name', 'ssl_key_name'].include?(k) -%>
 <%= k %>=<%= v -%><%= ' ' -%>
-      <%- end -%>
-<%= "\n" -%>
     <%- end -%>
+<%= "\n" -%>
+  <%- end -%>
 <%- end -%>
