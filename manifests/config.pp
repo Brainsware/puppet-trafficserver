@@ -1,6 +1,6 @@
 class trafficserver::config {
 
-  include 'trafficserver::params'
+  include 'trafficserver'
   include 'trafficserver::storage'
   include 'trafficserver::ssl'
 
@@ -72,8 +72,13 @@ class trafficserver::config {
   }
 
   anchor { 'tserver::config::begin': } ->
-  Class['trafficserver::params'] ->
+  Augeas['trafficserver.records_port'] ->
+  Augeas['trafficserver.records_debug'] ->
+  Augeas['trafficserver.records_mode'] ->
+  Augeas['trafficserver.records_records'] ->
+  Augeas['trafficserver.remap'] ->
   Class['trafficserver::storage'] ->
   Class['trafficserver::ssl'] ->
+  Augeas['trafficserver.plugins'] ->
   anchor { 'tserver::config::end': }
 }

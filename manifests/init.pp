@@ -51,15 +51,15 @@ class trafficserver (
   $ssl_hosts   = $trafficserver::params::ssl_hosts,
 ) inherits trafficserver::params {
 
+  if $ssl == true {
+    $port = $trafficserver::params::listen_ssl
+  } else {
+    $port = $trafficserver::params::listen
+  }
+
   include 'trafficserver::install'
   include 'trafficserver::config'
   include 'trafficserver::service'
-
-  if $ssl {
-    $port = $trafficserver::params::ssl_port
-  } else {
-    $port = $trafficserver::params::port
-  }
 
   anchor { 'traffiserver::begin': } ->
   Class['trafficserver::install'] ->
