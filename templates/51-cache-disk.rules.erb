@@ -4,10 +4,11 @@
 # Assign cache disks to <%= @group %> group
 # We cannot make the assignment final for some reason :S
 #
-<% if @storage and not @storage.empty? -%>
-<% @storage.each do |path,size| -%>
-<% if not size or size.empty? -%>
-SUBSYSTEM=="block", KERNEL=="<%= path -%>", GROUP="<%= @group -%>"
+<%- if @storage and not @storage.empty? -%>
+<%- @storage.each do |path,size| -%>
+<%- if not size or size.empty? -%>
+<%- kernel = path.split('/')[-1]  -%>
+SUBSYSTEM=="block", KERNEL=="<%= kernel -%>", GROUP:="<%= @group -%>"
 <% end -%>
 <% end -%>
 <% end -%>
