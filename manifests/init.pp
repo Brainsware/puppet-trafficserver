@@ -23,23 +23,67 @@
 #
 #
 class trafficserver (
-  $ssl         = $trafficserver::params::ssl,
-  $user        = $trafficserver::params::user,
-  $group       = $trafficserver::params::group,
-  $debug       = $trafficserver::params::debug,
-  $mode        = $trafficserver::params::mode,
-  $plugins     = $trafficserver::params::plugins,
-  $records     = $trafficserver::params::records,
-  $storage     = $trafficserver::params::storage,
-  $sysconfdir  = $trafficserver::params::sysconfdir,
-  $cachedir    = $trafficserver::params::cachedir,
+  $ssl         = UNDEF,
+  $user        = UNDEF,
+  $group       = UNDEF,
+  $debug       = UNDEF,
+  $mode        = UNDEF,
+  $plugins     = UNDEF,
+  $records     = UNDEF,
+  $storage     = UNDEF,
+  $sysconfdir  = UNDEF,
+  $cachedir    = UNDEF,
   $ssl_default   = $trafficserver::params::ssl_default,
 ) inherits trafficserver::params {
 
-  if $ssl == true {
-    $port = $trafficserver::params::listen_ssl
+  $real_ssl = $ssl? {
+    UNDEF   => $trafficserver::params::ssl,
+    default => $ssl,
+  }
+
+  $real_group = $group? {
+    UNDEF   => $trafficserver::params::group,
+    default => $group,
+  }
+  $real_user = $user? {
+    UNDEF   => $trafficserver::params::user,
+    default => $user,
+  }
+
+  $real_debug = $debug? {
+    UNDEF   => $trafficserver::params::debug,
+    default => $debug,
+  }
+
+  $real_plugins = $plugins? {
+    UNDEF   => $trafficserver::params::plugins,
+    default => $plugins,
+  }
+
+  $real_storage = $storage? {
+    UNDEF   => $trafficserver::params::storage,
+    default => $storage,
+  }
+
+  $real_sysconfdir = $sysconfdir? {
+    UNDEF   => $trafficserver::params::sysconfdir,
+    default => $sysconfdir,
+  }
+  $real_cachedir = $cachedir? {
+    UNDEF   => $trafficserver::params::cachedir,
+    default => $cachedir,
+  }
+
+  $real_ssl_default = $ssl_default? {
+    UNDEF   => $trafficserver::params::ssl_default,
+    default => $ssl_default,
+  }
+
+  # for consistency, prefix this one with real_ also ;)
+  if $real_ssl == true {
+    $real_port = $trafficserver::params::listen_ssl
   } else {
-    $port = $trafficserver::params::listen
+    $real_port = $trafficserver::params::listen
   }
 
   include 'trafficserver::install'

@@ -5,13 +5,13 @@ class trafficserver::config {
   include 'trafficserver'
   include 'trafficserver::storage'
 
-  $port = $trafficserver::port
+  $port = $trafficserver::real_port
   $port_changes = [ "set proxy.config.http.server_ports \"${port}\"" ]
   trafficserver::config::records { 'port':
     changes => $port_changes,
   }
 
-  $debug = $trafficserver::debug
+  $debug = $trafficserver::real_debug
   $debug_changes = [
       "set proxy.config.http.insert_request_via_str ${debug}",
       "set proxy.config.http.insert_response_via_str ${debug}"
@@ -20,7 +20,7 @@ class trafficserver::config {
     changes => $debug_changes ,
   }
 
-  $mode = $trafficserver::mode
+  $mode = $trafficserver::real_mode
   validate_re ($mode, $valid_modes)
 
   $mode_changes = $mode ? {
@@ -35,22 +35,22 @@ class trafficserver::config {
     changes => $mode_changes,
   }
 
-  $records = $trafficserver::records
-  unless $records == [] {
-    trafficserver::config::records { 'records':
+  $records = $trafficserver::real_records
+  if $records {
+    trafficserver::config::records { 'global_records':
       changes => $records,
     }
   }
 
-  augeas { 'trafficserver.plugins':
-    lens    => 'Trafficserver_plugin.plugin_lns',
-    context => "/files${trafficserver::sysconfdir}/plugin.config",
-    incl    => "${trafficserver::sysconfdir}/plugin.config",
-    changes =>  template('trafficserver/plugin.config.erb'),
+  $plugins = $trafficserver::real_plugins
+  unless $plugins == {} {
+    trafficserver::config::plugins { 'global_plugins':
+      changes => $plugins,
+    }
   }
 
-  $ssl = $trafficserver::ssl
-  $ssl_default = $trafficserver::ssl_default
+  $ssl = $trafficserver::real_ssl
+  $ssl_default = $trafficserver::real_ssl_default
   if $ssl {
     unless $ssl_default == {} {
       trafficserver::config::ssl { 'default':

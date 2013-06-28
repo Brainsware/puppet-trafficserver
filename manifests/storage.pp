@@ -4,15 +4,12 @@ class trafficserver::storage {
   include 'trafficserver::params'
   include 'trafficserver'
 
-  $sysconfdir     = $trafficserver::sysconfdir
-  $storage_passed = $trafficserver::storage
+  $sysconfdir     = $trafficserver::real_sysconfdir
+  $storage_passed = $trafficserver::real_storage
 
-  if $storage_passed == {} or $storage_passed == [] or $storage_passed == UNDEF {
-    # Nothing was passed, we're dealing with empty default values, reset to *actual* default
-    $storage = $trafficserver::params::storage
-  } elsif $storage_passed == false {
-    # Someone genuinly passed a false, and wants to disable storage.
-    $storage  = {}
+  $storage = $storage_passed ? {
+    false   => [], # Someone genuinly passed a false, and wants to disable storage.
+    default => $storage_passed,
   }
 
   Exec {
