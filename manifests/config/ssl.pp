@@ -8,11 +8,13 @@
 define trafficserver::config::ssl (
   $ssl_host,
 ){
-  include 'trafficserver'
+  include 'concat::setup'
   include 'trafficserver::params'
+  include 'trafficserver'
 
   $sysconfdir = $trafficserver::real_sysconfdir
-  $configfile = "sysconfdir/${trafficserver::params::ssl_config}"
+  $configfile = "${sysconfdir}/${trafficserver::params::ssl_config}"
+  $template   = $trafficserver::params::ssl_config_template
   $comment    = $title
 
   validate_hash ( $ssl_host )
@@ -20,8 +22,9 @@ define trafficserver::config::ssl (
     fail('\$ssl_hosts does not contain a key ssl_cert_name.')
   }
 
-  file { "${sysconfdir}/ssl_multicert.config_${comment}":
+  concat::fragment { "${sysconfdir}/ssl_multicert.config_${comment}":
     target  => $configfile,
-    content => template('trafficserver/ssl_multicert.config.erb'),
+    content => template($template),
+    order   => '99999'
   }
 }

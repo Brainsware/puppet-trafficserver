@@ -52,6 +52,7 @@ class trafficserver::config {
   $ssl = $trafficserver::real_ssl
   $ssl_default = $trafficserver::real_ssl_default
   if $ssl {
+    include trafficserver::ssl
     unless $ssl_default == {} {
       trafficserver::config::ssl { 'default':
         ssl_host => $ssl_default,

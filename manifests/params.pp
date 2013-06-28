@@ -60,7 +60,10 @@ class trafficserver::params {
   $valid_modes = '^(reverse|forward|both)$'
 
 
-  $ssl         = false
+  $ssl                = false
+  $ssl_config         = 'ssl_multicert.config'
+  $ssl_config_header  = 'puppet:///modules/trafficserver/ssl_multicert_header'
+  $ssl_config_template= 'trafficserver/ssl_multicert.config.erb'
   $ssl_default = {}
 
   case $::operatingsystem {

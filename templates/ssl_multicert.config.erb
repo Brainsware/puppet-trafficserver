@@ -1,5 +1,3 @@
-# This file managed by Puppet. Local changes will be overwritten
-# during the next Puppet run.
 <%- if @ssl_hosts and not @ssl_hosts.empty? -%>
   <%- @ssl_hosts.each do |host| -%>
     <%- fail("Host does not contain a ssl_cert_name!") unless host.has_key?("ssl_cert_name") -%>
