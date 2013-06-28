@@ -5,10 +5,11 @@ define trafficserver::config::plugins (
   include 'trafficserver'
 
   $sysconfdir = $trafficserver::real_sysconfdir
+  $configfile = "${sysconfdir}/plugins.config"
 
   $lens    = 'Trafficserver_plugins.plugins_lns'
-  $context = "/files${sysconfdir}/plugins.config"
-  $incl    = "${sysconfdir}/plugins.config"
+  $context = "/files${configfile}"
+  $incl    = $configfile
 
   augeas { "${lens}_${title}":
     lens    => $lens,

@@ -5,10 +5,11 @@ define trafficserver::config::records (
   include 'trafficserver'
 
   $sysconfdir = $trafficserver::real_sysconfdir
+  $configfile = "${sysconfdir}/records.config"
 
   $lens    = 'Trafficserver_records.records_lns'
-  $context = "/files${sysconfdir}/records.config"
-  $incl    = "${sysconfdir}/records.config"
+  $context = "/files${configfile}"
+  $incl    = $configfile
 
   augeas { "${lens}_${title}":
     lens    => $lens,

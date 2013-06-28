@@ -35,16 +35,17 @@ define trafficserver::config::remap (
   include 'trafficserver::params'
 
   $sysconfdir = $trafficserver::real_sysconfdir
+  $configfile = "${sysconfdir}/remap.config"
 
   $lens    = 'Trafficserver_remap.remap_lns'
-  $context = "/files${sysconfdir}/remap.config"
-  $incl    = "${sysconfdir}/remap.config"
+  $context = "/files${configfile}"
+  $incl    = $configfile
   $comment = $title
 
   augeas { "${lens}_${comment}":
     lens    => $lens,
-    context => "/files${context}",
-    incl    => "${incl}/remap.config",
+    context => $context,
+    incl    => $incl,
     changes =>  template('trafficserver/remap.config.erb'),
   }
 }
