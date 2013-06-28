@@ -25,7 +25,7 @@
 #   },
 #
 define trafficserver::config::remap (
-  $map_url     = {},
+  $url_map     = {},
   $reverse_map = {},
   $regex_map   = {},
   $redirects   = {},
