@@ -16,12 +16,17 @@ class trafficserver::params {
 
   $records = []
   # Other records config options. Use augeas syntax here directly
+  # While we generally consider records.config to be a "global", per
+  # instance setting, it might be cleaner to simply use the defined type
+  # trafficserver::config::records for these settings.
   #
   # Example:
   #
   # $records = [
   #   'set proxy.config.url_remap.pristine_host_hdr 1'
   # ]
+
+
 
   $plugins = {}
   # This an array of plugin names, e.g.:
@@ -34,7 +39,7 @@ class trafficserver::params {
   #   'foo.so'  => 'foo bar baz',
   # ]
 
-  $storage = []
+  $storage = [ $trafficserver::cachedir => '512M' ]
   # array of storage devices or directories. Each entry
   # contains a config line as per storage.config. E.g.:
   #
@@ -65,40 +70,18 @@ class trafficserver::params {
   $mode = 'reverse'
   $valid_modes = '^(reverse|forward|both)$'
 
-  $redirects   = {}
-  $url_map     = {}
-  $reverse_map = {}
-  $regex_map   = {}
-  # array of url maps or redirects. Each entry corresponds
-  # to a line in remap.config. n.b.: The traffic server
-  # internal order of processing is: redirects, maps, regex remaps
-  #
-  # Example:
-  #
-  # $redirects = {
-  #     'http://www.example.org' => 'http://example.org',
-  #     'http://git.example.org' => 'https://git.example.org',
-  #   },
-  #   # n.b.: We allow all methods on git.
-  # $url_map => {
-  #     # This currently doesn't work:
-  #     # 'http://example.org http://app04-dev.dev.rz01.riseops.at:9001 @method=GET @method=POST @method=HEAD @method=OPTIONS @action=allow',
-  #     'https://git.example.org' => 'http://app05-dev.rz01.riseops.at:9002',
-  #   },
-  # $reverse_map => {
-  #    'http://app04-dev.dev.rz01.riseops.at:9001' => 'http://example.org',
-  # }
-  #   # map everything else to:',
-  # $regex_map => {
-  #     'http://.*\.dev.example\.org' => 'http://app06-dev.rz01.riseops.at:8000', }, # @method=GET @method=POST @method=HEAD @method=OPTIONS @action=allow',
-  #     'https://.*\.dev.example\.org' => 'http://app06-dev.rz01.riseops.at:8000, }, # @method=GET @method=POST @method=HEAD @method=OPTIONS @action=allow',
-  #   },
-  #
 
-  $ssl_hosts = []
+  $ssl         = false
+  $ssl_default = {}
 
   case $::operatingsystem {
-    '/(Darwin|FreeBSD)/': { $sysconfdir = '/usr/local/etc/trafficserver' }
-    default: { $sysconfdir = '/etc/trafficserver' }
+    '/(Darwin|FreeBSD)/': {
+      $sysconfdir = '/usr/local/etc/trafficserver'
+      $cachedir   = '/usr/local/var/cache/trafficserver'
+    }
+    default: {
+      $sysconfdir = '/etc/trafficserver'
+      $cachedir   = '/var/cache/trafficserver'
+    }
   }
 }

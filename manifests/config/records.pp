@@ -3,6 +3,9 @@ define trafficserver::config::records (
   $changes
 ) {
   include 'trafficserver'
+
+  $sysconfdir = $trafficserver::sysconfdir
+
   $lens    = 'Trafficserver_records.records_lns'
   $context = "/files${trafficserver::sysconfdir}/records.config"
   $incl    = "${trafficserver::sysconfdir}/records.config"

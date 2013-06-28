@@ -4,7 +4,6 @@ class trafficserver::config {
 
   include 'trafficserver'
   include 'trafficserver::storage'
-  include 'trafficserver::ssl'
 
   $port = $trafficserver::port
   $port_changes = [ "set proxy.config.http.server_ports \"${port}\"" ]
@@ -43,18 +42,21 @@ class trafficserver::config {
     }
   }
 
-  augeas { 'trafficserver.remap':
-    lens    => 'Trafficserver_remap.remap_lns',
-    context => "/files${trafficserver::sysconfdir}/remap.config",
-    incl    => "${trafficserver::sysconfdir}/remap.config",
-    changes =>  template('trafficserver/remap.config.erb'),
-  }
-
   augeas { 'trafficserver.plugins':
     lens    => 'Trafficserver_plugin.plugin_lns',
     context => "/files${trafficserver::sysconfdir}/plugin.config",
     incl    => "${trafficserver::sysconfdir}/plugin.config",
     changes =>  template('trafficserver/plugin.config.erb'),
+  }
+
+  $ssl = $trafficserver::ssl
+  $ssl_default = $trafficserver::ssl_default
+  if $ssl {
+    unless $ssl_default == {} {
+      trafficserver::config::ssl { 'default':
+        ssl_host => $ssl_default,
+      }
+    }
   }
 
 }
