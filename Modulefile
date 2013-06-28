@@ -9,3 +9,4 @@ project_page 'https://github.com/Brainsware.org/puppet-trafficserver'
 
 ## Add dependencies, if any:
 dependency 'puppetlabs/stdlib'
+dependency 'ripienaar/concat'
