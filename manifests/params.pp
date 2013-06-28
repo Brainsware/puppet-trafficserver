@@ -1,3 +1,5 @@
+# Sane default parameters for Traffic Server are held in this
+# class -- they are also documented here!
 class trafficserver::params {
   # Basic configurations
 
@@ -11,10 +13,6 @@ class trafficserver::params {
   $debug = '3'  # default (highest).
   # Can go from 0 (disabled) to 3.
   # It's applied to both, in coming and outgoing Via headers.
-
-  $mode = 'reverse' # default.
-  # Other options: 'forward', 'both'.
-  # Transparent proxy is currently not supported by this module
 
   $records = []
   # Other records config options. Use augeas syntax here directly
@@ -47,6 +45,25 @@ class trafficserver::params {
   # trafficserver group (tserver) write access to these:
   #
   # SUBSYSTEM=="block", KERNEL=="vd[bc]", GROUP:="tserver"
+
+
+  # Traffic Server, mode of operations
+  # These settings here directly translate into augeas settings.
+  $mode_reverse = [
+      'set proxy.config.url_remap.remap_required 1',
+      'set proxy.config.reverse_proxy.enabled 1',
+    ]
+  $mode_forward = [
+      'set proxy.config.url_remap.remap_required 0',
+      'set proxy.config.reverse_proxy.enabled 0',
+    ]
+  $mode_both = [
+      'set proxy.config.url_remap.remap_required 0',
+      'set proxy.config.reverse_proxy.enabled 1',
+    ]
+  # Default mode of operation:
+  $mode = 'reverse'
+  $valid_modes = '^(reverse|forward|both)$'
 
   $redirects   = {}
   $url_map     = {}

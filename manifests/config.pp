@@ -1,60 +1,46 @@
+# This class manages pretty much all of traffic server's configuration
+# But does so via calling upon other classes/defined types to help it.
 class trafficserver::config {
 
   include 'trafficserver'
   include 'trafficserver::storage'
   include 'trafficserver::ssl'
 
-  augeas { 'trafficserver.records_port':
-    lens    => 'Trafficserver_records.records_lns',
-    context => "/files${trafficserver::sysconfdir}/records.config",
-    incl    => "${trafficserver::sysconfdir}/records.config",
-    changes => [
-      "set proxy.config.http.server_ports \"${trafficserver::port}\""
-    ],
+  $port = $trafficserver::port
+  $port_changes = [ "set proxy.config.http.server_ports \"${port}\"" ]
+  trafficserver::config::records { 'port':
+    changes => $port_changes,
   }
 
-  augeas { 'trafficserver.records_debug':
-    lens    => 'Trafficserver_records.records_lns',
-    context => "/files${trafficserver::sysconfdir}/records.config",
-    incl    => "${trafficserver::sysconfdir}/records.config",
-    changes => [
-      "set proxy.config.http.insert_request_via_str ${trafficserver::debug}",
-      "set proxy.config.http.insert_response_via_str ${trafficserver::debug}"
-    ],
+  $debug = $trafficserver::debug
+  $debug_changes = [
+      "set proxy.config.http.insert_request_via_str ${debug}",
+      "set proxy.config.http.insert_response_via_str ${debug}"
+    ]
+  trafficserver::config::records { 'debug':
+    changes => $debug_changes ,
   }
 
-  $changes_mode = $trafficserver::mode ? {
-    'reverse' => [
-      'set proxy.config.url_remap.remap_required 1',
-      'set proxy.config.reverse_proxy.enabled 1',
-    ],
-    'forward' => [
-      'set proxy.config.url_remap.remap_required 0',
-      'set proxy.config.reverse_proxy.enabled 0',
-    ],
-    'both' => [
-      'set proxy.config.url_remap.remap_required 0',
-      'set proxy.config.reverse_proxy.enabled 1',
-    ],
+  $mode = $trafficserver::mode
+  validate_re ($mode, $valid_modes)
+
+  $mode_changes = $mode ? {
+    'reverse' => $trafficserver::params::mode_reverse,
+    'forward' => $trafficserver::params::mode_forward,
+    'both' => $trafficserver::params::mode_both,
     # Default is reverse
-    default => [
-      'set proxy.config.url_remap.remap_required 1',
-      'set proxy.config.reverse_proxy.enabled 1',
-    ],
+    default => $trafficserver::params::mode_reverse
   }
 
-  augeas { 'trafficserver.records_mode':
-    lens    => 'Trafficserver_records.records_lns',
-    context => "/files${trafficserver::sysconfdir}/records.config",
-    incl    => "${trafficserver::sysconfdir}/records.config",
-    changes => $changes_mode,
+  trafficserver::config::records { 'mode':
+    changes => $mode_changes,
   }
 
-  augeas { 'trafficserver.records_records':
-    lens    => 'Trafficserver_records.records_lns',
-    context => "/files${trafficserver::sysconfdir}/records.config",
-    incl    => "${trafficserver::sysconfdir}/records.config",
-    changes => $trafficserver::records,
+  $records = $trafficserver::records
+  unless $records == [] {
+    trafficserver::config::records { 'records':
+      changes => $records,
+    }
   }
 
   augeas { 'trafficserver.remap':
@@ -71,14 +57,4 @@ class trafficserver::config {
     changes =>  template('trafficserver/plugin.config.erb'),
   }
 
-  anchor { 'tserver::config::begin': } ->
-  Augeas['trafficserver.records_port'] ->
-  Augeas['trafficserver.records_debug'] ->
-  Augeas['trafficserver.records_mode'] ->
-  Augeas['trafficserver.records_records'] ->
-  Augeas['trafficserver.remap'] ->
-  Class['trafficserver::storage'] ->
-  Class['trafficserver::ssl'] ->
-  Augeas['trafficserver.plugins'] ->
-  anchor { 'tserver::config::end': }
 }
