@@ -39,17 +39,6 @@ class trafficserver::params {
   #   'foo.so'  => 'foo bar baz',
   # ]
 
-  $storage = [ $trafficserver::cachedir => '512M' ]
-  # array of storage devices or directories. Each entry
-  # contains a config line as per storage.config. E.g.:
-  #
-  # $storage = [ '/dev/vdb', '/dev/vdc' ]
-  #
-  # It should be noted, that if we give trafficserver access to
-  # disk device files, we also need to make sure udev gives the
-  # trafficserver group (tserver) write access to these:
-  #
-  # SUBSYSTEM=="block", KERNEL=="vd[bc]", GROUP:="tserver"
 
 
   # Traffic Server, mode of operations
@@ -84,4 +73,16 @@ class trafficserver::params {
       $cachedir   = '/var/cache/trafficserver'
     }
   }
+
+  $storage = { "${cachedir}" => '512M' }
+  # array of storage devices or directories. Each entry
+  # contains a config line as per storage.config. E.g.:
+  #
+  # $storage = [ '/dev/vdb', '/dev/vdc' ]
+  #
+  # It should be noted, that if we give trafficserver access to
+  # disk device files, we also need to make sure udev gives the
+  # trafficserver group (tserver) write access to these:
+  #
+  # SUBSYSTEM=="block", KERNEL=="vd[bc]", GROUP:="tserver"
 }
