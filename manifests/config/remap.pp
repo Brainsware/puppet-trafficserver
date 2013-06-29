@@ -25,10 +25,10 @@
 #   },
 #
 define trafficserver::config::remap (
-  $url_map     = {},
-  $reverse_map = {},
-  $regex_map   = {},
-  $redirects   = {},
+  $map       = {},
+  $rev_map   = {},
+  $regex_map = {},
+  $redirects = {},
 ) {
 
   include 'trafficserver'

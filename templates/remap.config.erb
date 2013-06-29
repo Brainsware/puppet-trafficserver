@@ -1,9 +1,9 @@
 set #comment[1] "This file managed by Puppet. Local changes will be overwritten"
 set #comment[2] "during the next Puppet run."
 rm map
-<% if @url_map and not @url_map.empty? -%>
+<% if @map and not @map.empty? -%>
 <% i = 0 %>
-<% @url_map.each do |url,replacement| -%>
+<% @map.each do |url,replacement| -%>
 <% i += 1 %>
 set map[<%= i -%>] <%= url %>
 <% if replacement and not replacement.empty? -%>
@@ -23,9 +23,9 @@ set regex_map[<%= i -%>]/replacement <%= replacement %>
 <% end -%>
 <% end -%>
 rm reverse_map
-<% if @url_reverse_map and not @url_reverse_map.empty? -%>
+<% if @reverse_map and not @reverse_map.empty? -%>
 <% i = 0 %>
-<% @url_reverse_map.each do |rul,replacement| -%>
+<% @reverse_map.each do |url,replacement| -%>
 <% i += 1 %>
 set reverse_map[<%= i -%>] <%= url %>
 <% if replacement and not replacement.empty? -%>
