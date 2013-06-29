@@ -26,7 +26,7 @@
 #
 define trafficserver::config::remap (
   $map       = {},
-  $rev_map   = {},
+  $rev_map   = UNDEF,
   $regex_map = {},
   $redirects = {},
 ) {
@@ -41,6 +41,12 @@ define trafficserver::config::remap (
   $context = "/files${configfile}"
   $incl    = $configfile
   $comment = $title
+
+  # if the reverse_map is empty, create one:
+  $reverse_map = $rev_map ? {
+    UNDEF   => parseyaml(inline_template('<%= @map.invert.to_yaml %>')),
+    default => $reverse_map,
+  }
 
   augeas { "${lens}_${comment}":
     lens    => $lens,
