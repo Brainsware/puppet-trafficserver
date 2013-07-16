@@ -12,7 +12,7 @@
 #   # n.b.: We allow all methods on git.
 # url_map => {
 #     # This currently doesn't work:
-#     # 'http://example.org http://app04-dev.dev.rz01.riseops.at:9001 @method=GET @method=POST @method=HEAD @method=OPTIONS @action=allow',
+#     # @method=GET @method=POST @method=HEAD @method=OPTIONS @action=allow',
 #     'https://git.example.org' => 'http://app05-dev.rz01.riseops.at:9002',
 #   },
 # reverse_map => {
@@ -20,9 +20,21 @@
 # }
 #   # map everything else to:',
 # regex_map => {
-#     'http://.*\.dev.example\.org' => 'http://app06-dev.rz01.riseops.at:8000', }, # @method=GET @method=POST @method=HEAD @method=OPTIONS @action=allow',
-#     'https://.*\.dev.example\.org' => 'http://app06-dev.rz01.riseops.at:8000, }, # @method=GET @method=POST @method=HEAD @method=OPTIONS @action=allow',
-#   },
+#     @method=GET @method=POST @method=HEAD @method=OPTIONS @action=allow',
+#     'http://.*\.dev.example\.org' => 'http://app06-dev.rz01.riseops.at:8000',
+#     @method=GET @method=POST @method=HEAD @method=OPTIONS @action=allow',
+#     'https://.*\.dev.example\.org' => 'http://app06-dev.rz01.riseops.at:8000,
+#   }
+# trafficserver::config::remap { 'example.com-remaps':
+#   map     => $url_map,
+#   rev_map => $reverse_map,
+# }
+# trafficserver::config::remap { 'example.com-redirects':
+#   redirects => $redirects,
+# }
+# trafficserver::config::remap { 'example.com-regex':
+#   regex_map => $regex_map,
+# }
 #
 define trafficserver::config::remap (
   $map       = {},
