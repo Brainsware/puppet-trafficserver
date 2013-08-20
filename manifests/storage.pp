@@ -32,8 +32,9 @@ class trafficserver::storage {
       notify  => Exec['update udev rules'],
     }
 
+    # trigger an update of udev rules of the block subsystem
     exec { 'update udev rules':
-      command     => 'udevadm control --start-exec-queue',
+      command     => 'udevadm trigger --subsystem-match=block',
       refreshonly => true,
     }
   }
