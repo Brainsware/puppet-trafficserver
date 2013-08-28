@@ -1,12 +1,12 @@
 module Trafficserver_cache =
-  autoload cache_xfm
+  autoload xfm
 
   let eol = ( Util.eol | Util.comment_eol )
   let indent = Util.indent
   let spc = Util.del_ws_spc
   let value_re = /([^ \"\t\n#]([^ \t\n#]*)?|\"[^\\\"\n#]*(\\\.[^\\\"\n#]*)*\")/
 
-  let cache_filter = incl "/etc/trafficserver/cache.config"
+  let filter = incl "/etc/trafficserver/cache.config"
 
   (* primary dest types *)
   let primary_dest = "dest_domain" | "dest_host" | "dest_ip" | "url_regex"
@@ -30,4 +30,4 @@ module Trafficserver_cache =
 
   (* Define Lense *)
   let lns = ( Util.empty | Util.comment | cache_entry ) *
-  let xfm = transform lns cache_filter
+  let xfm = transform lns filter

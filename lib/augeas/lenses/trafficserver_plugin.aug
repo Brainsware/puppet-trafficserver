@@ -1,7 +1,7 @@
 module Trafficserver_plugin =
-  autoload plugin_xfm
+  autoload xfm
 
-  let plugin_filter = incl "/etc/trafficserver/plugin.config"
+  let filter = incl "/etc/trafficserver/plugin.config"
 
   let eol = Util.eol | Util.comment_eol
   let indent = Util.indent
@@ -18,4 +18,4 @@ module Trafficserver_plugin =
   let plugin_entry = [ indent . label "plugin" . store path_re . ( spc . [ label "args" . store args_re ] ) ? . eol ]
 
   let lns = ( Util.empty | Util.comment | plugin_entry ) *
-  let xfm = transform lns plugin_filter
+  let xfm = transform lns filter

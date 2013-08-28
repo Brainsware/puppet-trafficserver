@@ -1,7 +1,7 @@
 module Trafficserver_records =
-  autoload records_xfm
+  autoload xfm
 
-  let records_filter = incl "/etc/trafficserver/records.config"
+  let filter = incl "/etc/trafficserver/records.config"
 
   let eol = Util.eol | Util.comment_eol
   let indent = Util.indent
@@ -14,4 +14,4 @@ module Trafficserver_records =
   let records_entry = [ [ label "type" . store type_re]  . spc . key key_re . spc . [ label "value_type" . store value_type_re ] . spc . store value_re . eol ]
 
   let lns = (Util.empty | Util.comment | records_entry ) *
-  let xfm = transform lns records_filter
+  let xfm = transform lns filter

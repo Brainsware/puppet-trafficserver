@@ -1,10 +1,10 @@
 module Trafficserver_remap =
-  autoload remap_xfm
+  autoload xfm
 
   let indent = Util.indent
   let spc = Util.del_ws_spc
 
-  let remap_filter = incl "/etc/trafficserver/remap.config"
+  let filter = incl "/etc/trafficserver/remap.config"
 
   (* the known types of remaps *)
   let map_type_re = "map" | "reverse_map" | "redirect" | "redirect_temporary" | "regex_map" | "regex_redirect"
@@ -23,7 +23,7 @@ module Trafficserver_remap =
   (* match anything that doesnt have whitespace or #'s *)
   let path_re = /[^ \t\n#]+/
 
-  (* support for filters *)
+  (* support for remap filters *)
   let filter_action = [ key /@action/ . eq . store /(allow|deny)/ ]
   let filter_src_ip = [ key /@src_ip/ . eq . store Rx.ip ]
   let filter_method = [ key /@method/ . eq . store /(CONNECT|DELETE|GET|HEAD|ICP_QUERY|OPTIONS|POST|PURGE|PUT|TRACE|PUSH)/ ]
@@ -35,4 +35,4 @@ module Trafficserver_remap =
 
   (* Define Lense *)
   let lns = ( Util.empty | Util.comment | remap_entry ) *
-  let xfm = transform lns remap_filter
+  let xfm = transform lns filter
