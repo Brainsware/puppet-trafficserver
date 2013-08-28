@@ -13,6 +13,5 @@ module Trafficserver_records =
 
   let records_entry = [ [ label "type" . store type_re]  . spc . key key_re . spc . [ label "value_type" . store value_type_re ] . spc . store value_re . eol ]
 
-  let records_lns = (Util.empty | Util.comment | records_entry ) *
-
-  let records_xfm = transform records_lns records_filter
+  let lns = (Util.empty | Util.comment | records_entry ) *
+  let xfm = transform lns records_filter

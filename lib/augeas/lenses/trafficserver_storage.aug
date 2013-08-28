@@ -11,6 +11,7 @@ module Trafficserver_storage =
   let size_re = /[0-9]+[KkMmGgTt]?/  
 
   let storage_entry = [ indent . label "path" . store path_re . ( [ spc . label "size" . store size_re ] ) ? . eol ]
-  let storage_lns = ( Util.empty | Util.comment | storage_entry )*
-  let storage_xfm = transform storage_lns storage_filter
+
+  let lns = ( Util.empty | Util.comment | storage_entry )*
+  let xfm = transform lns storage_filter
 

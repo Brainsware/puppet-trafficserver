@@ -16,5 +16,6 @@ module Trafficserver_plugin =
   let path_re = /[^ \t\n#]+/
 
   let plugin_entry = [ indent . label "plugin" . store path_re . ( spc . [ label "args" . store args_re ] ) ? . eol ]
-  let plugin_lns = ( Util.empty | Util.comment | plugin_entry ) *
-  let plugin_xfm = transform plugin_lns plugin_filter
+
+  let lns = ( Util.empty | Util.comment | plugin_entry ) *
+  let xfm = transform lns plugin_filter

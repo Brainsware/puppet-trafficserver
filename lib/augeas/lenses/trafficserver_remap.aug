@@ -31,7 +31,8 @@ module Trafficserver_remap =
   let filter_pparam = [ key /@pparam/ . eq . store str_re ]
   let filter_entry = ( filter_action | filter_src_ip | filter_method | filter_plugin | filter_pparam )
 
-  (* lns and xfm *)
   let remap_entry = [ Util.indent . key map_type_re . spc . store  target_re . spc . [ label "replacement" . store replacement_re ] . ( spc . filter_entry )* . ( Util.comment_eol | Util.eol ) ]
-  let remap_lns = ( Util.empty | Util.comment | remap_entry ) *
-  let remap_xfm = transform remap_lns remap_filter
+
+  (* Define Lense *)
+  let lns = ( Util.empty | Util.comment | remap_entry ) *
+  let xfm = transform lns remap_filter

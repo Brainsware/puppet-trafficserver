@@ -28,6 +28,6 @@ module Trafficserver_cache =
   let optional_secondary = ( spc . [ key secondary_spec . del /=/ "=" . store value_re ] ) ?
   let cache_entry = [ indent . key primary_dest . del /=/ "=" . store  value_re . optional_secondary . directive_list . eol  ]
 
-  (* lns xfm *)
-  let cache_lns = ( Util.empty | Util.comment | cache_entry ) *
-  let cache_xfm = transform cache_lns cache_filter
+  (* Define Lense *)
+  let lns = ( Util.empty | Util.comment | cache_entry ) *
+  let xfm = transform lns cache_filter
