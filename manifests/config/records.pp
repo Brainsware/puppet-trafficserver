@@ -7,7 +7,7 @@ define trafficserver::config::records (
   $sysconfdir = $trafficserver::real_sysconfdir
   $configfile = "${sysconfdir}/records.config"
 
-  $lens    = 'Trafficserver_records.records_lns'
+  $lens    = 'Trafficserver_records.lns'
   $context = "/files${configfile}"
   $incl    = $configfile
 

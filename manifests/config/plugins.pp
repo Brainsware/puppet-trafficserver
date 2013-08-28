@@ -7,7 +7,7 @@ define trafficserver::config::plugins (
   $sysconfdir = $trafficserver::real_sysconfdir
   $configfile = "${sysconfdir}/plugins.config"
 
-  $lens    = 'Trafficserver_plugins.plugins_lns'
+  $lens    = 'Trafficserver_plugins.lns'
   $context = "/files${configfile}"
   $incl    = $configfile
 

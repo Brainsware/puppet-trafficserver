@@ -15,7 +15,7 @@ class trafficserver::storage {
   # we can take either [ '/dev/sdc', '/dev/sdb'] or
   # { '/var/cache/ats' => '4GB', } with this augeas template:
   augeas { 'trafficserver.storage':
-    lens    => 'Trafficserver_storage.storage_lns',
+    lens    => 'Trafficserver_storage.lns',
     context => "/files${sysconfdir}/storage.config",
     incl    => "${sysconfdir}/storage.config",
     changes => template('trafficserver/storage.config.erb'),
