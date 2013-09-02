@@ -16,5 +16,6 @@ define trafficserver::config::records (
     context => $context,
     incl    => $incl,
     changes => $changes,
+    notify  => Exec[trafficserver-config-reload],
   }
 }

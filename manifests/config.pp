@@ -56,4 +56,12 @@ class trafficserver::config {
     }
   }
 
+  # And finally, create an exec here to reload
+  exec { 'trafficserver-config-reload':
+    command     => "${bindir}/traffic_line -x",
+    cwd         => '/',
+    path        => $bindir,
+    refreshonly => true,
+  }
+
 }

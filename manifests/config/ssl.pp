@@ -25,6 +25,7 @@ define trafficserver::config::ssl (
   concat::fragment { "${sysconfdir}/ssl_multicert.config_${comment}":
     target  => $configfile,
     content => template($template),
-    order   => '99999'
+    order   => '99999',
+    notify  => Exec[trafficserver-config-reload],
   }
 }

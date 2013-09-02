@@ -87,7 +87,7 @@ class trafficserver (
 
   anchor { 'traffiserver::begin': } ->
   Class['trafficserver::install'] ->
-  Class['trafficserver::config'] ~>
+  Class['trafficserver::config'] ->
   Class['trafficserver::service'] ->
   anchor { 'trafficserver::end': }
 }
