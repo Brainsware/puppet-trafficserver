@@ -1,5 +1,6 @@
+# install traffic server
 class trafficserver::install {
-  package { [ 'trafficserver', 'trafficserver-gzip' ]:
+  package { 'trafficserver':
     ensure => 'latest',
   }
 }
