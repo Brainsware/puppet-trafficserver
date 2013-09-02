@@ -5,6 +5,9 @@ class trafficserver::config {
   include 'trafficserver'
   include 'trafficserver::storage'
 
+  $sysconfdir = $trafficserver::sysconfdir
+  $bindir     = $trafficserver::bindir
+
   $port = $trafficserver::real_port
   $port_changes = [ "set proxy.config.http.server_ports \"${port}\"" ]
   trafficserver::config::records { 'port':

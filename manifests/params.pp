@@ -68,12 +68,16 @@ class trafficserver::params {
 
   case $::operatingsystem {
     '/(Darwin|FreeBSD)/': {
-      $sysconfdir = '/usr/local/etc/trafficserver'
-      $cachedir   = '/usr/local/var/cache/trafficserver'
+      $prefix     = '/usr/local'
+      $sysconfdir = "${prefix}/etc/trafficserver"
+      $cachedir   = "${prefix}/var/cache/trafficserver"
+      $bindir     = "${prefix}/bin"
     }
     default: {
+      $prefix     = '/usr'
       $sysconfdir = '/etc/trafficserver'
       $cachedir   = '/var/cache/trafficserver'
+      $bindir     = "${prefix}/bin"
     }
   }
 

@@ -28,12 +28,13 @@ class trafficserver (
   $group       = UNDEF,
   $debug       = UNDEF,
   $mode        = UNDEF,
-  $plugins     = UNDEF,
   $records     = UNDEF,
   $storage     = UNDEF,
-  $sysconfdir  = UNDEF,
-  $cachedir    = UNDEF,
-  $ssl_default   = $trafficserver::params::ssl_default,
+  $prefix      = $trafficserver::params::prefix,
+  $bindir      = "${prefix}/bin",
+  $sysconfdir  = $trafficserver::params::sysconfdir,
+  $cachedir    = $trafficserver::params::cachedir,
+  $ssl_default = $trafficserver::params::ssl_default,
 ) inherits trafficserver::params {
 
   $real_ssl = $ssl? {
@@ -55,23 +56,9 @@ class trafficserver (
     default => $debug,
   }
 
-  $real_plugins = $plugins? {
-    UNDEF   => $trafficserver::params::plugins,
-    default => $plugins,
-  }
-
   $real_storage = $storage? {
     UNDEF   => $trafficserver::params::storage,
     default => $storage,
-  }
-
-  $real_sysconfdir = $sysconfdir? {
-    UNDEF   => $trafficserver::params::sysconfdir,
-    default => $sysconfdir,
-  }
-  $real_cachedir = $cachedir? {
-    UNDEF   => $trafficserver::params::cachedir,
-    default => $cachedir,
   }
 
   $real_ssl_default = $ssl_default? {
