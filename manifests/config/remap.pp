@@ -56,7 +56,7 @@ define trafficserver::config::remap (
 
   # if the reverse_map is empty, create one:
   $reverse_map = $rev_map ? {
-    UNDEF   => parseyaml(inline_template('<%= @map.invert.to_yaml %>')),
+    UNDEF   => hash_invert($map),
     default => $reverse_map,
   }
 
@@ -64,6 +64,7 @@ define trafficserver::config::remap (
     lens    => $lens,
     context => $context,
     incl    => $incl,
-    changes =>  template('trafficserver/remap.config.erb'),
+    changes => template('trafficserver/remap.config.erb'),
+    notify  => Exec[trafficserver-config-reload],
   }
 }
