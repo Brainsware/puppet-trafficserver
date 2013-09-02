@@ -11,13 +11,21 @@
 #   class {'trafficserver':
 #     ssl                            => true,
 #     storage                        => [ '/dev/vdb' ],
-#     plugins                  => {
-#         'stats_over_http.so' => '',
-#         'gzip.so'            => 'gzip.config',
-#     }
 #     ssl_default         => {
 #       'ssl_cert_name' => 'bar.pem',    'ssl_key_name' => 'barKey.pem'
 #     },
+#   }
+#
+#   # plugins can be configured like this:
+#   trafficserver::config::plugin { 'stats_over_http': }
+#   trafficserver::config::plugin { 'gzip':
+#     args => '/etc/bw/trafficserver/gzip.config',
+#   }
+#   trafficserver::config::plugin { 'foo_plugin':
+#     args => [
+#       'foo',
+#       'bar',
+#     ]
 #   }
 #
 #

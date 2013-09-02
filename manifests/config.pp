@@ -45,13 +45,6 @@ class trafficserver::config {
     }
   }
 
-  $plugins = $trafficserver::real_plugins
-  unless $plugins == {} {
-    trafficserver::config::plugins { 'global_plugins':
-      changes => $plugins,
-    }
-  }
-
   $ssl = $trafficserver::real_ssl
   $ssl_default = $trafficserver::real_ssl_default
   if $ssl {

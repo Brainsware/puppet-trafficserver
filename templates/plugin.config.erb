@@ -1,13 +1,8 @@
 set #comment[1] "This file managed by Puppet. Local changes will be overwritten"
 set #comment[2] "during the next Puppet run."
-rm plugin
-<% if @plugins and not @plugins.empty? -%>
-<% i = 0 -%>
-<% @plugins.each do |plugin,args| -%>
-<% i += 1 -%>
-set plugin[<%= i -%>] <%= plugin %>
-<% unless args == '' or args == nil or args.empty? -%>
-set plugin[<%= i -%>]/args <%= args -%>
-<% end -%>
+<% if @plugin and not @plugin.empty? -%>
+set plugin[.='<%= plugin -%>'] <%= plugin -%>.<%= @plugin_extension %>
+<% unless @args == '' or @args == nil or @args.empty? -%>
+set plugin[.='<%= plugin -%>']/args <%= @args -%>
 <% end -%>
 <% end -%>
