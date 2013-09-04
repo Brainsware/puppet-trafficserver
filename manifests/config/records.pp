@@ -4,7 +4,7 @@ define trafficserver::config::records (
 ) {
   include 'trafficserver'
 
-  $sysconfdir = $trafficserver::real_sysconfdir
+  $sysconfdir = $trafficserver::sysconfdir
   $configfile = "${sysconfdir}/records.config"
 
   $lens    = 'Trafficserver_records.lns'

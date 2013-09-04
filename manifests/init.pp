@@ -31,54 +31,23 @@
 #
 #
 class trafficserver (
-  $ssl         = UNDEF,
-  $user        = UNDEF,
-  $group       = UNDEF,
-  $debug       = UNDEF,
-  $mode        = UNDEF,
-  $records     = UNDEF,
-  $storage     = UNDEF,
+  $ssl         = $trafficserver::params::ssl,
+  $user        = $trafficserver::params::user,
+  $group       = $trafficserver::params::group,
+  $debug       = $trafficserver::params::debug,
+  $mode        = $trafficserver::params::mode,
   $prefix      = $trafficserver::params::prefix,
   $bindir      = "${prefix}/bin",
   $sysconfdir  = $trafficserver::params::sysconfdir,
   $cachedir    = $trafficserver::params::cachedir,
-  $ssl_default = $trafficserver::params::ssl_default,
+  $storage     = $trafficserver::params::storage,
+  $ssl_default = undef,
+  $records     = undef,
 ) inherits trafficserver::params {
 
-  $real_ssl = $ssl? {
-    UNDEF   => $trafficserver::params::ssl,
-    default => $ssl,
-  }
-
-  $real_group = $group? {
-    UNDEF   => $trafficserver::params::group,
-    default => $group,
-  }
-  $real_user = $user? {
-    UNDEF   => $trafficserver::params::user,
-    default => $user,
-  }
-
-  $real_debug = $debug? {
-    UNDEF   => $trafficserver::params::debug,
-    default => $debug,
-  }
-
-  $real_storage = $storage? {
-    UNDEF   => $trafficserver::params::storage,
-    default => $storage,
-  }
-
-  $real_ssl_default = $ssl_default? {
-    UNDEF   => $trafficserver::params::ssl_default,
-    default => $ssl_default,
-  }
-
-  # for consistency, prefix this one with real_ also ;)
-  if $real_ssl == true {
-    $real_port = $trafficserver::params::listen_ssl
-  } else {
-    $real_port = $trafficserver::params::listen
+  $port = $ssl? {
+    true    => $trafficserver::params::listen_ssl,
+    default => $trafficserver::params::listen,
   }
 
   include 'trafficserver::install'

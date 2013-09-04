@@ -12,7 +12,7 @@ define trafficserver::config::ssl (
   include 'trafficserver::params'
   include 'trafficserver'
 
-  $sysconfdir = $trafficserver::real_sysconfdir
+  $sysconfdir = $trafficserver::sysconfdir
   $configfile = "${sysconfdir}/${trafficserver::params::ssl_config}"
   $template   = $trafficserver::params::ssl_config_template
   $comment    = $title

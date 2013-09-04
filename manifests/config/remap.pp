@@ -46,7 +46,7 @@ define trafficserver::config::remap (
   include 'trafficserver'
   include 'trafficserver::params'
 
-  $sysconfdir = $trafficserver::real_sysconfdir
+  $sysconfdir = $trafficserver::sysconfdir
   $configfile = "${sysconfdir}/remap.config"
 
   $lens    = 'Trafficserver_remap.lns'
