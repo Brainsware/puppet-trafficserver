@@ -1,40 +1,26 @@
 set #comment[1] "This file managed by Puppet. Local changes will be overwritten"
 set #comment[2] "during the next Puppet run."
 <% if @map and not @map.empty? -%>
-<% i = 0 %>
-<% @map.each do |url,replacement| -%>
-<% i += 1 %>
+<% @map.each do |url,backend| -%>
 set map[.='<%= url -%>'] <%= url %>
-<% if replacement and not replacement.empty? -%>
-set map[.='<%= url -%>']/replacement <%= replacement %>
-<% end -%>
+set map[.='<%= url -%>']/replacement <%= backend %>
 <% end -%>
 <% end -%>
 <% if @regex_map and not @regex_map.empty? -%>
-<% i = 0 %>
-<% @regex_map.each do |url,replacement| -%>
-<% i += 1 %>
+<% @regex_map.each do |url,backend| -%>
 set regex_map[.='<%= url -%>'] <%= url %>
-<% if replacement and not replacement.empty? -%>
-set regex_map[.='<%= url -%>']/replacement <%= replacement %>
-<% end -%>
+set regex_map[.='<%= url -%>']/replacement <%= backend %>
 <% end -%>
 <% end -%>
 <% if @reverse_map and not @reverse_map.empty? -%>
-<% i = 0 %>
-<% @reverse_map.each do |url,replacement| -%>
-<% i += 1 %>
-set reverse_map[.='<%= url -%>'] <%= url %>
-<% if replacement and not replacement.empty? -%>
-set reverse_map[.='<%= url -%>']/replacement <%= replacement %>
-<% end -%>
+<% @reverse_map.each do |backend,url| -%>
+set reverse_map[.='<%= backend -%>'] <%= backend %>
+set reverse_map[.='<%= url -%>']/replacement <%= url %>
 <% end -%>
 <% end -%>
 <% if @redirects and not @redirects.empty? -%>
 <% @redirects.each do |url,replacement| -%>
 set redirect[.='<%= url -%>'] <%= url %>
-<% if replacement and not replacement.empty? -%>
-set redirect[.='<%= url -%>']/replacement <%= replacement %>
-<% end -%>
+set redirect[last()]/replacement <%= replacement %>
 <% end -%>
 <% end -%>
