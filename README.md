@@ -13,23 +13,30 @@ This plugin assumes that you have current version of Apache Traffic Server in yo
 
 Installing Traffic Server:
 
+``` puppet
      include trafficserver
+```
 
 Installing Traffic Server, enabling SSL.
 
+```puppet
      class { 'trafficserver':
        ssl => true,
      }
+```
 
 Install it in some weird prefix:
 
+```puppet
      class { 'trafficserver':
        prefix     => '/opt/es',
        sysconfdir => '/etc/es/trafficserver',
      }
+```
 
 Install it, assign a couple of disks:
 
+```puppet
      storage = class { 'trafficserver':
      class { 'trafficserver':
        prefix     => '/opt/es',
@@ -37,19 +44,25 @@ Install it, assign a couple of disks:
        user       => 'ats-cache'
        storage    => [ '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf' ],
      }
+```
 
 Configure [gzip](https://trafficserver.readthedocs.org/en/latest/reference/plugins/gzip.en.html) plugin:
 
+```puppet
      trafficserver::config::plugin { 'gzip':
        args => '/etc/es/trafficserver/gzip.config'
      }
+```
 
 Configure [stats\_over\_http](https://trafficserver.readthedocs.org/en/latest/reference/plugins/stats_over_http.en.html) plugin. Really, this should be some default:
 
+```puppet
      trafficserver::config::plugin { 'stats_over_http': }
+```
 
 Configure a couple of remaps:
 
+```puppet
      $map = {
        'http://example.com' => 'http://backend-web01',
        'http://example.org' => 'http://backend-web21',
@@ -68,6 +81,7 @@ Configure a couple of remaps:
        reverse_map => $reverse_map,
        redirect    => $redirect,
      }
+```
 
 ## TODO
 
