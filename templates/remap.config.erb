@@ -18,8 +18,8 @@ set reverse_map[.='<%= backend -%>'] <%= backend %>
 set reverse_map[.='<%= url -%>']/replacement <%= url %>
 <%   end -%>
 <% end -%>
-<% if @redirects and not @redirects.empty? -%>
-<%   @redirects.each do |url,replacement| -%>
+<% if @redirect and not @redirect.empty? -%>
+<%   @redirect.each do |url,replacement| -%>
 set redirect[.='<%= url -%>'] <%= url %>
 set redirect[.='<%= url -%>']/replacement <%= replacement %>
 <%   end -%>

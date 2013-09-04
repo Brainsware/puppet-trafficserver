@@ -5,21 +5,21 @@
 #
 # Example:
 #
-# redirects => {
+# redirect = {
 #     'http://www.example.org' => 'http://example.org',
 #     'http://git.example.org' => 'https://git.example.org',
 #   },
 #   # n.b.: We allow all methods on git.
-# url_map => {
+# url_map = {
 #     # This currently doesn't work:
 #     # @method=GET @method=POST @method=HEAD @method=OPTIONS @action=allow',
 #     'https://git.example.org' => 'http://app05-dev.rz01.riseops.at:9002',
 #   },
-# reverse_map => {
+# reverse_map = {
 #    'http://app04-dev.dev.rz01.riseops.at:9001' => 'http://example.org',
 # }
 #   # map everything else to:',
-# regex_map => {
+# regex_map = {
 #     @method=GET @method=POST @method=HEAD @method=OPTIONS @action=allow',
 #     'http://.*\.dev.example\.org' => 'http://app06-dev.rz01.riseops.at:8000',
 #     @method=GET @method=POST @method=HEAD @method=OPTIONS @action=allow',
@@ -30,7 +30,7 @@
 #   rev_map => $reverse_map,
 # }
 # trafficserver::config::remap { 'example.com-redirects':
-#   redirects => $redirects,
+#   redirect => $redirect,
 # }
 # trafficserver::config::remap { 'example.com-regex':
 #   regex_map => $regex_map,
@@ -40,7 +40,7 @@ define trafficserver::config::remap (
   $map       = {},
   $rev_map   = {},
   $regex_map = {},
-  $redirects = {},
+  $redirect  = {},
 ) {
 
   include 'trafficserver'
