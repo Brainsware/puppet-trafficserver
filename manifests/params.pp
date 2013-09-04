@@ -27,22 +27,9 @@ class trafficserver::params {
   # ]
 
 
-
-  $plugins = {}
-  # This an array of plugin names, e.g.:
-  # $plugins = ['http_stats', 'gzip']
-  #
-  # It can also include the plugin's config:
-  # $plugins = [
-  #   'http_stats',
-  #   'gzip' => 'gzip.config',
-  #   'foo'  => 'foo bar baz',
-  # ]
-
   # Should we ever start supporting OS X or Windows, we can make this
   # platform dependent!
   $plugin_extension = 'so'
-
 
 
   # Traffic Server, mode of operations
