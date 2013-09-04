@@ -38,7 +38,7 @@
 #
 define trafficserver::config::remap (
   $map       = {},
-  $rev_map   = UNDEF,
+  $rev_map   = {},
   $regex_map = {},
   $redirects = {},
 ) {
@@ -54,11 +54,6 @@ define trafficserver::config::remap (
   $incl    = $configfile
   $comment = $title
 
-  # if the reverse_map is empty, create one:
-  $reverse_map = $rev_map ? {
-    UNDEF   => hash_invert($map),
-    default => $reverse_map,
-  }
 
   augeas { "${lens}_${comment}":
     lens    => $lens,
