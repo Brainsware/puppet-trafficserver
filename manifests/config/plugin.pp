@@ -21,5 +21,6 @@ define trafficserver::config::plugin (
     incl    => $incl,
     changes => template('trafficserver/plugin.config.erb'),
     notify  => Exec[trafficserver-config-reload],
+    require => Package[trafficserver],
   }
 }
