@@ -4,8 +4,8 @@ class trafficserver::storage {
   include 'trafficserver::params'
   include 'trafficserver'
 
-  $sysconfdir     = $trafficserver::real_sysconfdir
-  $storage_passed = $trafficserver::real_storage
+  $sysconfdir     = $trafficserver::sysconfdir
+  $storage_passed = $trafficserver::storage
 
   $storage = $storage_passed ? {
     false   => [], # Someone genuinly passed a false, and wants to disable storage.
