@@ -37,7 +37,6 @@ Install it in some weird prefix:
 Install it, assign a couple of disks:
 
 ```puppet
-     storage = class { 'trafficserver':
      class { 'trafficserver':
        prefix     => '/opt/es',
        sysconfdir => '/etc/es/trafficserver',
