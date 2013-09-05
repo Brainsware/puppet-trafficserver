@@ -88,6 +88,34 @@ Configure a couple of remaps:
 * Right now, `@action`s/`@flter`s/etc.. in remap rules are not supported.
 * Add reload hook for storage on FreeBSD device changes
 
+## Release process
+
+When cutting a new release, please
+
+* make sure that all tests pass
+* make sure that the documentation is up-to-date
+* bump the version in Modulefile according to [semver](http://semver.org/)
+* verify that all dependencies are correct, and up-to-date
+* create a new, *signed* tag:
+
+    igalic@levix ~/src/bw/puppet-trafficserver (git)-[master] % git tag -s 1.3.2
+
+* switch to that tag, and create a package:
+
+    igalic@levix ~/src/bw/puppet-trafficserver (git)-[master] % git checkout 1.3.2
+    Note: checking out '1.3.2'.
+    ...
+    HEAD is now at 87d0661... add the most awesome feature.
+    igalic@levix ~/src/bw/puppet-trafficserver (git)-[0.2.1] %  puppet module build .
+    Notice: Building /home/igalic/src/bw/puppet-trafficserver for release
+    Module built: /home/igalic/src/bw/puppet-trafficserver/pkg/brainsware-trafficserver-0.2.1.tar.gz
+
+
+* push the tag,
+
+    igalic@levix ~/src/bw/puppet-trafficserver (git)-[0.2.1] % git push --tags origin
+
+* and finally [upload the new package](http://forge.puppetlabs.com/brainsware/trafficserver/upload)
 
 License
 -------
