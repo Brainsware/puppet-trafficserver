@@ -106,14 +106,14 @@ When cutting a new release, please
     Note: checking out '1.3.2'.
     ...
     HEAD is now at 87d0661... add the most awesome feature.
-    igalic@levix ~/src/bw/puppet-trafficserver (git)-[0.2.1] %  puppet module build .
+    igalic@levix ~/src/bw/puppet-trafficserver (git)-[1.3.2] %  puppet module build .
     Notice: Building /home/igalic/src/bw/puppet-trafficserver for release
     Module built: /home/igalic/src/bw/puppet-trafficserver/pkg/brainsware-trafficserver-0.2.1.tar.gz
 
 
 * push the tag,
 
-    igalic@levix ~/src/bw/puppet-trafficserver (git)-[0.2.1] % git push --tags origin
+    igalic@levix ~/src/bw/puppet-trafficserver (git)-[1.3.2] % git push --tags origin
 
 * and finally [upload the new package](http://forge.puppetlabs.com/brainsware/trafficserver/upload)
 
