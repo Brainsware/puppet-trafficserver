@@ -98,8 +98,9 @@ Apache Software License 2.0
 Contact
 -------
 
+You can send us questions via mail [puppet@brainsware.org](puppet@brainsware.org), or reach us IRC: [igalic](https://github.com/igalic) hangs out in [#puppet](irc://freenode.org/#puppet)
 
 Support
 -------
 
-Please log tickets and issues at our [Projects site](http://brainsware.org/)
+Please log tickets and issues at our [Project's issue tracker](https://github.com/Brainsware/puppet-trafficserver/issues)
