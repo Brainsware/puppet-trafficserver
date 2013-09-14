@@ -3,7 +3,7 @@
 manage installation and configuration of Apache Traffic Server.
 
 Currently supported modes: Forward, Reverse and mixed.
-Supported Platforms: Debian/Ubuntu.
+Supported Platforms: Debian/Ubuntu, FreeBSD: partially. Solaris/Illumos: untested.
 
 It allows to seperately configure plugins, SSL certs and Remap Rules. Storage is configured globally.
 
