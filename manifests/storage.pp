@@ -41,15 +41,17 @@ class trafficserver::storage {
       path => '/bin:/usr/bin:/sbin:/usr/sbin',
       cwd  => '/',
     }
-    file { '/etc/udev/rules.d/51-cache-disk.rules':
-      content => template('trafficserver/51-cache-disk.rules.erb'),
-      notify  => Exec['update udev rules'],
-    }
+    if $::kernel == 'Linux' {
+      file { '/etc/udev/rules.d/51-cache-disk.rules':
+        content => template('trafficserver/51-cache-disk.rules.erb'),
+        notify  => Exec['update udev rules'],
+      }
 
-    # trigger an update of udev rules of the block subsystem
-    exec { 'update udev rules':
-      command     => 'udevadm trigger --subsystem-match=block',
-      refreshonly => true,
+      # trigger an update of udev rules of the block subsystem
+      exec { 'update udev rules':
+        command     => 'udevadm trigger --subsystem-match=block',
+        refreshonly => true,
+      }
     }
   }
 }
