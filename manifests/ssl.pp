@@ -23,7 +23,7 @@ class trafficserver::ssl {
   $group = $trafficserver::real_group
 
   $configfile  = "${trafficserver::real_sysconfdir}/${trafficserver::params::ssl_config}"
-  $conf_header = "${trafficserver::params::ssl_config_header}"
+  $conf_header = $trafficserver::params::ssl_config_header
 
   # creates the configuration
   concat { $configfile:
