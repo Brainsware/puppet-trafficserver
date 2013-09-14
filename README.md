@@ -13,7 +13,7 @@ This plugin assumes that you have current version of Apache Traffic Server in yo
 
 Installing Traffic Server:
 
-``` puppet
+```puppet
      include trafficserver
 ```
 
@@ -90,11 +90,12 @@ Configure a couple of remaps:
 
 ## Release process
 
+The version in Modulefile should be bumped according to [semver](http://semver.org/) *during development*, i.e.: The first commit after the release should already bump the version, as master at this point differs from the latest release.
+
 When cutting a new release, please
 
 * make sure that all tests pass
 * make sure that the documentation is up-to-date
-* bump the version in Modulefile according to [semver](http://semver.org/)
 * verify that all dependencies are correct, and up-to-date
 * create a new, *signed* tag:
 
