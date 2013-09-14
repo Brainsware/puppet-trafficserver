@@ -13,7 +13,7 @@
 #   limitations under the License.
 
 name    'brainsware-trafficserver'
-version '0.2.1'
+version '0.2.2'
 source 'https://github.com/Brainsware.org/puppet-trafficserver'
 author 'Brainsware.org'
 license 'Apache 2.0'
