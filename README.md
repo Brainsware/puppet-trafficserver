@@ -97,16 +97,16 @@ When cutting a new release, please
 * make sure that all tests pass
 * make sure that the documentation is up-to-date
 * verify that all dependencies are correct, and up-to-date
-* create a new, *signed* tag and a package, using `make release`:
+* create a new, *signed* tag and a package, using `rake release`:
 
 ```
-    igalic@levix ~/src/bw/puppet-trafficserver (git)-[master] % make release
+    igalic@levix ~/src/bw/puppet-trafficserver (git)-[master] % rake release
     git tag -s 1.3.2 -m 't&r 1.3.2'
     ...
     git checkout 1.3.2
     Note: checking out '1.3.2'.
     ...
-    HEAD is now at ff9aaae... bump version & explain how versioning should work
+    HEAD is now at ff9aaae... Most awesomest feature ever. SHIPIT!
     puppet module build .
     Notice: Building /home/igalic/src/bw/puppet-trafficserver for release
     Module built: /home/igalic/src/bw/puppet-trafficserver/pkg/brainsware-trafficserver-1.3.2.tar.gz
