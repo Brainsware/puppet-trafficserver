@@ -12,18 +12,19 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-all:
-	@echo 'You need to specifically call this as'
-	@echo
-	@echo '    % make release'
-	@echo
-	@echo 'Please note that the release target is not idempotent.'
-	@echo
-	@exit 1
+require 'rubygems'
+require 'puppetlabs_spec_helper/rake_tasks'
 
-export v = $(shell awk -F"'" '/\<version\>/{print $$2}' Modulefile)
+def version
+	File.open('Modulefile').each do |line|
+		return line.split("'")[1] if line =~ /\bversion\b/ 
+	end
+end
 
-release:
-	git tag -s $(v) -m 't&r $(v)'
-	git checkout $(v)
-	puppet module build .
+desc "Create a releasable artifact along with signed tags."
+task :release do
+	sh "git tag -s #{version} -m 't&r #{version}'"
+	sh "git checkout #{version}"
+	sh "puppet module build ."
+end
+
