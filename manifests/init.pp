@@ -46,6 +46,7 @@
 #
 class trafficserver (
   $ssl         = $trafficserver::params::ssl,
+  $listen      = $trafficserver::params::listen,
   $user        = $trafficserver::params::user,
   $group       = $trafficserver::params::group,
   $debug       = $trafficserver::params::debug,
@@ -61,7 +62,7 @@ class trafficserver (
 
   $port = $ssl? {
     true    => $trafficserver::params::listen_ssl,
-    default => $trafficserver::params::listen,
+    default => $listen,
   }
 
   include 'trafficserver::install'
