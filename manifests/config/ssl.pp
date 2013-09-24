@@ -25,7 +25,7 @@ define trafficserver::config::ssl (
   include 'concat::setup'
   include 'trafficserver::params'
   include 'trafficserver'
-  
+
   $user  = $trafficserver::real_user
   $group = $trafficserver::real_group
 
@@ -38,13 +38,13 @@ define trafficserver::config::ssl (
   unless has_key ($ssl_host, 'ssl_cert_name') {
     fail('\$ssl_hosts does not contain a key ssl_cert_name.')
   }
-  
+
   # creates the configuration
-  concat { "${configfile}":
+  concat { $configfile:
     owner   => $user,
     group   => $group;
   }
-  
+
   # concat the configuration
   concat::fragment { "${sysconfdir}/ssl_multicert.config_${comment}":
     target  => $configfile,
