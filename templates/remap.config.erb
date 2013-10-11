@@ -12,8 +12,8 @@ set regex_map[.='<%= url -%>'] <%= url %>
 set regex_map[.='<%= url -%>']/replacement <%= backend %>
 <%   end -%>
 <% end -%>
-<% if @reverse_map and not @reverse_map.empty? -%>
-<%   @reverse_map.each do |backend,url| -%>
+<% if @rev_map and not @rev_map.empty? -%>
+<%   @rev_map.each do |backend,url| -%>
 set reverse_map[.='<%= backend -%>'] <%= backend %>
 set reverse_map[.='<%= url -%>']/replacement <%= url %>
 <%   end -%>
