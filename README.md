@@ -67,7 +67,7 @@ Configure a couple of remaps:
        'http://example.org' => 'http://backend-web21',
        'http://example.net' => 'http://backend-web42',
      }
-     $reverse_map = {
+     $rev_map = {
        'http://backend-web01' => 'http://example.com',
        'http://backend-web21' => 'http://example.org',
        'http://backend-web42' => 'http://example.net',
@@ -77,7 +77,7 @@ Configure a couple of remaps:
      }
      trafficserver::config::remap { 'example_maps':
        map         => $map,
-       reverse_map => $reverse_map,
+       rev_map     => $rev_map,
        redirect    => $redirect,
      }
 ```

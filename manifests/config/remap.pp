@@ -19,17 +19,17 @@
 #
 # Example:
 #
-# redirect = {
+# $redirect = {
 #     'http://www.example.org' => 'http://example.org',
 #     'http://git.example.org' => 'https://git.example.org',
 #   },
 #   # n.b.: We allow all methods on git.
-# url_map = {
+# $url_map = {
 #     # This currently doesn't work:
 #     # @method=GET @method=POST @method=HEAD @method=OPTIONS @action=allow',
 #     'https://git.example.org' => 'http://app05-dev.rz01.riseops.at:9002',
 #   },
-# reverse_map = {
+# $rev_map = {
 #    'http://app04-dev.dev.rz01.riseops.at:9001' => 'http://example.org',
 # }
 #   # map everything else to:',
@@ -41,7 +41,7 @@
 #   }
 # trafficserver::config::remap { 'example.com-remaps':
 #   map     => $url_map,
-#   rev_map => $reverse_map,
+#   rev_map => $rev_map,
 # }
 # trafficserver::config::remap { 'example.com-redirects':
 #   redirect => $redirect,
