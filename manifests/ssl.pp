@@ -15,7 +15,6 @@
 # setup of concat for ssl_multicert.config
 class trafficserver::ssl {
 
-  include 'concat::setup'
   include 'trafficserver::params'
   include 'trafficserver'
 
