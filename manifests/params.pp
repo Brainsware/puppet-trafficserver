@@ -17,9 +17,9 @@
 class trafficserver::params {
   # Basic configurations
 
-  $listen = '80'
+  $listen = '80:ipv4 80:ipv6'
   # To enable ssl termination also, we set this to:
-  $listen_ssl = '80 443:ssl'
+  $listen_ssl = "${listen} 443:ssl:ipv4 443:ssl:ipv6"
 
   $user  = 'tserver'
   $group = 'tserver'
