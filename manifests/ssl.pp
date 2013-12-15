@@ -13,16 +13,11 @@
 #   limitations under the License.
 
 # setup of concat for ssl_multicert.config
-class trafficserver::ssl {
+class trafficserver::ssl inherits trafficserver {
 
-  include 'trafficserver::params'
-  include 'trafficserver'
 
-  $user  = $trafficserver::real_user
-  $group = $trafficserver::real_group
-
-  $configfile  = "${trafficserver::real_sysconfdir}/${trafficserver::params::ssl_config}"
-  $conf_header = $trafficserver::params::ssl_config_header
+  $configfile  = "${::trafficserver::sysconfdir}/${::trafficserver::params::ssl_config}"
+  $conf_header = $::trafficserver::params::ssl_config_header
 
   # creates the configuration
   concat { $configfile:
@@ -33,6 +28,6 @@ class trafficserver::ssl {
   concat::fragment { "${configfile}_header":
     target => $configfile,
     source => $conf_header,
-    order  => '00000',
+    order  => '00',
   }
 }

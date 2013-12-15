@@ -14,21 +14,15 @@
 
 # This class manages pretty much all of traffic server's configuration
 # But does so via calling upon other classes/defined types to help it.
-class trafficserver::config {
+class trafficserver::config inherits trafficserver {
 
-  include 'trafficserver'
   include 'trafficserver::storage'
 
-  $sysconfdir = $trafficserver::sysconfdir
-  $bindir     = $trafficserver::bindir
-
-  $port = $trafficserver::port
   $port_changes = [ "set proxy.config.http.server_ports \"${port}\"" ]
   trafficserver::config::records { 'port':
     changes => $port_changes,
   }
 
-  $debug = $trafficserver::debug
   $debug_changes = [
       "set proxy.config.http.insert_request_via_str ${debug}",
       "set proxy.config.http.insert_response_via_str ${debug}",
@@ -37,15 +31,12 @@ class trafficserver::config {
     changes => $debug_changes ,
   }
 
-  $mode = $trafficserver::mode
-  validate_re ($mode, $valid_modes)
-
   $mode_changes = $mode ? {
-    'reverse' => $trafficserver::params::mode_reverse,
-    'forward' => $trafficserver::params::mode_forward,
-    'both' => $trafficserver::params::mode_both,
+    'reverse' => $::trafficserver::params::mode_reverse,
+    'forward' => $::trafficserver::params::mode_forward,
+    'both'    => $::trafficserver::params::mode_both,
     # Default is reverse
-    default => $trafficserver::params::mode_reverse
+    default => $::trafficserver::params::mode_reverse
   }
 
   trafficserver::config::records { 'mode':
@@ -59,8 +50,6 @@ class trafficserver::config {
     }
   }
 
-  $ssl = $trafficserver::ssl
-  $ssl_default = $trafficserver::ssl_default
   if $ssl {
     include trafficserver::ssl
     if $ssl_default {
@@ -72,9 +61,9 @@ class trafficserver::config {
 
   # And finally, create an exec here to reload
   exec { 'trafficserver-config-reload':
-    command     => "${bindir}/traffic_line -x",
-    cwd         => '/',
     path        => $bindir,
+    command     => 'traffic_line -x',
+    cwd         => '/',
     refreshonly => true,
   }
 

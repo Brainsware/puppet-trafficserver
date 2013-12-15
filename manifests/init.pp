@@ -64,6 +64,7 @@ class trafficserver (
     true    => $trafficserver::params::listen_ssl,
     default => $listen,
   }
+  validate_re ($mode, $valid_modes)
 
   include 'trafficserver::install'
   include 'trafficserver::config'

@@ -14,12 +14,11 @@
 
 # This type handles adding values to records.config
 define trafficserver::config::records (
-  $changes
+  $changes = [ $title ],
 ) {
   include 'trafficserver'
 
-  $sysconfdir = $trafficserver::sysconfdir
-  $configfile = "${sysconfdir}/records.config"
+  $configfile = "${::trafficserver::sysconfdir}/records.config"
 
   $lens    = 'Trafficserver_records.lns'
   $context = "/files${configfile}"
