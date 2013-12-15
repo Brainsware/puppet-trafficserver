@@ -13,12 +13,8 @@
 #   limitations under the License.
 
 # This class assembles storage.config
-class trafficserver::storage {
+class trafficserver::storage inherits trafficserver {
 
-  include 'trafficserver::params'
-  include 'trafficserver'
-
-  $sysconfdir     = $trafficserver::sysconfdir
   $storage_passed = $trafficserver::storage
 
   $storage = $storage_passed ? {

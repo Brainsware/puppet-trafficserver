@@ -14,16 +14,13 @@
 
 # This type handles adding values to plugins.config
 define trafficserver::config::plugin (
-  $plugin = $title,
-  $args = [],
+  $plugin    = $title,
+  $extension = $trafficserver::params::plugin_extension,
+  $args      = [],
 ) {
-  include trafficserver
-  include trafficserver::params
+  include 'trafficserver'
 
-  $sysconfdir = $trafficserver::sysconfdir
-  $configfile = "${sysconfdir}/plugin.config"
-
-  $plugin_extension = $trafficserver::params::plugin_extension
+  $configfile = "${::trafficserver::sysconfdir}/plugin.config"
 
   $lens    = 'Trafficserver_plugin.lns'
   $context = "/files${configfile}"

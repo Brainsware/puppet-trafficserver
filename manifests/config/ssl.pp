@@ -20,17 +20,13 @@
 #       'ssl_ca_name'   => 'Ca.pem'
 #     },
 define trafficserver::config::ssl (
-  $ssl_host,
+  $ssl_host = {},
 ){
-  include 'trafficserver::params'
   include 'trafficserver'
   include 'trafficserver::ssl'
 
-  $user  = $trafficserver::real_user
-  $group = $trafficserver::real_group
 
-  $sysconfdir = $trafficserver::sysconfdir
-  $configfile = "${sysconfdir}/${trafficserver::params::ssl_config}"
+  $configfile = "${::trafficserver::sysconfdir}/${trafficserver::params::ssl_config}"
   $template   = $trafficserver::params::ssl_config_template
   $comment    = $title
 
@@ -40,10 +36,9 @@ define trafficserver::config::ssl (
   }
 
   # concat the configuration
-  concat::fragment { "${sysconfdir}/ssl_multicert.config_${comment}":
+  concat::fragment { "${configfile}_${comment}":
     target  => $configfile,
     content => template($template),
-    order   => '99999',
     notify  => Exec[trafficserver-config-reload],
   }
 }
