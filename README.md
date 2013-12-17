@@ -9,9 +9,9 @@ It allows to seperately configure plugins, SSL certs and Remap Rules. Storage is
 
 This plugin assumes that you have current version of Apache Traffic Server in your packagemanager's repositories. See [fpm](https://github.com/jordansissel/fpm) for a project that allows you to easily create packages.
 
-## Documentation
+# Documentation
 
-Installing Traffic Server:
+## Install Traffic Server
 
 ```puppet
      include trafficserver
@@ -45,6 +45,8 @@ Install it, assign a couple of disks:
      }
 ```
 
+## Plugins
+
 Configure [gzip](https://trafficserver.readthedocs.org/en/latest/reference/plugins/gzip.en.html) plugin:
 
 ```puppet
@@ -58,6 +60,8 @@ Configure [stats\_over\_http](https://trafficserver.readthedocs.org/en/latest/re
 ```puppet
      trafficserver::config::plugin { 'stats_over_http': }
 ```
+
+## Remap
 
 Configure a couple of remaps:
 
