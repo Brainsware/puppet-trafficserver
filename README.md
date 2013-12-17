@@ -126,7 +126,6 @@ or we pass it an array:
 
 ## TODO
 
-* I'd like to have a test case for every single thing that we have documented above.
 * Right now, `@action`s/`@flter`s/etc.. in remap rules are not supported.
 * Add reload hook for storage on FreeBSD device changes
 
