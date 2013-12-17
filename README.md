@@ -86,6 +86,44 @@ Configure a couple of remaps:
      }
 ```
 
+## SSL
+
+Similarily to remap, we can can setup multiple SSL virtual hosts.
+
+There are two ways to specify more than one virtual host. We can either make multiple calls to `trafficserver::config::ssl`:
+
+```puppet
+    $www = {
+      'ssl_cert_name' => '/etc/ssl/certs/www.example.com.crt',
+      'ssl_key_name' => '/etc/ssl/certs/mail.example.com.key',
+    }
+    $mail = {
+      'ssl_cert_name' => '/etc/ssl/certs/mail.example.com.crt',
+      'ssl_key_name' => '/etc/ssl/keys/mail.example.com.key',
+    }
+    trafficserver::config::ssl { 'www.example.com':
+      ssl_host => $www
+    }
+    trafficserver::config::ssl { 'mail.example.com':
+      ssl_host => $mail
+    }
+```
+
+or we pass it an array:
+
+```puppet
+    example_com = [{
+      'ssl_cert_name' => '/etc/ssl/certs/www.example.com.crt',
+      'ssl_key_name' => '/etc/ssl/certs/mail.example.com.key',
+    },{
+      'ssl_cert_name' => '/etc/ssl/certs/mail.example.com.crt',
+      'ssl_key_name' => '/etc/ssl/keys/mail.example.com.key',
+    }]
+    trafficserver::config::ssl { '*.example.com':
+      ssl_hosts => $example_com
+    }
+```
+
 ## TODO
 
 * I'd like to have a test case for every single thing that we have documented above.
