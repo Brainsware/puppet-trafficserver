@@ -59,6 +59,14 @@ class trafficserver::config inherits trafficserver {
     }
   }
 
+  if $balancer_map { 
+    trafficserver::config::remap { 'balancer':
+      balancer_map      => $balancer_map,
+      balancer_backend  => $balancer_backend,
+      balancer_algo     => $balancer_algo,
+    }
+  }
+
   # And finally, create an exec here to reload
   exec { 'trafficserver-config-reload':
     path        => $bindir,
