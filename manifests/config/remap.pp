@@ -51,10 +51,14 @@
 # }
 #
 define trafficserver::config::remap (
-  $map       = {},
-  $rev_map   = {},
-  $regex_map = {},
-  $redirect  = {},
+  $map                = {},
+  $rev_map            = {},
+  $regex_map          = {},
+  $redirect           = {},
+
+  $balancer_map       = [],
+  $balancer_algo      = [],
+  $balancer_backend   = {},
 ) {
 
   include 'trafficserver'
