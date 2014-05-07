@@ -45,6 +45,14 @@ Install it, assign a couple of disks:
      }
 ```
 
+Don't install Traffic Server, just configure it:
+
+```puppet
+     class { 'trafficserver':
+       install => false,
+     }
+```
+
 ## Plugins
 
 Configure [gzip](https://trafficserver.readthedocs.org/en/latest/reference/plugins/gzip.en.html) plugin:
