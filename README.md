@@ -69,7 +69,7 @@ Configure [stats\_over\_http](https://trafficserver.readthedocs.org/en/latest/re
      trafficserver::config::plugin { 'stats_over_http': }
 ```
 
-Configure [balancer](https://trafficserver.readthedocs.org/en/latest/reference/plugins/balancer.en.html) plugin. Add this lines to manifests/config.pp. Don't use `plugin` class.
+Configure [balancer](https://trafficserver.readthedocs.org/en/latest/reference/plugins/balancer.en.html) plugin. Don't use `plugin` class. Configure a couple of balancer map:
 
 ```puppet
       $balancer_map = [
@@ -80,15 +80,15 @@ Configure [balancer](https://trafficserver.readthedocs.org/en/latest/reference/p
         'roundrobin',
         'hash,url'
       ]
-      $balancer = {
+      $balancer_backend = {
         'serv1.example1.com' => 'serv2.example1.com',
         's1.example2.com' => 's2.example2.com',
       }
 ```
 
-If you set up multiple load-balance, like this example, care to the order of each fiels.
-Here, http://example1.com is going to be load-balance with roundrobin algorithm between serv1.example1.com and serv2.example2.com.
-And http://example2.com is going to be load-balance with hash,url algorithm between s1.example1.com and s2.example2.com.
+If you set up multiple load-balance web page, like this example, care to the order of each fields.
+Here, http://example1.com is going to be load-balance with roundrobin algorithm between serv1.example1.com and serv2.example1.com.
+And http://example2.com is going to be load-balance with hash,url algorithm between s1.example2.com and s2.example2.com.
 
 ## Remap
 
