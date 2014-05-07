@@ -31,7 +31,7 @@ set redirect[.='<%= url -%>']/replacement <%= replacement %>
 set map[.='<%= @balancer_map[$index] %>'] <%= @balancer_map[$index] %>
 set map[.='<%= @balancer_map[$index] %>']/replacement <%= @balancer_map[$index] %>
 set map[.='<%= @balancer_map[$index] %>']/@plugin balancer.so
-set map[.='<%= @balancer_map[$index] %>']/@pparam[1] '--policy=<%= @balancer_algo[$inde
+set map[.='<%= @balancer_map[$index] %>']/@pparam[1] '--policy=<%= @balancer_algo[$index] -%>'
 set map[.='<%= @balancer_map[$index] %>']/@pparam[2] '<%= backend1 %>'
 set map[.='<%= @balancer_map[$index] %>']/@pparam[3] '<%= backend2 %>'
 <%- $index = $index + 1 -%>
