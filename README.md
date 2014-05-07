@@ -84,6 +84,12 @@ Configure [balancer](https://trafficserver.readthedocs.org/en/latest/reference/p
         'serv1.example1.com' => 'serv2.example1.com',
         's1.example2.com' => 's2.example2.com',
       }
+
+      trafficserver::config::remap { 'example_balancer':
+        balancer_map      => $balancer_map,
+        balancer_backend  => $balancer_backend,
+        balancer_algo     => $balancer_algo,
+      }
 ```
 
 If you set up multiple load-balance web page, like this example, care to the order of each fields.
