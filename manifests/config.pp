@@ -66,5 +66,4 @@ class trafficserver::config inherits trafficserver {
     cwd         => '/',
     refreshonly => true,
   }
-
 }

@@ -58,6 +58,7 @@ class trafficserver (
   $storage     = $trafficserver::params::storage,
   $ssl_default = undef,
   $records     = undef,
+  $install     = $trafficserver::params::install,
 ) inherits trafficserver::params {
 
   $port = $ssl? {
@@ -66,13 +67,23 @@ class trafficserver (
   }
   validate_re ($mode, $valid_modes)
 
-  include 'trafficserver::install'
+  if $install == 'true' {
+    include 'trafficserver::install'
+  }
   include 'trafficserver::config'
   include 'trafficserver::service'
 
-  anchor { 'traffiserver::begin': } ->
-  Class['trafficserver::install'] ->
-  Class['trafficserver::config'] ->
-  Class['trafficserver::service'] ->
-  anchor { 'trafficserver::end': }
+  if $install == 'true' {
+    anchor { 'traffiserver::begin': } ->
+    Class['trafficserver::install'] ->
+    Class['trafficserver::config'] ->
+    Class['trafficserver::service'] ->
+    anchor { 'trafficserver::end': }
+  }
+  else {
+    anchor { 'traffiserver::begin': } ->
+    Class['trafficserver::config'] ->
+    Class['trafficserver::service'] ->
+    anchor { 'trafficserver::end': }
+  }
 }

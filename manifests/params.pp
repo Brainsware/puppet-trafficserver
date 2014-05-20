@@ -17,6 +17,9 @@
 class trafficserver::params {
   # Basic configurations
 
+  # To disable trafficserver's installation by package, set $install to false
+  $install = true
+
   $listen = '80:ipv4 80:ipv6'
   # To enable ssl termination also, we set this to:
   $listen_ssl = "${listen} 443:ssl:ipv4 443:ssl:ipv6"
