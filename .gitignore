@@ -1,3 +1,6 @@
 .*.swp
 pkg/
 spec/fixtures
+.bundle
+Gemfile.lock
+.vagrant
