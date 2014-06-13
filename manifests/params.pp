@@ -53,15 +53,27 @@ class trafficserver::params {
   # These settings here directly translate into augeas settings.
   $mode_reverse = [
       'set proxy.config.url_remap.remap_required 1',
+      'set proxy.config.url_remap.remap_required/type CONFIG',
+      'set proxy.config.url_remap.remap_required/value_type INT',
       'set proxy.config.reverse_proxy.enabled 1',
+      'set proxy.config.reverse_proxy.enabled/type CONFIG',
+      'set proxy.config.reverse_proxy.enabled/value_type INT',
     ]
   $mode_forward = [
       'set proxy.config.url_remap.remap_required 0',
+      'set proxy.config.url_remap.remap_required/type CONFIG',
+      'set proxy.config.url_remap.remap_required/value_type INT',
       'set proxy.config.reverse_proxy.enabled 0',
+      'set proxy.config.reverse_proxy.enabled/type CONFIG',
+      'set proxy.config.reverse_proxy.enabled/value_type INT',
     ]
   $mode_both = [
       'set proxy.config.url_remap.remap_required 0',
+      'set proxy.config.url_remap.remap_required/type CONFIG',
+      'set proxy.config.url_remap.remap_required/value_type INT',
       'set proxy.config.reverse_proxy.enabled 1',
+      'set proxy.config.reverse_proxy.enabled/type CONFIG',
+      'set proxy.config.reverse_proxy.enabled/value_type INT',
     ]
   # Default mode of operation:
   $mode = 'reverse'
