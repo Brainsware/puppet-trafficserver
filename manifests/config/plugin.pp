@@ -18,7 +18,7 @@ define trafficserver::config::plugin (
   $extension = $trafficserver::params::plugin_extension,
   $args      = [],
 ) {
-  include 'trafficserver'
+  include '::trafficserver'
 
   $configfile = "${::trafficserver::sysconfdir}/plugin.config"
 
@@ -32,6 +32,5 @@ define trafficserver::config::plugin (
     incl    => $incl,
     changes => template('trafficserver/plugin.config.erb'),
     notify  => Exec[trafficserver-config-reload],
-    require => Package[trafficserver],
   }
 }
