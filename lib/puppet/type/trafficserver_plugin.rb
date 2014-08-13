@@ -16,12 +16,12 @@ Puppet::Type.newtype(:trafficserver_plugin) do
 
   ensurable
 
-  newparams(:name, :namevar => true) do
+  newparam(:name, :namevar => true) do
     desc "Name (path) to the plugin"
   end
 
   # this is taken from postgresql_conf
-  newparams(:target) do
+  newparam(:target) do
     desc "The path to plugin.config"
     defaultto do
       if @resource.class.defaultprovider.ancestor.include?(Puppet::Provider::ParsedFile)
