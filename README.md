@@ -45,6 +45,16 @@ Install it, assign a couple of disks:
      }
 ```
 
+Maybe you would prefer to keep cache in a directory on one disk:
+
+```puppet
+     class { 'trafficserver':
+       storage    => { /var/cache/trafficserver  => 512M },
+     }
+```
+
+It does not work if you put '[', ']' or '"' in the directory name.
+
 Don't install Traffic Server, just configure it:
 
 ```puppet
