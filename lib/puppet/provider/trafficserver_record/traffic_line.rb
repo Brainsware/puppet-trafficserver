@@ -18,9 +18,29 @@ Puppet::Type.type(:trafficserver_record).provide(:traffic_line) do
 
   commands :traffic_line => 'traffic_line'
 
+  mk_resource_methods
+
   ConfigPattern = 'proxy.(config|local|cluster).*'
 
-  mk_resource_methods
+  def initialize(value={})
+    super(value)
+  end
+
+  def name=(value)
+    @property_hash[:name] = value
+  end
+
+  def value=(value)
+    @property_hash[:name]  = resource[:name]
+    @property_hash[:value] = value
+    # if the value is equal, we're done here (or else we're not idempotent!)
+    return if value == resource[:value]
+
+    options = []
+    options << '-s' << @property_hash[:name]
+    options << '-v' << @property_hash[:value]
+    traffic_line(options)
+  end
 
   # get all records.config entries at the beginning
   def self.instances
