@@ -20,7 +20,7 @@ Puppet::Type.newtype(:trafficserver_record) do
     desc "record entry"
   end
 
-  newparam(:value) do
+  newproperty(:value) do
     desc "Value of this record"
   end
 
