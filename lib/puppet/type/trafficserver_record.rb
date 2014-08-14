@@ -24,4 +24,5 @@ Puppet::Type.newtype(:trafficserver_record) do
     desc "Value of this record"
   end
 
+
 end

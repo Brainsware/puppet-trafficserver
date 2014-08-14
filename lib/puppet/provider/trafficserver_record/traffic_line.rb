@@ -30,11 +30,10 @@ Puppet::Type.type(:trafficserver_record).provide(:traffic_line) do
     @property_hash[:name] = value
   end
 
+  # this method is only called when value isn't insync?
   def value=(value)
     @property_hash[:name]  = resource[:name]
     @property_hash[:value] = value
-    # if the value is equal, we're done here (or else we're not idempotent!)
-    return if value == resource[:value]
 
     options = []
     options << '-s' << @property_hash[:name]
@@ -54,10 +53,9 @@ Puppet::Type.type(:trafficserver_record).provide(:traffic_line) do
   end
 
   def self.prefetch(resources)
-    records = instances
-    resources.keys.each do |record|
-      if provider = records.find{ |rec| rec.name == name }
-        resources[name].provider = provider
+    instances.each do |prov|
+      if resource = resources[prov.name]
+        resource.provider = prov
       end
     end
   end
