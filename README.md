@@ -53,8 +53,6 @@ Maybe you would prefer to keep cache in a directory on one disk:
      }
 ```
 
-It does not work if you put '[', ']' or '"' in the directory name.
-
 Don't install Traffic Server, just configure it:
 
 ```puppet
