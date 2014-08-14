@@ -50,4 +50,14 @@ class trafficserver::storage inherits trafficserver {
       }
     }
   }
+  if is_hash($storage) {
+    $path = keys($storage)
+
+    file { $path:
+      ensure    => 'directory',
+      owner     => $user,
+      group     => $group,
+      mode      => '0640',
+    }
+  }
 }
