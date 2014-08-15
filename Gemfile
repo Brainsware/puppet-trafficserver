@@ -1,4 +1,4 @@
-#  Copyright 2015 Puppet Community
+#  Copyright 2016 Puppet Community
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -12,27 +12,25 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
 group :test do
-  gem 'rake'
-  gem 'puppet', ENV['PUPPET_VERSION'] || '~> 3.8.0'
-  gem 'rspec-puppet', git: 'https://github.com/rodjek/rspec-puppet.git'
-  gem 'puppetlabs_spec_helper'
-  gem 'metadata-json-lint'
-  gem 'rspec-puppet-facts'
-  gem 'rspec'
-  gem 'puppet-blacksmith'
-  gem 'rubocop'
+  gem "rake"
+  gem "puppet", ENV['PUPPET_VERSION'] || '~> 3.6.0'
+  gem "puppet-lint"
+  gem "rspec-puppet", :git => 'https://github.com/rodjek/rspec-puppet.git'
+  gem "puppet-syntax"
+  gem "puppetlabs_spec_helper"
 end
 
 group :development do
-  gem 'travis'
-  gem 'travis-lint'
-  gem 'guard-rake'
-end
-
-group :system_tests do
-  gem 'beaker'
-  gem 'beaker-rspec'
+  gem "travis"
+  gem "travis-lint"
+  gem "beaker"
+  gem "beaker-rspec"
+  gem "vagrant-wrapper"
+  gem "puppet-blacksmith"
+  gem "guard-rake"
+  gem "pry"
+  gem "pry-doc"
 end

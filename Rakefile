@@ -1,4 +1,4 @@
-#   Copyright 2013 Brainsware
+#   Copyright 2014 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -12,9 +12,57 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-require 'rubygems'
 require 'puppetlabs_spec_helper/rake_tasks'
-require 'puppet_blacksmith/rake_tasks'
-require 'rubocop/rake_task'
+require 'puppet-lint/tasks/puppet-lint'
+require 'puppet-syntax/tasks/puppet-syntax'
 
-RuboCop::RakeTask.new
+# These two gems aren't always present, for instance
+# on Travis with --without development
+begin
+  require 'puppet_blacksmith/rake_tasks'
+rescue LoadError
+end
+
+PuppetLint.configuration.send("disable_80chars")
+PuppetLint.configuration.log_format = "%{path}:%{linenumber}:%{check}:%{KIND}:%{message}"
+PuppetLint.configuration.fail_on_warnings = true
+
+# Forsake support for Puppet 2.6.2 for the benefit of cleaner code.
+# http://puppet-lint.com/checks/class_parameter_defaults/
+PuppetLint.configuration.send('disable_class_parameter_defaults')
+# http://puppet-lint.com/checks/class_inherits_from_params_class/
+PuppetLint.configuration.send('disable_class_inherits_from_params_class')
+
+exclude_paths = [
+  "pkg/**/*",
+  "vendor/**/*",
+  "spec/**/*",
+]
+PuppetLint.configuration.ignore_paths = exclude_paths
+PuppetSyntax.exclude_paths = exclude_paths
+
+def version
+  metadata = JSON.parse(File.read('metadata.json'))
+  metadata["version"]
+end
+
+
+desc "Create a releasable artifact along with signed tags."
+task :release do
+  v = version
+  sh "git tag -s #{v} -m 't&r #{v}'"
+  sh "git checkout #{v}"
+  sh "puppet module build ."
+end
+
+desc "Run acceptance tests"
+RSpec::Core::RakeTask.new(:acceptance) do |t|
+  t.pattern = 'spec/acceptance'
+end
+
+desc "Run syntax, lint, and spec tests."
+task :test => [
+  :syntax,
+  :lint,
+  :spec,
+]
