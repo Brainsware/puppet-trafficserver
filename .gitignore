@@ -1,6 +1,7 @@
-.*.swp
-pkg/
-spec/fixtures
+.*.sw?
 .bundle
-Gemfile.lock
+.rspec_system
 .vagrant
+Gemfile.lock
+pkg
+spec/fixtures
