@@ -21,7 +21,7 @@ Puppet::Type.newtype(:trafficserver_plugin) do
   end
 
   # this is taken from postgresql_conf
-  newparam(:target) do
+  newproperty(:target) do
     desc "The path to plugin.config"
     defaultto do
       if @resource.class.defaultprovider.ancestor.include?(Puppet::Provider::ParsedFile)
@@ -32,7 +32,7 @@ Puppet::Type.newtype(:trafficserver_plugin) do
     end
   end
 
-  newproperty(:arguments, :array_matching => all) do
+  newproperty(:arguments, :array_matching => :all) do
     desc "optional list of arguments to the plugin"
   end
 
