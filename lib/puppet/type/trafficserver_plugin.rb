@@ -24,7 +24,7 @@ Puppet::Type.newtype(:trafficserver_plugin) do
   newproperty(:target) do
     desc "The path to plugin.config"
     defaultto do
-      if @resource.class.defaultprovider.ancestor.include?(Puppet::Provider::ParsedFile)
+      if @resource.class.defaultprovider.ancestors.include?(Puppet::Provider::ParsedFile)
         @resource.class.defaultprovider.default_target
       else
         nil
