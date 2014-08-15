@@ -12,6 +12,8 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+require 'puppet/provider/parsedfile'
+
 Puppet::Type.type(:trafficserver_plugin).provide(
   :parsed,
   :parent         => Puppet::Provider::ParsedFile,
@@ -22,15 +24,21 @@ Puppet::Type.type(:trafficserver_plugin).provide(
   text_line :comment, :match => /^\s*#/
   text_line :blank,   :match => /^\s*/
 
-  text_line :parsed,
+  record_line :parsed,
     :fields   => %w{plugin arguments comment},
-    :optional => %w{options comments},
+    :optional => %w{arguments comments},
     :match    => %r{
-      ^                # i don't wanna look up if ATS parser can start with spaces, so start without
-      ([\S]+)          # a word (collect into a group: plugin)
-      \s*              # any number of spaces
-      ([\S]+)*         # optional: zero or more words, separated by spaces. (collect as: arguments)
-      (?:\s*\#\s*(.*)) # optional: comment (collect as: comment)
-      $
-    }x
+      ^                       # i don't wanna look up if ATS parser can start with spaces, so start without
+      ((?!\#)\S+)             # a word (collect into a group: plugin)
+      [ ]*                    # any number of spaces
+      ((?:(?!\#)\S+[ ]?)+)?   # optional: zero or more words, separated by spaces. (collect as: arguments)
+      (?:\s*\#\s*(.+))?       # optional: comment (collect as: comment)
+      \s*                     # optional: trailing spaces
+      $                       # the end.
+    }x,
+    :to_line => proc { |h|
+      str  = h[:plugin]
+      str += h[:arguments].join(' ') unless (h[:arguments].nil? or h[:arguments].empty? or h[:arguemnts] == :absent)
+      str += " # #{h[:comment]}" unless (h[:comment].nil? or h[:comment] == :absent)
+    }
 end
