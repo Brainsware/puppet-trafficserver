@@ -24,24 +24,29 @@ Puppet::Type.type(:trafficserver_plugin).provide(
   text_line :comment, :match => /^\s*#/
   text_line :blank,   :match => /^\s*$/
 
+  # TODO: put this in puppetx
+  def self.emptyish(x)
+    x.nil? or x.empty? or x == :absent
+  end
+
   record_line :parsed,
-    :fields   => %w{name arguments comment},
-    :optional => %w{arguments comments},
+    :fields   => %w{line_match}, # fuck regular expressions
     :match    => %r{
-      ^                       # i don't wanna look up if ATS parser can start with spaces, so start without
-      ((?!\#)\S+)             # a word (collect into a group: name)
-      [ \t]*                  # any number of spaces
-      ((?:(?!\#)\S+[ \t]?)+)? # optional: zero or more words, separated by spaces. (collect as: arguments)
-      (?:\s*\#\s*(.*))?       # optional: comment (collect as: comment)
-      [ \t]*                  # optional: trailing spaces
-      $                       # the end.
+      ^[ \t]*                 # optional: starting space
+       (.+?)                  # match the whole line, we'll take it apart in post_parse.
+      [ \t]*$                 # optional: trailing spaces
     }x,
     :to_line => proc { |h|
-      str  = h[:name]
-      str += h[:arguments].join(' ') unless (h[:arguments].nil? or h[:arguments].empty? or h[:arguemnts] == :absent)
-      str += " # #{h[:comment]}" unless (h[:comment].nil? or h[:comment] == :absent)
+      str  = h[:plugin]
+      str += h[:arguments].join(' ') unless emptyish(h[:arguments])
+      str += " # #{h[:comment]}"     unless emptyish(h[:arguments])
     },
+    # if there's a comment sign, we can split on that
     :post_parse => proc { |h|
-      h[:arguments] = h[:arguments].split unless h[:arguments].nil?
+      conf, comment = h[:line_match].split('#', 2) # catch comments in comments ;)
+      h[:plugin], *h[:arguments] = conf.split
+      h[:comment]                = comment.strip unless comment.nil? # XXX: find out why we cannot call #emptyish here.
+
+      h[:name] = h[:plugin]
     }
 end
