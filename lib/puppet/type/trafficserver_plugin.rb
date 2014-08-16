@@ -16,7 +16,7 @@ Puppet::Type.newtype(:trafficserver_plugin) do
 
   ensurable
 
-  newparam(:name, :namevar => true) do
+  newparam(:plugin, :namevar => true) do
     desc "Name (path) to the plugin"
   end
 

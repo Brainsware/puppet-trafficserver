@@ -16,7 +16,7 @@ Puppet::Type.newtype(:trafficserver_record) do
 
   desc 'trafficserver_record is a type to manage records.config entries'
 
-  newparam(:name, :namevar => true) do
+  newparam(:record, :namevar => true) do
     desc "record entry"
   end
 
