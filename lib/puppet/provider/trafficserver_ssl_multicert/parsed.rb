@@ -45,11 +45,11 @@ Puppet::Type.type(:trafficserver_ssl_multicert).provide(
       [ \t]*$                 # optional: trailing spaces
     }x,
     :to_line => proc { |h|
-      str  = "ssl_cert_name=#{h[:ssl_cert_name]}"
+      str  =  "ssl_cert_name=#{h[:ssl_cert_name]}"
       # following the style-guide in the ssl_multicert.config.default, we always set the dest_ip first
-      str  = "dest_ip=#{h[:dest_ip]} #{str}"             unless emptyish(h[:dest_ip])
-      str += " ssl_key_name=#{h[:ssl_key_name]}"         unless emptyish(h[:ssl_key_name])
-      str += " ssl_ca_name=#{h[:ssl_ca_name]}"           unless emptyish(h[:ssl_ca_name])
+      str  =        "dest_ip=#{h[:dest_ip]} #{str}"      unless emptyish(h[:dest_ip])
+      str +=  " ssl_key_name=#{h[:ssl_key_name]}"        unless emptyish(h[:ssl_key_name])
+      str +=   " ssl_ca_name=#{h[:ssl_ca_name]}"         unless emptyish(h[:ssl_ca_name])
       # quote ssl_key_dialog's value:
       str += " ssl_key_dialog=\"#{h[:ssl_key_dialog]}\"" unless emptyish(h[:ssl_key_dialog])
       str += " # #{h[:comment]}"                         unless emptyish(h[:comment])
