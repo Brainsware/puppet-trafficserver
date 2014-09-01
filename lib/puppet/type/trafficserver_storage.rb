@@ -16,27 +16,56 @@ Puppet::Type.newtype(:trafficserver_storage) do
 
   ensurable
 
+  validate do
+    require 'pry' ; binding.pry
+    # mysteriously, this does not work:
+    #
+    #if self[:path] !~ %r{/dev(ices)?/} && (self[:size].nil? || self[:size] == :undef)
+    #  raise ArgumentError, "Invalid format: directory `#{self[:path]}' needs a <size> given #{self[:size]}"
+    #elsif (self[:path] =~ %r{^/dev(ices)?/} and self[:size])
+    #  raise ArgumentError, "Invalid format: device `#{self[:path]}' must not have a <size>"
+    #end
+    #
+    #all we get here is:
+    #pry(#<Puppet::Type::Trafficserver_storage>)> to_hash
+    #=> {:path=>"var/trafficserver", :provider=>:storage,
+    #    :owner=>"trafficserver", :group=>"trafficserver",
+    #    :target=>"/etc/trafficserver/storage.config", :loglevel=>:notice}
+    #
+    # i.e.: we're missing everything that is not a param or a namevar will come
+    # with its default value, or with else with nil.
+  end
+
   newparam(:path, :namevar => true) do
     desc "path to directory or device"
   end
 
-  # this is taken from postgresql_conf
-  newproperty(:target) do
-    desc "The path to plugin.config"
-    defaultto do
-      if @resource.class.defaultprovider.ancestors.include?(Puppet::Provider::ParsedFile)
-        @resource.class.defaultprovider.default_target
-      else
-        nil
-      end
-    end
-  end
-
   newproperty(:size) do
     desc "size: only used for directories"
+    defaultto :undef
   end
 
   newproperty(:comment) do
     desc "optional comment"
+    defaultto :undef
   end
+
+  # it's hard to discover these from the system, so we won't attempt to.
+  # They have to be passed.
+
+  newparam(:owner) do
+    desc "owner of device or directory"
+    defaultto 'trafficserver'
+  end
+
+  newparam(:group) do
+    desc "group of device or directory"
+    defaultto 'trafficserver'
+  end
+
+  newparam(:target) do
+    desc "The path to plugin.config"
+    defaultto '/etc/trafficserver/storage.config'
+  end
+
 end
