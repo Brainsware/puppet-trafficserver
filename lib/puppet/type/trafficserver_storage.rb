@@ -17,7 +17,6 @@ Puppet::Type.newtype(:trafficserver_storage) do
   ensurable
 
   validate do
-    require 'pry' ; binding.pry
     # mysteriously, this does not work:
     #
     #if self[:path] !~ %r{/dev(ices)?/} && (self[:size].nil? || self[:size] == :undef)
@@ -37,7 +36,8 @@ Puppet::Type.newtype(:trafficserver_storage) do
   end
 
   newparam(:path, :namevar => true) do
-    desc "path to directory or device"
+    desc "fully qualified path to directory or device"
+    newvalues(/^\//)
   end
 
   newproperty(:size) do
@@ -67,5 +67,4 @@ Puppet::Type.newtype(:trafficserver_storage) do
     desc "The path to plugin.config"
     defaultto '/etc/trafficserver/storage.config'
   end
-
 end

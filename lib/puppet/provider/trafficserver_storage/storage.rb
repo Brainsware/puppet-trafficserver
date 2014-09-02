@@ -16,7 +16,12 @@ require 'puppetx/filemapper'
 
 Puppet::Type.type(:trafficserver_storage).provide(:storage) do
 
+  desc 'Apache TrafficServer provider for parsing and writing storage.config'
+
   include PuppetX::FileMapper
+
+  commands :mkdir  => 'mkdir',
+           :chown  => 'chown'
 
   @default_target = '/etc/trafficserver/storage.config'
   @blank      = /^\s*$/
@@ -63,9 +68,17 @@ Puppet::Type.type(:trafficserver_storage).provide(:storage) do
 
   def self.format_file(filename, providers)
     providers.collect do |provider|
+
+      # if it's a directory, create and chown them.
+      if provider.size && !Dir.exist?(provider.path)
+        mkdir('-p', provider.path)
+        chown("#{provider.owner}:#{provider.group}", provider.path)
+      end
+
       line  = "#{provider.path}"
       line += " #{provider.size}"      unless (provider.size.nil?    || provider.size    == :undef)
       line += " # #{provider.comment}" unless (provider.comment.nil? || provider.comment == :undef)
+
     end.join
   end
 
