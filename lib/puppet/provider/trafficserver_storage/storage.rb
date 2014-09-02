@@ -23,10 +23,10 @@ Puppet::Type.type(:trafficserver_storage).provide(:storage) do
   commands :mkdir  => 'mkdir',
            :chown  => 'chown'
 
-  @default_target = '/etc/trafficserver/storage.config'
-  @blank      = /^\s*$/
-  @comment    = /^\s*#/
-  @line_match =  %r{
+  Default_target = '/etc/trafficserver/storage.config'
+  Blank      = /^\s*$/
+  Comment    = /^\s*#/
+  Line_match =  %r{
       ^[ \t]*  # optional starting space, this is important of the repetition matcher below
       (.+?)    # match the whole bloody line, and we'll take it apart later.
       [ \t]*$  # optional: trailing spaces
@@ -34,19 +34,19 @@ Puppet::Type.type(:trafficserver_storage).provide(:storage) do
 
 
   def select_file
-    @default_target
+    Default_target
   end
 
   def self.target_files
-    [ @default_target ]
+    [ Default_target ]
   end
 
   def self.parse_file(filename, file_contents)
     lines = file_contents.split("\n")
 
-    real_lines = lines.delete_if { |l| l =~ @blank || l =~ @comment }
+    real_lines = lines.delete_if { |l| l =~ Blank || l =~ Comment }
 
-    real_lines.collect { |line| line.match(@line_match) }.compact.collect do |m|
+    real_lines.collect { |line| line.match(Line_match) }.compact.collect do |m|
 
       line_match    = m[1]
       conf, comment = line_match.split('#', 2) # catch comments in comments ;)
