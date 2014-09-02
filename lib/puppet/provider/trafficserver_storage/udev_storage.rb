@@ -27,5 +27,9 @@ Puppet::Type.type(:trafficserver_storage).provide(:udev_storage,
   # (that is, an entry that starts with /dev(ices)? and contains no size, we write
   #
   # SUBSYSTEM=="block", KERNEL=="/dev/that/device", GROUP:="provider.group"
-
+  def flush
+    super
+    # update udev rules here
+    require 'pry' ; binding.pry
+  end
 end
