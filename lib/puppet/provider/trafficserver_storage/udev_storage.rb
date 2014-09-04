@@ -12,8 +12,10 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'trafficserver_storage/storage'))
+
 Puppet::Type.type(:trafficserver_storage).provide(:udev_storage,
-  :parent => :storage,
+  :parent => ::Puppet::Provider::Trafficserver_storage,
 ) do
 
   desc 'Apache TrafficServer provider for allow access to raw storage devices in Linux'
@@ -27,8 +29,7 @@ Puppet::Type.type(:trafficserver_storage).provide(:udev_storage,
   # (that is, an entry that starts with /dev(ices)? and contains no size, we write
   #
   # SUBSYSTEM=="block", KERNEL=="/dev/that/device", GROUP:="provider.group"
-  def flush
-    super
+  def self.pre_flush_hook(filename)
     # update udev rules here
     require 'pry' ; binding.pry
   end
