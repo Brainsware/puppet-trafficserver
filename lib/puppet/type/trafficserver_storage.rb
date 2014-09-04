@@ -42,12 +42,10 @@ Puppet::Type.newtype(:trafficserver_storage) do
 
   newproperty(:size) do
     desc "size: only used for directories"
-    defaultto :undef
   end
 
   newproperty(:comment) do
     desc "optional comment"
-    defaultto :undef
   end
 
   # it's hard to discover these from the system, so we won't attempt to.

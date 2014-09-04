@@ -12,9 +12,16 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+# abstract base class for trafficserver_storage
+
 require 'puppetx/filemapper'
 
 class Puppet::Provider::Trafficserver_storage < Puppet::Provider
+
+  # implement self.resources_type, because FileMapper will need it.
+  def self.resource_type
+    Puppet::Type.type(:trafficserver_storage)
+  end
 
   include PuppetX::FileMapper
 
@@ -43,10 +50,10 @@ class Puppet::Provider::Trafficserver_storage < Puppet::Provider
   # fill namevar attributes that are not "name".
   # As such, we override the getter for path here.
   def path
-    if (@property_hash[:path].nil? or @property_hash[:path] == :undef)
-      return @property_hash[:name]
+    if @resource.nil?
+      return @property_hash[:path]
     end
-    @property_hash[:path]
+    @resource[:path]
   end
 
   def self.parse_file(filename, file_contents)
@@ -75,7 +82,9 @@ class Puppet::Provider::Trafficserver_storage < Puppet::Provider
   end
 
   def self.format_file(filename, providers)
-    providers.collect do |provider|
+    contents = []
+    contents << header
+    contents << providers.collect do |provider|
 
       # if it's a directory, create and chown them.
       if (!(provider.size.nil? or provider.size == :undef) and not Dir.exist?(provider.path))
@@ -87,13 +96,16 @@ class Puppet::Provider::Trafficserver_storage < Puppet::Provider
       line += " #{provider.size}"      unless (provider.size.nil?    || provider.size    == :undef)
       line += " # #{provider.comment}" unless (provider.comment.nil? || provider.comment == :undef)
 
-    end.join("\n") + "\n"
+      # line += foo unless false returns nil, of course.
+      # be more explicity:
+      line
+    end
+    contents.join("\n") + "\n"
   end
 
-  require 'pry' ; binding.pry
 
   def self.header
-    <<-HEADER
+    hdr = <<-HEADER
 #
 # Storage Configuration file
 #
@@ -135,6 +147,7 @@ class Puppet::Provider::Trafficserver_storage < Puppet::Provider
 # most likely you'll want to use a larger cache. And, we definitely recommend the use
 # of raw devices for production caches.
 HEADER
+    hdr
   end
 
 end

@@ -12,7 +12,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-require File.expand_path(File.join(File.dirname(__FILE__), '..', 'trafficserver_storage/storage'))
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'trafficserver_storage'))
 
 Puppet::Type.type(:trafficserver_storage).provide(:udev_storage,
   :parent => ::Puppet::Provider::Trafficserver_storage,
@@ -29,8 +29,8 @@ Puppet::Type.type(:trafficserver_storage).provide(:udev_storage,
   # (that is, an entry that starts with /dev(ices)? and contains no size, we write
   #
   # SUBSYSTEM=="block", KERNEL=="/dev/that/device", GROUP:="provider.group"
-  def self.pre_flush_hook(filename)
-    # update udev rules here
-    require 'pry' ; binding.pry
-  end
+  #def self.pre_flush_hook(filename)
+  #  # update udev rules here
+  #  require 'pry' ; binding.pry
+  #end
 end
