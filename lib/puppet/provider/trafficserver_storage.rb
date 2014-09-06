@@ -64,7 +64,7 @@ class Puppet::Provider::Trafficserver_storage < Puppet::Provider
     real_lines.collect { |line| line.match(Line_match) }.compact.collect do |m|
 
       line_match    = m[1]
-      conf, comment = line_match.split('#', 2) # catch comments in comments ;)
+      conf, comment = line_match.split('#', 2) # max 2 pieces to catch # comments in # comments
       path, *size   = conf.split
       comment       = comment.strip unless comment.nil?
 
@@ -83,10 +83,14 @@ class Puppet::Provider::Trafficserver_storage < Puppet::Provider
 
   def self.format_file(filename, providers)
     contents = []
-    contents << header
+    contents << Header
     contents << providers.collect do |provider|
 
       # if it's a directory, create and chown them.
+      # the reason why we don't manage this as puppet (file) resource is that i
+      # don't want somewhere down the line for this resource to suddenly become
+      # :absent. trafficserver provides a persistent cache. let's not
+      # compromise that.
       if (!(provider.size.nil? or provider.size == :undef) and not Dir.exist?(provider.path))
         mkdir('-p', provider.path)
         chown("#{provider.owner}:#{provider.group}", provider.path)
@@ -104,8 +108,7 @@ class Puppet::Provider::Trafficserver_storage < Puppet::Provider
   end
 
 
-  def self.header
-    hdr = <<-HEADER
+  Header = <<-HEADER
 #
 # Storage Configuration file
 #
@@ -147,7 +150,5 @@ class Puppet::Provider::Trafficserver_storage < Puppet::Provider
 # most likely you'll want to use a larger cache. And, we definitely recommend the use
 # of raw devices for production caches.
 HEADER
-    hdr
-  end
 
 end

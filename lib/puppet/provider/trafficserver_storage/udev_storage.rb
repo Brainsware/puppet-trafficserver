@@ -18,9 +18,9 @@ Puppet::Type.type(:trafficserver_storage).provide(:udev_storage,
   :parent => ::Puppet::Provider::Trafficserver_storage,
 ) do
 
-  desc 'Apache TrafficServer provider for allow access to raw storage devices in Linux'
+  desc 'Apache TrafficServer provider to allow access to raw storage devices in Linux'
 
-  confine  :kernel => :linux
+  defaultfor  :kernel => :linux
 
   # here we have to (idempotently) write an entry into
   # /etc/udev/rules.d/51-cache-disk.rules

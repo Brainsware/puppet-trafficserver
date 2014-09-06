@@ -37,11 +37,12 @@ Puppet::Type.newtype(:trafficserver_storage) do
 
   newparam(:path, :namevar => true) do
     desc "fully qualified path to directory or device"
-    newvalues(/^\//)
+    newvalues(%r{^/})
   end
 
   newproperty(:size) do
     desc "size: only used for directories"
+    newvalues(/^\d+[KMGTP]?$/)
   end
 
   newproperty(:comment) do
