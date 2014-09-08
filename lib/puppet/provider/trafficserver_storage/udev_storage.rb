@@ -22,6 +22,8 @@ Puppet::Type.type(:trafficserver_storage).provide(:udev_storage,
 
   defaultfor  :kernel => :linux
 
+  Udev_file = '/etc/udev/rules.d/51-cache-disk.rules'
+
   # here we have to (idempotently) write an entry into
   # /etc/udev/rules.d/51-cache-disk.rules
   # why 51-cache-disk.rules? Because we've always done it like that.
@@ -29,8 +31,38 @@ Puppet::Type.type(:trafficserver_storage).provide(:udev_storage,
   # (that is, an entry that starts with /dev(ices)? and contains no size, we write
   #
   # SUBSYSTEM=="block", KERNEL=="/dev/that/device", GROUP:="provider.group"
-  #def self.pre_flush_hook(filename)
-  #  # update udev rules here
-  #  require 'pry' ; binding.pry
-  #end
+  #
+  # this hook is ran after storage.config has been updated. we'll disregard
+  # the "filename" parameter, because we're not touching storage.config
+  # instead we'll loop through @property_hash / @resources to find all raw
+  # devices (those without a `size`) to build our "should" file-contents, and
+  # compare it against the "is" we read from disk. if they don't match, we'll
+  # overwrite "is" with "should".
+  def self.post_flush_hook(filename)
+    @udev_file   = Puppet::Util::FileType.filetype(:flat).new(Udev_file)
+    @udev_is     = @udev_file.read
+    @udev_should = Udev_header + generate_should
+    require 'pry' ; binding.pry
+    unless @udev_is == @udev_should
+      @udev_file.write(@udev_should)
+    end
+  end
+
+  def self.generate_should
+    instances.collect do |instance|
+      require 'pry' ; binding.pry
+      if (instance.size.nil? or instance.size == :undef)
+        "SUBSYSTEM==\"block\", KERNEL==\"#{instance.path}\", GROUP:=\"lolwtf\"" if instance.ensure == :present
+      end
+    end.join("\n")
+  end
+
+  Udev_header = <<-HEADER
+#
+# Do not attempt to modify this file. It's manged by puppet and will be
+# overwritten on the next run!
+#
+# Assign cache disks to trafficserver's group
+#
+HEADER
 end
