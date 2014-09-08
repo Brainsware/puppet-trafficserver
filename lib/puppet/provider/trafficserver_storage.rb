@@ -37,7 +37,6 @@ class Puppet::Provider::Trafficserver_storage < Puppet::Provider
       [ \t]*$  # optional: trailing spaces
     }x
 
-
   def select_file
     Default_target
   end
