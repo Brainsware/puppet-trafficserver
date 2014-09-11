@@ -24,6 +24,11 @@ Puppet::Type.type(:trafficserver_storage).provide(:udev_storage,
 
   Udev_file = '/etc/udev/rules.d/51-cache-disk.rules'
 
+  # we'll need this here.
+  def group
+    @resource[:group]
+  end
+
   # here we have to (idempotently) write an entry into
   # /etc/udev/rules.d/51-cache-disk.rules
   # why 51-cache-disk.rules? Because we've always done it like that.
@@ -42,7 +47,6 @@ Puppet::Type.type(:trafficserver_storage).provide(:udev_storage,
     @udev_file   = Puppet::Util::FileType.filetype(:flat).new(Udev_file)
     @udev_is     = @udev_file.read
     @udev_should = Udev_header + generate_should
-    require 'pry' ; binding.pry
     unless @udev_is == @udev_should
       @udev_file.write(@udev_should)
     end
@@ -50,9 +54,8 @@ Puppet::Type.type(:trafficserver_storage).provide(:udev_storage,
 
   def self.generate_should
     instances.collect do |instance|
-      require 'pry' ; binding.pry
       if (instance.size.nil? or instance.size == :undef)
-        "SUBSYSTEM==\"block\", KERNEL==\"#{instance.path}\", GROUP:=\"lolwtf\"" if instance.ensure == :present
+        "SUBSYSTEM==\"block\", KERNEL==\"#{instance.path}\", GROUP:=\"#{instance.group}\"" if instance.ensure == :present
       end
     end.join("\n")
   end

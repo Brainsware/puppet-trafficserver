@@ -61,9 +61,4 @@ Puppet::Type.newtype(:trafficserver_storage) do
     desc "group of device or directory"
     defaultto 'trafficserver'
   end
-
-  newparam(:target) do
-    desc "The path to plugin.config"
-    defaultto '/etc/trafficserver/storage.config'
-  end
 end
