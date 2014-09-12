@@ -55,6 +55,19 @@ class Puppet::Provider::Trafficserver_storage < Puppet::Provider
     @resource[:path]
   end
 
+  # we'll need the group in other providers,
+  # but since they are parameters, they aren't always accessible
+  # (and filemapper doesn't set them through mk_resource_methods)
+  def self.set_group(filename, group)
+    @mapped_files[filename][:group] = group
+  end
+
+  def flush
+    self.class.set_group(self.select_file(), @resource[:group])
+    super
+  end
+
+
   def self.parse_file(filename, file_contents)
     lines = file_contents.split("\n")
 
