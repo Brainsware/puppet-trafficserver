@@ -22,12 +22,9 @@ Puppet::Type.type(:trafficserver_storage).provide(:udev_storage,
 
   defaultfor  :kernel => :linux
 
-  Udev_file = '/etc/udev/rules.d/51-cache-disk.rules'
+  commands :udevadm => 'udevadm'
 
-  # we'll need this here.
-  def group
-    @resource[:group]
-  end
+  Udev_file = '/etc/udev/rules.d/51-cache-disk.rules'
 
   # here we have to (idempotently) write an entry into
   # /etc/udev/rules.d/51-cache-disk.rules
@@ -44,18 +41,21 @@ Puppet::Type.type(:trafficserver_storage).provide(:udev_storage,
   # compare it against the "is" we read from disk. if they don't match, we'll
   # overwrite "is" with "should".
   def self.post_flush_hook(filename)
+    # restore group param
+    @group       = @mapped_files[filename][:group]
     @udev_file   = Puppet::Util::FileType.filetype(:flat).new(Udev_file)
     @udev_is     = @udev_file.read
     @udev_should = Udev_header + generate_should
     unless @udev_is == @udev_should
       @udev_file.write(@udev_should)
+      udevadm('trigger', '--subsystem-match=block')
     end
   end
 
   def self.generate_should
     instances.collect do |instance|
       if (instance.size.nil? or instance.size == :undef)
-        "SUBSYSTEM==\"block\", KERNEL==\"#{instance.path}\", GROUP:=\"#{instance.group}\"" if instance.ensure == :present
+        "SUBSYSTEM==\"block\", KERNEL==\"#{instance.path}\", GROUP:=\"#{@group}\"" if instance.ensure == :present
       end
     end.join("\n")
   end
