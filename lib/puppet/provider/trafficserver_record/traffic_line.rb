@@ -22,14 +22,6 @@ Puppet::Type.type(:trafficserver_record).provide(:traffic_line) do
 
   ConfigPattern = 'proxy.(config|local|cluster).*'
 
-  def initialize(value={})
-    super(value)
-  end
-
-  def name=(value)
-    @property_hash[:name] = value
-  end
-
   # this method is only called when value isn't insync?
   def value=(value)
     @property_hash[:name]  = resource[:name]
