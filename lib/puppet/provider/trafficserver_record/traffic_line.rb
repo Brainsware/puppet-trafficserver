@@ -24,12 +24,11 @@ Puppet::Type.type(:trafficserver_record).provide(:traffic_line) do
 
   # this method is only called when value isn't insync?
   def value=(value)
-    @property_hash[:name]  = resource[:name]
     @property_hash[:value] = value
 
     options = []
-    options << '-s' << @property_hash[:name]
-    options << '-v' << @property_hash[:value]
+    options << '-s' << @property_hash[:record]
+    options << '-v' << value
     traffic_line(options)
   end
 
@@ -39,8 +38,9 @@ Puppet::Type.type(:trafficserver_record).provide(:traffic_line) do
     records.split("\n").collect do |line|
       name, value = line.split(' ', 2)
       # and initialize @property_hash
-      new( :name  => name,
-           :value => value.to_s)
+      new( :name   => name,
+           :record => name,
+           :value  => value.to_s)
     end
   end
 
