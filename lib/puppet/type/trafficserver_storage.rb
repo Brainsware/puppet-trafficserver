@@ -14,6 +14,8 @@
 
 Puppet::Type.newtype(:trafficserver_storage) do
 
+  require 'pry' ; binding.pry
+
   ensurable
 
   validate do
@@ -45,6 +47,14 @@ Puppet::Type.newtype(:trafficserver_storage) do
     newvalues(/^\d+[KMGTP]?$/)
   end
 
+  newparam(:type) do
+    desc "Whether this is raw or dir"
+    newvalues(:raw, :dir)
+    validate do |val|
+      require 'pry' ; binding.pry
+    end
+  end
+
   newproperty(:comment) do
     desc "optional comment"
   end
@@ -60,5 +70,10 @@ Puppet::Type.newtype(:trafficserver_storage) do
   newparam(:group) do
     desc "group of device or directory"
     defaultto 'trafficserver'
+  end
+
+  def generate
+    require 'pry' ; binding.pry
+    []
   end
 end

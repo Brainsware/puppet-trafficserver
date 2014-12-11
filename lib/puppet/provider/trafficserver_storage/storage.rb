@@ -16,17 +16,9 @@
 
 require 'puppetx/filemapper'
 
-class Puppet::Provider::Trafficserver_storage < Puppet::Provider
-
-  # implement self.resources_type, because FileMapper will need it.
-  def self.resource_type
-    Puppet::Type.type(:trafficserver_storage)
-  end
+Puppet::Type.type(:trafficserver_storage).provide(:storage) do
 
   include PuppetX::FileMapper
-
-  commands :mkdir  => 'mkdir',
-           :chown  => 'chown'
 
   Default_target = '/etc/trafficserver/storage.config'
   Blank      = /^\s*$/
@@ -49,37 +41,20 @@ class Puppet::Provider::Trafficserver_storage < Puppet::Provider
   # fill namevar attributes that are not "name".
   # As such, we override the getter for path here.
   def path
-    if @resource.nil?
-      return @property_hash[:path]
-    end
-    @resource[:path]
+    return @property_hash[:path] if @resource.nil?
+    return @resource[:path]
   end
-
-  # we'll need the group in other providers,
-  # but since they are parameters, they aren't always accessible
-  # (and filemapper doesn't set them through mk_resource_methods)
-  def self.set_group(filename, group)
-    @mapped_files[filename][:group] = group
-  end
-
-  def flush
-    self.class.set_group(self.select_file(), @resource[:group])
-    super
-  end
-
 
   def self.parse_file(filename, file_contents)
-    lines = file_contents.split("\n")
-
-    real_lines = lines.delete_if { |l| l =~ Blank || l =~ Comment }
-
-    real_lines.collect { |line| line.match(Line_match) }.compact.collect do |m|
+    lines = file_contents.split("\n").delete_if { |l| l =~ Blank || l =~ Comment }
+    lines.collect { |line| line.match(Line_match) }.compact.collect do |m|
 
       line_match    = m[1]
       conf, comment = line_match.split('#', 2) # max 2 pieces to catch # comments in # comments
       path, *size   = conf.split
       comment       = comment.strip unless comment.nil?
 
+      # let's find out how to get group's default from the type :D
       # validate, that which cannot be sensibly validated in the type:
       raise Puppet::ParseError, "Invalid format: <path> [<size>]" if size.size > 1
 
@@ -89,6 +64,7 @@ class Puppet::Provider::Trafficserver_storage < Puppet::Provider
         :path     => path,
         :size     => size.first,
         :comment  => comment,
+        # how do we set group/owner or type here?
       }
     end
   end
@@ -97,16 +73,6 @@ class Puppet::Provider::Trafficserver_storage < Puppet::Provider
     contents = []
     contents << Header
     contents << providers.collect do |provider|
-
-      # if it's a directory, create and chown them.
-      # the reason why we don't manage this as puppet (file) resource is that i
-      # don't want somewhere down the line for this resource to suddenly become
-      # :absent. trafficserver provides a persistent cache. let's not
-      # compromise that.
-      if (!(provider.size.nil? or provider.size == :undef) and not Dir.exist?(provider.path))
-        mkdir('-p', provider.path)
-        chown("#{provider.owner}:#{provider.group}", provider.path)
-      end
 
       line  = "#{provider.path}"
       line += " #{provider.size}"      unless (provider.size.nil?    || provider.size    == :undef)
@@ -118,7 +84,6 @@ class Puppet::Provider::Trafficserver_storage < Puppet::Provider
     end
     contents.join("\n") + "\n"
   end
-
 
   Header = <<-HEADER
 #
