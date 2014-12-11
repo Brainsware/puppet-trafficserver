@@ -20,6 +20,11 @@ Puppet::Type.type(:trafficserver_storage).provide(:storage) do
 
   include PuppetX::FileMapper
 
+  def self.is_it_really_set?(x)
+    return false if x.nil? || x.empty? || x == :undef || x == :absent
+    true
+  end
+
   Default_target = '/etc/trafficserver/storage.config'
   Blank      = /^\s*$/
   Comment    = /^\s*#/
@@ -75,8 +80,8 @@ Puppet::Type.type(:trafficserver_storage).provide(:storage) do
     contents << providers.collect do |provider|
 
       line  = "#{provider.path}"
-      line += " #{provider.size}"      unless (provider.size.nil?    || provider.size    == :undef)
-      line += " # #{provider.comment}" unless (provider.comment.nil? || provider.comment == :undef)
+      line += " #{provider.size}"      unless is_it_really_set?(provider.size)
+      line += " # #{provider.comment}" unless is_it_really_set?(provider.comment)
 
       # line += foo unless false returns nil, of course.
       # be more explicity:
