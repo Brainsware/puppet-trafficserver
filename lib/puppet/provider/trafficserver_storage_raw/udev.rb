@@ -12,7 +12,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-Puppet::Type.type(:trafficserver_storage_dev).provide(:udev_storage) do
+Puppet::Type.type(:trafficserver_storage_raw).provide(:udev_storage) do
 
   require 'pry'; binding.pry
 
