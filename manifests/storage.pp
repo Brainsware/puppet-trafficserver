@@ -30,21 +30,18 @@ define trafficserver::storage (
     content => template($trafficserver::params::storage_template),
   }
 
-  if $size {
-    file { $path:
-      ensure => directory,
-      owner  => $owner,
-      group  => $group,
-      mode   => '0750',
-    }
-  } else {
-    create_resources("trafficserver::storage::${::kernel}", {
-      "${title}" => {
-        'ensure' => $ensure,
-        'device' => $path,
-        'owner'  => $owner,
-        'group'  => $group,
-      }
-    })
+  $provider = $size? {
+    undef   => $::kernel,
+    default => 'mkdir',
   }
+
+  create_resources("trafficserver::storage::${::provider}", {
+    "${title}" => {
+      'ensure' => $ensure,
+      'path'   => $path,
+      'size'   => $size,
+      'owner'  => $owner,
+      'group'  => $group,
+    }
+  })
 }

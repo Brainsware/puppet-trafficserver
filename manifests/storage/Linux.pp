@@ -1,7 +1,8 @@
 # "private" defined type for platform specifics
 define trafficserver::storage::Linux (
   $ensure = 'present',
-  $device = $title,
+  $path   = $title,
+  $size   = undef,
   $group  = $trafficserver::group,
   $owner  = $trafficserver::group,
 ) {
