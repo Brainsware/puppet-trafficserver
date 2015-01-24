@@ -1,4 +1,4 @@
-#   Copyright 2013 Brainsware
+#   Copyright 2015 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -13,51 +13,38 @@
 #   limitations under the License.
 
 # This class assembles storage.config
-class trafficserver::storage inherits trafficserver {
+define trafficserver::storage (
+  $ensure  = 'present',
+  $path    = $title,
+  $size    = undef,
+  $comment = undef,
+  $group   = $trafficserver::group,
+  $owner   = $trafficserver::user,
+){
 
-  $storage_passed = $trafficserver::storage
+  validate_re($ensure, '^(present|absent)$')
 
-  $storage = $storage_passed ? {
-    false   => [], # Someone genuinly passed a false, and wants to disable storage.
-    default => $storage_passed,
+  concat::fragment { "ensure ${title} ${ensure}":
+    ensure  => $ensure,
+    target  => $trafficserver::params::storage_config,
+    content => template($trafficserver::params::storage_template),
   }
 
-  # we can take either [ '/dev/sdc', '/dev/sdb'] or
-  # { '/var/cache/ats' => '4GB', } with this augeas template:
-  augeas { 'trafficserver.storage':
-    lens    => 'Trafficserver_storage.lns',
-    context => "/files${sysconfdir}/storage.config",
-    incl    => "${sysconfdir}/storage.config",
-    changes => template('trafficserver/storage.config.erb'),
-  }
-
-  # However, we only want to execute these Udev rules, if we got a non-empty array:
-  if is_array($storage) and $storage {
-    Exec {
-      path => '/bin:/usr/bin:/sbin:/usr/sbin',
-      cwd  => '/',
-    }
-    if $::kernel == 'Linux' {
-      file { '/etc/udev/rules.d/51-cache-disk.rules':
-        content => template('trafficserver/51-cache-disk.rules.erb'),
-        notify  => Exec['update udev rules'],
-      }
-
-      # trigger an update of udev rules of the block subsystem
-      exec { 'update udev rules':
-        command     => 'udevadm trigger --subsystem-match=block',
-        refreshonly => true,
-      }
-    }
-  }
-  if is_hash($storage) {
-    $path = keys($storage)
-
+  if $size {
     file { $path:
-      ensure    => 'directory',
-      owner     => $user,
-      group     => $group,
-      mode      => '0640',
+      ensure => directory,
+      owner  => $owner,
+      group  => $group,
+      mode   => '0750',
     }
+  } else {
+    create_resources("trafficserver::storage::${::kernel}", {
+      "${title}" => {
+        'ensure' => $ensure,
+        'device' => $path,
+        'owner'  => $owner,
+        'group'  => $group,
+      }
+    })
   }
 }

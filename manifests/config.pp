@@ -1,4 +1,4 @@
-#   Copyright 2013 Brainsware
+#   Copyright 2015 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -12,56 +12,55 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-# This class manages pretty much all of traffic server's configuration
-# But does so via calling upon other classes/defined types to help it.
-class trafficserver::config inherits trafficserver {
+# This class manages some basics of traffic server's configuration
+# For more complex things settings, please use trafficserver_record directly!
+# or any other (defined) types.
+class trafficserver::config {
 
-  include 'trafficserver::storage'
+  # basic (concat) setup for trafficserver storage
+  include trafficserver::config::storage
 
-  $port_changes = [ "set proxy.config.http.server_ports \"${port}\"" ]
-  trafficserver::config::records { 'port':
-    changes => $port_changes,
+  if $trafficserver::ssl and $trafficserver::listen == $trafficserver::params::listen {
+    $port = $trafficserver::params::listen_ssl
+  } else {
+    $port = $trafficserver::listen
+  }
+  trafficserver_record { 'proxy.config.http.server_ports':
+    value => $port,
   }
 
-  $debug_changes = [
-      "set proxy.config.http.insert_request_via_str ${debug}",
-      "set proxy.config.http.insert_response_via_str ${debug}",
-    ]
-  trafficserver::config::records { 'debug':
-    changes => $debug_changes ,
+  trafficserver_record {
+    'proxy.config.http.insert_request_via_str':
+      value => $trafficserver::debug;
+    'proxy.config.http.insert_response_via_str':
+      value =>  $trafficserver::debug;
   }
 
-  $mode_changes = $mode ? {
-    'reverse' => $::trafficserver::params::mode_reverse,
-    'forward' => $::trafficserver::params::mode_forward,
-    'both'    => $::trafficserver::params::mode_both,
+  case $trafficserver::mode {
+    'forward': {
+      $remap_required         = '0'
+      $reverse_proxy_enabled  = '0'
+    }
+    'both': {
+      $remap_required         = '0'
+      $reverse_proxy_enabled  = '1'
+    }
     # Default is reverse
-    default => $::trafficserver::params::mode_reverse
-  }
-
-  trafficserver::config::records { 'mode':
-    changes => $mode_changes,
-  }
-
-  $records = $trafficserver::records
-  if $records {
-    trafficserver::config::records { 'global_records':
-      changes => $records,
+    default: {
+      $remap_required         = '1'
+      $reverse_proxy_enabled  = '1'
     }
   }
-
-  if $ssl {
-    include trafficserver::ssl
-    if $ssl_default {
-      trafficserver::config::ssl { 'default':
-        ssl_host => $ssl_default,
-      }
-    }
+  trafficserver_record {
+    'proxy.config.url_remap.remap_required':
+      value => $remap_required;
+    'proxy.config.reverse_proxy.enabled':
+      value => $reverse_proxy_enabled;
   }
 
   # And finally, create an exec here to reload
   exec { 'trafficserver-config-reload':
-    path        => $bindir,
+    path        => $trafficserver::bindir,
     command     => 'traffic_line -x',
     cwd         => '/',
     refreshonly => true,

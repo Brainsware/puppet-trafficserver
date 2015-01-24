@@ -1,4 +1,4 @@
-#   Copyright 2013 Brainsware
+#   Copyright 2015 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -22,68 +22,61 @@
 #
 # === Examples
 #
-#   class {'trafficserver':
-#     ssl                            => true,
-#     storage                        => [ '/dev/vdb' ],
-#     ssl_default         => {
-#       'ssl_cert_name' => 'bar.pem',    'ssl_key_name' => 'barKey.pem'
-#     },
-#   }
+#   class {'trafficserver': }
 #
 #   # plugins can be configured like this:
-#   trafficserver::config::plugin { 'stats_over_http': }
-#   trafficserver::config::plugin { 'gzip':
-#     args => '/etc/bw/trafficserver/gzip.config',
+#   trafficserver_plugin { 'stats_over_http': }
+#   trafficserver_plugin { 'gzip':
+#     arguments => '/etc/bw/trafficserver/gzip.config',
 #   }
-#   trafficserver::config::plugin { 'foo_plugin':
-#     args => [
-#       'foo',
-#       'bar',
-#     ]
+#   trafficserver_plugin { 'foo_plugin':
+#     arguments => [ 'foo', 'bar', ]
 #   }
 #
 #
 #
 class trafficserver (
-  $ssl         = $trafficserver::params::ssl,
-  $listen      = $trafficserver::params::listen,
-  $user        = $trafficserver::params::user,
-  $group       = $trafficserver::params::group,
-  $debug       = $trafficserver::params::debug,
-  $mode        = $trafficserver::params::mode,
-  $prefix      = $trafficserver::params::prefix,
-  $bindir      = "${prefix}/bin",
-  $sysconfdir  = $trafficserver::params::sysconfdir,
-  $cachedir    = $trafficserver::params::cachedir,
-  $storage     = $trafficserver::params::storage,
-  $ssl_default = undef,
-  $records     = undef,
-  $install     = $trafficserver::params::install,
+  # manage the package.
+  # If you don't want that, you can set all of these as [] and 'undef'
+  # in hiera that is acomplished with:
+  #
+  #    trafficserver::package_name  : []
+  #    trafficserver::package_ensure: !!null
+  #
+  $package_name           = $trafficserver::params::package_name,
+  $package_ensure         = $trafficserver::params::package_ensure,
+  $plugins_package_name   = $trafficserver::params::plugins_package_name,
+  $plugins_package_ensure = $trafficserver::params::plugins_package_ensure,
+
+  $service_name   = $trafficserver::params::service_name,
+  $service_ensure = $trafficserver::params::service_ensure,
+  $service_enable = $trafficserver::params::service_enable,
+
+  # ~some~ configuration parameters
+  $ssl    = $trafficserver::params::ssl,
+  $listen = $trafficserver::params::listen,
+  $mode   = $trafficserver::params::mode,
+  $debug  = $trafficserver::params::debug,
+
+  # change base assumptions here to support your favourite OS
+  # because our params.pp does not know it
+  $user       = $trafficserver::params::user,
+  $group      = $trafficserver::params::group,
+  $prefix     = $trafficserver::params::prefix,
+  $bindir     = "${prefix}/bin",
+  $sysconfdir = $trafficserver::params::sysconfdir,
+  $cachedir   = $trafficserver::params::cachedir,
 ) inherits trafficserver::params {
 
-  $port = $ssl? {
-    true    => $trafficserver::params::listen_ssl,
-    default => $listen,
-  }
-  validate_re ($mode, $valid_modes)
+  validate_re ($mode, $trafficserver::params::valid_modes)
 
-  if $install == 'true' {
-    include 'trafficserver::install'
-  }
+  include 'trafficserver::install'
   include 'trafficserver::config'
   include 'trafficserver::service'
 
-  if $install == 'true' {
-    anchor { 'traffiserver::begin': } ->
-    Class['trafficserver::install'] ->
-    Class['trafficserver::config'] ->
-    Class['trafficserver::service'] ->
-    anchor { 'trafficserver::end': }
-  }
-  else {
-    anchor { 'traffiserver::begin': } ->
-    Class['trafficserver::config'] ->
-    Class['trafficserver::service'] ->
-    anchor { 'trafficserver::end': }
-  }
+  anchor { 'traffiserver::begin': } ->
+  Class['trafficserver::install'] ->
+  Class['trafficserver::config'] ->
+  Class['trafficserver::service'] ->
+  anchor { 'trafficserver::end': }
 }
