@@ -35,6 +35,9 @@ Puppet::Type.type(:trafficserver_plugin).provide(
       str  = h[:plugin]
       str += h[:arguments].join(' ') unless (h[:arguments].nil? or h[:arguments].empty? or h[:arguments] == :absent)
       str += " # #{h[:comment]}"     unless (h[:comment].nil?   or h[:comment].empty?   or h[:comment]   == :absent)
+
+      # explicitly return full str
+      str
     },
     # if there's a comment sign, we can split on that
     :post_parse => proc { |h|
