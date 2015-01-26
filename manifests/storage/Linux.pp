@@ -8,6 +8,7 @@ define trafficserver::storage::Linux (
 ) {
   concat::fragment {
     ensure  => $ensure,
+    target  => $trafficserver::params::device_file,
     content => template($trafficserver::params::device_template),
   } ~>
   exec { 'update udev rules':
