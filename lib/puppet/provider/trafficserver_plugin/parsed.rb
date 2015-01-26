@@ -33,8 +33,8 @@ Puppet::Type.type(:trafficserver_plugin).provide(
     }x,
     :to_line => proc { |h|
       str  = h[:plugin]
-      str += h[:arguments].join(' ') unless (h[:arguments].nil? or h[:arguments].empty? or h[:arguments] == :absent)
-      str += " # #{h[:comment]}"     unless (h[:comment].nil?   or h[:comment].empty?   or h[:comment]   == :absent)
+      str += " #{h[:arguments].join(' ')}" unless (h[:arguments].nil? or h[:arguments].empty? or h[:arguments] == :absent)
+      str += " # #{h[:comment]}"           unless (h[:comment].nil?   or h[:comment].empty?   or h[:comment]   == :absent)
 
       # explicitly return full str
       str
