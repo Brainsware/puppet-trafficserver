@@ -1,4 +1,5 @@
 # basic (concat) setup for trafficserver storage
+# + platform specific execs, so we don't "duplicate" them in the defines
 class trafficserver::config::storage {
 
   # these variables will also be used in the udev file header
@@ -26,4 +27,15 @@ class trafficserver::config::storage {
     content => template($trafficserver::params::device_header),
   }
 
+  case $::kernel {
+    'Linux': {
+      exec { 'update udev rules':
+        command     => 'udevadm trigger --subsystem-match=block',
+        path        => '/bin:/usr/bin:/sbin:/usr/sbin',
+        cwd         => '/',
+        refreshonly => true,
+      }
+    }
+    default: {}
+  }
 }
