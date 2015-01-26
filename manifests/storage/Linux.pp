@@ -6,7 +6,7 @@ define trafficserver::storage::Linux (
   $group  = $trafficserver::group,
   $owner  = $trafficserver::group,
 ) {
-  concat::fragment {
+  concat::fragment { "ensure ${path} ${ensure} in device file":
     ensure  => $ensure,
     target  => $trafficserver::params::device_file,
     content => template($trafficserver::params::device_template),
