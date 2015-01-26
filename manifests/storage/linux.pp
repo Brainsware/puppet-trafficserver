@@ -1,5 +1,5 @@
 # "private" defined type for platform specifics
-define trafficserver::storage::Linux (
+define trafficserver::storage::linux (
   $ensure = 'present',
   $path   = $title,
   $size   = undef,
