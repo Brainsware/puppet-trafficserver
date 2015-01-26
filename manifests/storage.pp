@@ -24,7 +24,7 @@ define trafficserver::storage (
 
   validate_re($ensure, '^(present|absent)$')
 
-  concat::fragment { "ensure ${title} ${ensure}":
+  concat::fragment { "ensure ${title} ${ensure} in storage.config":
     ensure  => $ensure,
     target  => $trafficserver::params::storage_config,
     content => template($trafficserver::params::storage_template),
@@ -36,7 +36,7 @@ define trafficserver::storage (
   }
 
   create_resources("trafficserver::storage::${::provider}", {
-    "${title}" => {
+    "ensure ${title} is ${ensure} through ${provider}" => {
       'ensure' => $ensure,
       'path'   => $path,
       'size'   => $size,
