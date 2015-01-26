@@ -29,6 +29,10 @@ class trafficserver::config {
     value => $port,
   }
 
+  trafficserver_record { 'proxy.config.admin.user_id':
+    value => $trafficserver::user,
+  }
+
   trafficserver_record {
     'proxy.config.http.insert_request_via_str':
       value => $trafficserver::debug;
