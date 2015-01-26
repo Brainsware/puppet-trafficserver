@@ -42,7 +42,7 @@ Puppet::Type.type(:trafficserver_plugin).provide(
     :post_parse => proc { |h|
       conf, comment = h[:line_match].split('#', 2) # catch comments in comments ;)
       h[:plugin], *h[:arguments] = conf.split
-      h[:comment]                = comment.strip unless @emptyish[comment]
+      h[:comment]                = comment.strip unless (comment.nil? or comment.empty? or comment == :absent)
 
       h[:name] = h[:plugin]
     }
