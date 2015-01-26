@@ -49,6 +49,11 @@ Puppet::Type.newtype(:trafficserver_ssl_multicert) do
     desc "If the certificates have different Certificate Authorities, they can be specified with this option"
   end
 
+  newproperty(:action) do
+    desc "If the tunnel matches this line, traffic server will not participate in the handshake. But rather it will blind tunnel the SSL connection."
+    newvalues(/tunnel/) # so far, tunnel is the only valid value...
+  end
+
   newproperty(:comment) do
     desc "optional comment"
   end

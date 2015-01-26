@@ -31,6 +31,7 @@ Puppet::Type.type(:trafficserver_ssl_multicert).provide(
     :ssl_key_name,
     :ssl_key_dialog,
     :ssl_ca_name,
+    :action,
   ]
 
   def self.emptyish?(x)
@@ -52,6 +53,7 @@ Puppet::Type.type(:trafficserver_ssl_multicert).provide(
       str +=   " ssl_ca_name=#{h[:ssl_ca_name]}"         unless emptyish?(h[:ssl_ca_name])
       # quote ssl_key_dialog's value:
       str += " ssl_key_dialog=\"#{h[:ssl_key_dialog]}\"" unless emptyish?(h[:ssl_key_dialog])
+      str += " action=#{h[:action]}"                     unless emptyish?(h[:action])
       str += " # #{h[:comment]}"                         unless emptyish?(h[:comment])
 
       # explicitly return full str:
