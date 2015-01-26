@@ -24,8 +24,6 @@ Puppet::Type.type(:trafficserver_plugin).provide(
   text_line :comment, :match => /^\s*#/
   text_line :blank,   :match => /^\s*$/
 
-  @emptyish =  ->(arg) {  x.nil? or x.empty? or x == :absent }
-
   record_line :parsed,
     :fields   => %w{line_match}, # no need for regex here
     :match    => %r{
@@ -35,8 +33,8 @@ Puppet::Type.type(:trafficserver_plugin).provide(
     }x,
     :to_line => proc { |h|
       str  = h[:plugin]
-      str += h[:arguments].join(' ') unless @emptyish[h[:arguments]]
-      str += " # #{h[:comment]}"     unless @emptyish[h[:comment]]
+      str += h[:arguments].join(' ') unless (h[:arguments].nil? or h[:arguments].empty? or h[:arguments] == :absent)
+      str += " # #{h[:comment]}"     unless (h[:comment].nil?   or h[:comment].empty?   or h[:comment]   == :absent)
     },
     # if there's a comment sign, we can split on that
     :post_parse => proc { |h|
