@@ -23,7 +23,7 @@ class trafficserver::params {
   $plugins_package_ensure = 'present'
 
   $service_name   = 'trafficserver'
-  $service_ensure = 'present'
+  $service_ensure = 'running'
   $service_enable =  true
 
   $ssl         = false
