@@ -7,11 +7,13 @@ class trafficserver::config::records {
     $port = $trafficserver::listen
   }
   trafficserver_record { 'proxy.config.http.server_ports':
-    value => $port,
+    value  => $port,
+    notify => Class[::trafficserver::service],
   }
 
   trafficserver_record { 'proxy.config.admin.user_id':
-    value => $trafficserver::user,
+    value  => $trafficserver::user,
+    notify => Class[::trafficserver::service],
   }
 
   trafficserver_record {
