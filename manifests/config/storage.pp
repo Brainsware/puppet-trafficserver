@@ -30,7 +30,7 @@ class trafficserver::config::storage {
   case $::kernel {
     'Linux': {
       exec { 'update udev rules':
-        command     => 'udevadm trigger --subsystem-match=block',
+        command     => 'udevadm control --reload-rules && udevadm trigger --subsystem-match=block',
         path        => '/bin:/usr/bin:/sbin:/usr/sbin',
         cwd         => '/',
         refreshonly => true,
