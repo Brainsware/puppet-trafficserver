@@ -42,6 +42,7 @@ Puppet::Type.type(:trafficserver_plugin).provide(
       h[:plugin], *h[:arguments] = conf.split
       h[:comment]                = comment.strip unless (comment.nil? or comment.empty? or comment == :absent)
 
-      h[:name] = h[:plugin]
+      h[:ensure] = :present
+      h[:name]   = h[:plugin]
     }
 end

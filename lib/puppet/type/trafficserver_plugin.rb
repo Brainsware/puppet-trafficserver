@@ -20,6 +20,12 @@ Puppet::Type.newtype(:trafficserver_plugin) do
     desc "Name (path) to the plugin"
   end
 
+  newproperty(:ensure) do
+    desc "Ensure whether plugin is enabled or not"
+    defaultto :present
+  end
+
+
   # this is taken from postgresql_conf
   newproperty(:target) do
     desc "The path to plugin.config"
