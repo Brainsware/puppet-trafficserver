@@ -35,7 +35,7 @@ define trafficserver::storage (
     default      => $::kernel,
   }
 
-  create_resources("trafficserver::storage::${::provider}", {
+  create_resources("trafficserver::storage::${provider}", {
     "ensure ${title} is ${ensure} through ${provider}" => {
       'ensure' => $ensure,
       'path'   => $path,
