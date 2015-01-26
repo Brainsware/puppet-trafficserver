@@ -31,8 +31,8 @@ define trafficserver::storage (
   }
 
   $provider = $size? {
-    undef   => $::kernel,
-    default => 'mkdir',
+    /^\d+[MGTPE]?$/ => 'mkdir',
+    default      => $::kernel,
   }
 
   create_resources("trafficserver::storage::${::provider}", {
