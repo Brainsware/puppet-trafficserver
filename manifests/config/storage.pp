@@ -13,6 +13,7 @@ class trafficserver::config::storage {
 
   concat::fragment { 'storage_header':
     order   => '00',
+    target  => $trafficserver::params::storage_config,
     content => template($trafficserver::params::storage_header),
   }
 
@@ -21,6 +22,7 @@ class trafficserver::config::storage {
 
   concat::fragment { 'device_file_header':
     order   => '00',
+    target  => $trafficserver::params::device_file,
     content => template($trafficserver::params::device_header),
   }
 
