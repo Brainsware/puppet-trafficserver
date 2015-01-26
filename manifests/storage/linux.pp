@@ -6,6 +6,10 @@ define trafficserver::storage::linux (
   $group  = $trafficserver::group,
   $owner  = $trafficserver::group,
 ) {
+
+  # the "name" in udev..
+  $kernel = regsubst($path, '^/dev/(.+)$', '\1')
+
   concat::fragment { "ensure ${path} ${ensure} in device file":
     ensure  => $ensure,
     target  => $trafficserver::params::device_file,
