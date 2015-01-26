@@ -1,4 +1,4 @@
-#   Copyright 2014 Brainsware
+#   Copyright 2015 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -24,13 +24,10 @@ Puppet::Type.type(:trafficserver_plugin).provide(
   text_line :comment, :match => /^\s*#/
   text_line :blank,   :match => /^\s*$/
 
-  # TODO: put this in puppetx
-  def self.emptyish(x)
-    x.nil? or x.empty? or x == :absent
-  end
+  @emptyish =  ->(arg) {  x.nil? or x.empty? or x == :absent }
 
   record_line :parsed,
-    :fields   => %w{line_match}, # fuck regular expressions
+    :fields   => %w{line_match}, # no need for regex here
     :match    => %r{
       ^[ \t]*                 # optional: starting space
        (.+?)                  # match the whole line, we'll take it apart in post_parse.
@@ -38,14 +35,14 @@ Puppet::Type.type(:trafficserver_plugin).provide(
     }x,
     :to_line => proc { |h|
       str  = h[:plugin]
-      str += h[:arguments].join(' ') unless emptyish(h[:arguments])
-      str += " # #{h[:comment]}"     unless emptyish(h[:comment])
+      str += h[:arguments].join(' ') unless @emptyish[h[:arguments]]
+      str += " # #{h[:comment]}"     unless @emptyish[h[:comment]]
     },
     # if there's a comment sign, we can split on that
     :post_parse => proc { |h|
       conf, comment = h[:line_match].split('#', 2) # catch comments in comments ;)
       h[:plugin], *h[:arguments] = conf.split
-      h[:comment]                = comment.strip unless comment.nil? # XXX: find out why we cannot call #emptyish here.
+      h[:comment]                = comment.strip unless @emptyish[comment]
 
       h[:name] = h[:plugin]
     }
