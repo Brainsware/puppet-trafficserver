@@ -42,21 +42,24 @@ Puppet::Type.type(:trafficserver_ssl_multicert).provide(
       [ \t]*$                 # optional: trailing spaces
     }x,
     :block_eval => :instance do
+      def emptyish?(x)
+        x.nil? or x.empty? or x == :absent
+      end
       
       def to_line(h)
         str  =  "ssl_cert_name=#{h[:ssl_cert_name]}"
         # following the style-guide in the ssl_multicert.config.default, we always set the dest_ip first
-        str  =        "dest_ip=#{h[:dest_ip]} #{str}"      unless (h[:dest_ip].nil? or h[:dest_ip].empty? or h[:dest_ip] == :absent)
-        str +=  " ssl_key_name=#{h[:ssl_key_name]}"        unless (h[:ssl_key_name].nil? or h[:ssl_key_name].empty? or h[:ssl_key_name] == :absent)
-        str +=   " ssl_ca_name=#{h[:ssl_ca_name]}"         unless (h[:ssl_ca_name].nil? or h[:ssl_ca_name].empty? or h[:ssl_ca_name] == :absent)
+        str  =        "dest_ip=#{h[:dest_ip]} #{str}"      unless emptyish?(h)
+        str +=  " ssl_key_name=#{h[:ssl_key_name]}"        unless emptyish?(h)
+        str +=   " ssl_ca_name=#{h[:ssl_ca_name]}"         unless emptyish?(h)
         # quote ssl_key_dialog's value:
-        str += " ssl_key_dialog=\"#{h[:ssl_key_dialog]}\"" unless (h[:ssl_key_dialog].nil? or h[:ssl_key_dialog].empty? or h[:ssl_key_dialog] == :absent)
-        str += " action=#{h[:action]}"                     unless (h[:action].nil? or h[:action].empty? or h[:action] == :absent)
-        str += " # #{h[:comment]}"                         unless (h[:comment].nil? or h[:comment].empty? or h[:comment] == :absent)
+        str += " ssl_key_dialog=\"#{h[:ssl_key_dialog]}\"" unless emptyish?(h)
+        str += " action=#{h[:action]}"                     unless emptyish?(h)
+        str += " # #{h[:comment]}"                         unless emptyish?(h)
 
         # explicitly return full str:
         str
-      }
+      end
 
       def post_parse(h)
         # use Shellwords#split to split the strings, since normal split won't do.
