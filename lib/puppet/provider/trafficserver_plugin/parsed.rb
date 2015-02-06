@@ -31,7 +31,7 @@ Puppet::Type.type(:trafficserver_plugin).provide(
        (.+?)                  # match the whole line, we'll take it apart in post_parse.
       [ \t]*$                 # optional: trailing spaces
     }x,
-    :block_eval => instance do
+    :block_eval => :instance do
       def emptyish?(x)
         x.nil? or x.empty? or x == :absent
       end
