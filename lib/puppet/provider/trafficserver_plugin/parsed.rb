@@ -31,21 +31,28 @@ Puppet::Type.type(:trafficserver_plugin).provide(
        (.+?)                  # match the whole line, we'll take it apart in post_parse.
       [ \t]*$                 # optional: trailing spaces
     }x,
-    :to_line => proc { |h|
-      str  = h[:plugin]
-      str += " #{h[:arguments].join(' ')}" unless (h[:arguments].nil? or h[:arguments].empty? or h[:arguments] == :absent)
-      str += " # #{h[:comment]}"           unless (h[:comment].nil?   or h[:comment].empty?   or h[:comment]   == :absent)
+    :block_eval => instance do
+      def emptyish?(x)
+        x.nil? or x.empty? or x == :absent
+      end
 
-      # explicitly return full str
-      str
-    },
-    # if there's a comment sign, we can split on that
-    :post_parse => proc { |h|
-      conf, comment = h[:line_match].split('#', 2) # catch comments in comments ;)
-      h[:plugin], *h[:arguments] = conf.split
-      h[:comment]                = comment.strip unless (comment.nil? or comment.empty? or comment == :absent)
+      def to_line(h)
+        str  = h[:plugin]
+        str += " #{h[:arguments].join(' ')}" unless emptyish?(h[:arguments])
+        str += " # #{h[:comment]}"           unless emptyish?(h[:comment])
 
-      h[:ensure] = :present
-      h[:name]   = h[:plugin]
-    }
+        # explicitly return full str
+        str
+      end
+
+      # if there's a comment sign, we can split on that
+      def post_parse(h)
+        conf, comment = h[:line_match].split('#', 2) # catch comments in comments ;)
+        h[:plugin], *h[:arguments] = conf.split
+        h[:comment]                = comment.strip unless (emptyish?(comment))
+
+        h[:ensure] = :present
+        h[:name]   = h[:plugin]
+      end
+    end
 end

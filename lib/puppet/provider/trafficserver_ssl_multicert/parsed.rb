@@ -1,4 +1,4 @@
-#   Copyright 2014 Brainsware
+#   Copyright 2015 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -49,13 +49,13 @@ Puppet::Type.type(:trafficserver_ssl_multicert).provide(
       def to_line(h)
         str  =  "ssl_cert_name=#{h[:ssl_cert_name]}"
         # following the style-guide in the ssl_multicert.config.default, we always set the dest_ip first
-        str  =        "dest_ip=#{h[:dest_ip]} #{str}"      unless emptyish?(h)
-        str +=  " ssl_key_name=#{h[:ssl_key_name]}"        unless emptyish?(h)
-        str +=   " ssl_ca_name=#{h[:ssl_ca_name]}"         unless emptyish?(h)
+        str  =        "dest_ip=#{h[:dest_ip]} #{str}"      unless emptyish?(h[:dest_ip])
+        str +=  " ssl_key_name=#{h[:ssl_key_name]}"        unless emptyish?(h[:dest_key_name])
+        str +=   " ssl_ca_name=#{h[:ssl_ca_name]}"         unless emptyish?(h[:ssl_ca_name])
         # quote ssl_key_dialog's value:
-        str += " ssl_key_dialog=\"#{h[:ssl_key_dialog]}\"" unless emptyish?(h)
-        str += " action=#{h[:action]}"                     unless emptyish?(h)
-        str += " # #{h[:comment]}"                         unless emptyish?(h)
+        str += " ssl_key_dialog=\"#{h[:ssl_key_dialog]}\"" unless emptyish?(h[:ssl_key_dialog])
+        str += " action=#{h[:action]}"                     unless emptyish?(h[:action])
+        str += " # #{h[:comment]}"                         unless emptyish?(h[:comment])
 
         # explicitly return full str:
         str
