@@ -62,4 +62,9 @@ class trafficserver::params {
   $storage_config   = "${sysconfdir}/storage.config"
   $storage_header   = "${module_name}/storage.config.header.erb"
   $storage_template = "${module_name}/storage.config.erb"
+
+  $remap_config   = "${sysconfdir}/remap.config"
+  $remap_header   = "${module_name}/remap.config.header.erb"
+  $remap_template = "${module_name}/remap.config.remap.erb"
+  $definefilter_template = "${module_name}/remap.config.definefilter.erb"
 }
