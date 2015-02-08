@@ -17,8 +17,9 @@
 # or any other (defined) types.
 class trafficserver::config {
 
-  # basic (concat) setup for trafficserver storage
+  # basic (concat) setup for trafficserver storage and remap
   include trafficserver::config::storage
+  include trafficserver::config::remap
   # configure (most basic) records parameters, exposed through init.pp
   include trafficserver::config::records
 
