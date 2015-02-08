@@ -1,0 +1,11 @@
+<%- if !@activatefilter.nil? and !@activatefilter.empty? -%>
+.activatefilter <%= @activatefilter %>
+<%- end -%>
+<%- if ! @config.empty? -%>
+<%= @type %> <%= Array(@config).join(' ')  %>
+<%- else -%>
+
+<%- end -%>
+<%- if !@deactivatefilter.nil? and !@deactivatefilter.empty? -%>
+.deactivatefilter <%= @deactivatefilter %>
+<%- end -%>
