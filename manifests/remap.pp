@@ -19,7 +19,7 @@ define trafficserver::remap (
   $activatefilter   = undef,
   $deactivatefilter = undef,
   $config           = [],
-  $order            = undef,
+  $order            = 0,
 ){
 
   validate_re($ensure, '^(present|absent)$')
@@ -29,25 +29,20 @@ define trafficserver::remap (
     fail("Trafficserver::remap[${title}]: one of activatefilter, deactivatefilter, config must be set!")
   }
 
-  ## derrive concat order from $type, or else, use $order
-  if $order {
-    $real_order = $order
-  } else {
-    $real_order = $type? {
-      # http://trafficserver.readthedocs.org/en/latest/reference/configuration/remap.config.en.html#precedence
-      'map_with_recv_port'       => 10,
-      'regex_map_with_recv_port' => 10,
-      'map'                      => 20,
-      'regex_map'                => 20,
-      'reverse_map'              => 20,
-      'map_with_referer'         => 20,
-      'regex_map_with_referer'   => 20,
-      'redirect'                 => 30,
-      'redirect_temporary'       => 30,
-      'regex_redirect'           => 40,
-      'regex_redirect_temporary' => 40,
-      default                    => 20, # our default is same as map/regex_remap/reverse_map
-    }
+  $type_order = $type? {
+    # http://trafficserver.readthedocs.org/en/latest/reference/configuration/remap.config.en.html#precedence
+    'map_with_recv_port'       => 1000,
+    'regex_map_with_recv_port' => 1000,
+    'map'                      => 2000,
+    'regex_map'                => 2000,
+    'reverse_map'              => 2000,
+    'map_with_referer'         => 2000,
+    'regex_map_with_referer'   => 2000,
+    'redirect'                 => 3000,
+    'redirect_temporary'       => 3000,
+    'regex_redirect'           => 4000,
+    'regex_redirect_temporary' => 4000,
+    default                    => 2000, # our default is same as map/regex_remap/reverse_map
   }
 
   # used variables in this template
@@ -57,7 +52,7 @@ define trafficserver::remap (
   # * deactivatefilter
   concat::fragment { "ensure ${title} ${ensure} in remap.config":
     ensure  => $ensure,
-    order   => $real_order,
+    order   => $type_order + $order,
     target  => $trafficserver::params::remap_config,
     content => template($trafficserver::params::remap_template),
   }

@@ -8,11 +8,12 @@ class trafficserver::config::remap {
   concat { $trafficserver::params::remap_config:
     owner  => $owner,
     group  => $group,
+    order  => 'numeric',
     notify => Exec['trafficserver-config-reload'],
   }
 
   concat::fragment { 'remap_header':
-    order   => '00',
+    order   => 0,
     target  => $trafficserver::params::remap_config,
     content => template($trafficserver::params::remap_header),
   }
