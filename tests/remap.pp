@@ -22,6 +22,7 @@ trafficserver::remap::definefilter { 'internal_only':
 
 trafficserver::remap { 'activate delete_purge':
   activatefilter => 'disable_delete_purge',
+  order          => -1,
 }
 
 trafficserver::remap { 'foo to bar':

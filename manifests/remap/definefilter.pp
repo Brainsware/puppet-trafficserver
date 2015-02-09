@@ -18,6 +18,7 @@ define trafficserver::remap::definefilter (
   $ensure = 'present',
   # you can explicitly override the filter's name, by setting
   # name => 'something_else'
+  $order = 5,
 ){
 
   validate_re($ensure, '^(present|absent)$')
@@ -27,7 +28,7 @@ define trafficserver::remap::definefilter (
   # * filter
   concat::fragment { "ensure ${name} filter ${ensure} in remap.config":
     ensure  => $ensure,
-    order   => '05',
+    order   => 5,
     target  => $trafficserver::params::remap_config,
     content => template($trafficserver::params::definefilter_template),
   }
