@@ -18,16 +18,14 @@ define trafficserver::remap (
   $type             = 'map',
   $activatefilter   = undef,
   $deactivatefilter = undef,
+  $from             = undef,
+  $to               = undef,
   $config           = [],
   $order            = 0,
 ){
 
   validate_re($ensure, '^(present|absent)$')
   validate_re($type, '^(regex_)?(map|map_with_referer|map_with_recv_port|reverse_map|redirect|redirect_temporary)$')
-
-  if empty($activatefilter) and empty($deactivatefilter) and empty($config) {
-    fail("Trafficserver::remap[${title}]: one of activatefilter, deactivatefilter, config must be set!")
-  }
 
   $type_order = $type? {
     # http://trafficserver.readthedocs.org/en/latest/reference/configuration/remap.config.en.html#precedence
@@ -46,8 +44,10 @@ define trafficserver::remap (
   }
 
   # used variables in this template
-  # * config
   # * type
+  # * from
+  # * to
+  # * config
   # * activatefilter
   # * deactivatefilter
   concat::fragment { "ensure ${title} ${ensure} in remap.config":
