@@ -32,14 +32,14 @@ define trafficserver::remap (
     'map_with_recv_port'       => 1000,
     'regex_map_with_recv_port' => 1000,
     'map'                      => 2000,
-    'regex_map'                => 2000,
+    'regex_map'                => 3000,
     'reverse_map'              => 2000,
     'map_with_referer'         => 2000,
-    'regex_map_with_referer'   => 2000,
-    'redirect'                 => 3000,
-    'redirect_temporary'       => 3000,
-    'regex_redirect'           => 4000,
-    'regex_redirect_temporary' => 4000,
+    'regex_map_with_referer'   => 3000,
+    'redirect'                 => 4000,
+    'redirect_temporary'       => 4000,
+    'regex_redirect'           => 5000,
+    'regex_redirect_temporary' => 5000,
     default                    => 2000, # our default is same as map/regex_remap/reverse_map
   }
 
