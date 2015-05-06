@@ -70,6 +70,12 @@ Puppet::Type.type(:trafficserver_ssl_multicert).provide(
           h[key.to_sym] = value.to_s
         }
         h[:name] = h[:ssl_cert_name]
+
+        # initialize unmentioned fields with the empty string
+        # so that out-of-sync is detected properly (issue #18)
+        ValidKeys.reject { |k| h.has_key?(k) }.each do |key|
+          h[key] = ''
+        end
       end
     end
 end
