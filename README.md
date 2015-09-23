@@ -5,7 +5,7 @@ manage installation and configuration of Apache Traffic Server.
 Currently supported modes: Forward, Reverse and mixed.
 Supported Platforms: Debian/Ubuntu, FreeBSD: partially. Solaris/Illumos: untested.
 
-It allows to seperately configure plugins, SSL certs and Remap Rules. Storage is configured globally.
+It allows to separately configure plugins, SSL certs and Remap Rules. Storage is configured globally.
 
 This plugin assumes that you have current version of Apache Traffic Server in your packagemanager's repositories. See [fpm](https://github.com/jordansissel/fpm) for a project that allows you to easily create packages.
 
