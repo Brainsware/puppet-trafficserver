@@ -12,14 +12,24 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-# install traffic server
-class trafficserver::install {
+# This define helps define filters in remap.config
+define trafficserver::remap::definefilter (
+  $filter,
+  $ensure = 'present',
+  # you can explicitly override the filter's name, by setting
+  # name => 'something_else'
+  $order = 5,
+){
 
-  package { $trafficserver::package_name:
-    ensure => $trafficserver::package_ensure,
-  }
+  validate_re($ensure, '^(present|absent)$')
 
-  package { $trafficserver::plugins_package_name:
-    ensure => $trafficserver::plugins_package_ensure,
+  # used variables in this template
+  # * name
+  # * filter
+  concat::fragment { "ensure ${name} filter ${ensure} in remap.config":
+    ensure  => $ensure,
+    order   => 5,
+    target  => $trafficserver::params::remap_config,
+    content => template($trafficserver::params::definefilter_template),
   }
 }

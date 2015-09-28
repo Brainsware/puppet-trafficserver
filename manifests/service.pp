@@ -15,7 +15,8 @@
 # This class ensures the service is running, and can be notified
 # for config changes
 class trafficserver::service {
-  service { 'trafficserver':
-    ensure   => 'running',
+  service { $trafficserver::service_name:
+    ensure => $trafficserver::service_ensure,
+    enable => $trafficserver::service_enable,
   }
 }

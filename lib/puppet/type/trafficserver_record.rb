@@ -1,4 +1,4 @@
-#   Copyright 2013 Brainsware
+#   Copyright 2015 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -12,22 +12,16 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-# setup of concat for ssl_multicert.config
-class trafficserver::ssl inherits trafficserver {
+Puppet::Type.newtype(:trafficserver_record) do
 
+  desc 'trafficserver_record is a type to manage records.config entries'
 
-  $configfile  = "${::trafficserver::sysconfdir}/${::trafficserver::params::ssl_config}"
-  $conf_header = $::trafficserver::params::ssl_config_header
+  newparam(:record, :namevar => true) do
+    desc "record entry"
+  end
 
-  # creates the configuration
-  concat { $configfile:
-    owner   => $user,
-    group   => $group,
-  }
+  newproperty(:value) do
+    desc "Value of this record"
+  end
 
-  concat::fragment { "${configfile}_header":
-    target => $configfile,
-    source => $conf_header,
-    order  => '00',
-  }
-}
+end

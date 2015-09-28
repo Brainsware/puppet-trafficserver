@@ -1,11 +1,1 @@
-set #comment[1] "This file managed by Puppet. Local changes will be overwritten"
-set #comment[2] "during the next Puppet run."
-rm path
-<% if @storage and not @storage.empty? -%>
-<%   @storage.each do |path,size| -%>
-set path[.='<%= path -%>'] <%= path %>
-<%     if size and not size.empty? -%>
-set path[.='<%= path -%>']/size <%= size %>
-<%     end -%>
-<%   end -%>
-<% end -%>
+<%= @path %><%= " #{@size}" if @size %><%= " # #{@comment}" if @comment %>
