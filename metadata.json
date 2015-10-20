@@ -1,0 +1,20 @@
+{
+  "name": "brainsware-trafficserver",
+  "version": "0.2.3",
+  "source": "https://github.com/Brainsware/puppet-trafficserver",
+  "author": "Brainsware",
+  "license": "Apache-2.0",
+  "summary": "manage trafficserver installation and configuration",
+  "description": "manage trafficserver installation and configuration",
+  "project_page": "https://github.com/Brainsware/puppet-trafficserver",
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_range": ">= 4.1.0"
+    },
+    {
+      "name": "puppetlabs/concat",
+      "version_range": ">= 1.0.0"
+    }
+  ]
+}

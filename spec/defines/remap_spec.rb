@@ -1,4 +1,4 @@
-#   Copyright 2013 Brainsware
+#   Copyright 2015 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -15,28 +15,29 @@
 require 'spec_helper'
 
 describe 'trafficserver::config::remap', :type => :define do
-	context 'README tests' do
-     $map = {
-       'http://example.com' => 'http://backend-web01',
-       'http://example.org' => 'http://backend-web21',
-       'http://example.net' => 'http://backend-web42',
-     }
-     $rev_map = {
-       'http://backend-web01' => 'http://example.com',
-       'http://backend-web21' => 'http://example.org',
-       'http://backend-web42' => 'http://example.net',
-     }
-     $redirect = {
-       'http://example.co.uk' => 'http://example.com/uk',
-     }
-		 let(:title) { 'README examples' }
-		 let(:params) do {
-			 'map'      => $map,
-			 'rev_map'  => $rev_map,
-			 'redirect' => $redirect,
-		 }
-		 end
+  context 'README tests' do
+    map = {
+      'http://example.com' => 'http://backend-web01',
+      'http://example.org' => 'http://backend-web21',
+      'http://example.net' => 'http://backend-web42',
+    }
+    rev_map = {
+      'http://backend-web01' => 'http://example.com',
+      'http://backend-web21' => 'http://example.org',
+      'http://backend-web42' => 'http://example.net',
+    }
+    redirect = {
+      'http://example.co.uk' => 'http://example.com/uk',
+    }
+    let(:title) { 'README examples' }
+    let(:params) do
+      {
+        'map'      => map,
+        'rev_map'  => rev_map,
+        'redirect' => redirect,
+      }
+    end
 
-		 it { should contain_augeas('Trafficserver_remap.lns_README examples') }
-	end
+    it { is_expected.to contain_augeas('Trafficserver_remap.lns_README examples') }
+  end
 end

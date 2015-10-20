@@ -1,4 +1,4 @@
-#   Copyright 2013 Brainsware
+#   Copyright 2015 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -14,6 +14,6 @@
 
 require 'spec_helper'
 
-#describe 'trafficserver', :type => :class do
+# describe 'trafficserver', :type => :class do
 #  let(:title) { 'trafficserver' }
-#end
+# end
