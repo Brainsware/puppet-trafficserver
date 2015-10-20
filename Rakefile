@@ -14,17 +14,7 @@
 
 require 'rubygems'
 require 'puppetlabs_spec_helper/rake_tasks'
+require 'puppet_blacksmith/rake_tasks'
+require 'rubocop/rake_task'
 
-def version
-	File.open('Modulefile').each do |line|
-		return line.split("'")[1] if line =~ /\bversion\b/ 
-	end
-end
-
-desc "Create a releasable artifact along with signed tags."
-task :release do
-	sh "git tag -s #{version} -m 't&r #{version}'"
-	sh "git checkout #{version}"
-	sh "puppet module build ."
-end
-
+RuboCop::RakeTask.new
