@@ -67,13 +67,13 @@ class trafficserver (
   }
   validate_re ($mode, $valid_modes)
 
-  if $install == 'true' {
+  if $install == true {
     include 'trafficserver::install'
   }
   include 'trafficserver::config'
   include 'trafficserver::service'
 
-  if $install == 'true' {
+  if $install == true {
     anchor { 'traffiserver::begin': } ->
     Class['trafficserver::install'] ->
     Class['trafficserver::config'] ->
