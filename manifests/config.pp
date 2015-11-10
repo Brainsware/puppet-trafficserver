@@ -16,7 +16,9 @@
 # But does so via calling upon other classes/defined types to help it.
 class trafficserver::config inherits trafficserver {
 
-  include 'trafficserver::storage'
+  anchor { '::trafficserver::config::start': }
+
+  class { '::trafficserver::storage': }
 
   $port_changes = [ "set proxy.config.http.server_ports \"${port}\"" ]
   trafficserver::config::records { 'port':
@@ -66,4 +68,11 @@ class trafficserver::config inherits trafficserver {
     cwd         => '/',
     refreshonly => true,
   }
+  
+  anchor { '::trafficserver::config::end': }
+
+  Anchor['::trafficserver::config::start'] ->
+  Class['::trafficserver::storage'] ->
+  Anchor['::trafficserver::config::end']
+
 }
