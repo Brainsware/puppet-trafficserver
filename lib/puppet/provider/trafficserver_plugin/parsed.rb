@@ -1,4 +1,4 @@
-#   Copyright 2015 Brainsware
+#   Copyright 2016 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -16,43 +16,43 @@ require 'puppet/provider/parsedfile'
 
 Puppet::Type.type(:trafficserver_plugin).provide(
   :parsed,
-  :parent         => Puppet::Provider::ParsedFile,
-  :default_target => '/etc/trafficserver/plugin.config',
-  :filetype       => :flat,
+  parent: Puppet::Provider::ParsedFile,
+  default_target: '/etc/trafficserver/plugin.config',
+  filetype: :flat
 ) do
 
-  text_line :comment, :match => /^\s*#/
-  text_line :blank,   :match => /^\s*$/
+  text_line :comment, match: %r{^\s*#}
+  text_line :blank,   match: %r{^\s*$}
 
   record_line :parsed,
-    :fields   => %w{line_match}, # no need for regex here
-    :match    => %r{
-      ^[ \t]*                 # optional: starting space
-       (.+?)                  # match the whole line, we'll take it apart in post_parse.
-      [ \t]*$                 # optional: trailing spaces
-    }x,
-    :block_eval => :instance do
-      def emptyish?(x)
-        x.nil? or x.empty? or x == :absent
-      end
-
-      def to_line(h)
-        str  = h[:plugin]
-        str += " #{h[:arguments].join(' ')}" unless emptyish?(h[:arguments])
-        str += " # #{h[:comment]}"           unless emptyish?(h[:comment])
-
-        # explicitly return full str
-        str
-      end
-
-      # if there's a comment sign, we can split on that
-      def post_parse(h)
-        conf, comment = h[:line_match].split('#', 2) # catch comments in comments ;)
-        h[:plugin], *h[:arguments] = conf.split
-        h[:comment]                = comment.strip unless (emptyish?(comment))
-
-        h[:ensure] = :present
-        h[:name]   = h[:plugin]
-      end
+              fields: %w(line_match), # no need for regex here
+              match: %r{
+                ^[ \t]*                 # optional: starting space
+                 (.+?)                  # match the whole line, we'll take it apart in post_parse.
+                [ \t]*$                 # optional: trailing spaces
+              }x,
+              block_eval: :instance do
+    def emptyish?(x)
+      x.nil? || x.empty? || (x == :absent)
     end
+
+    def to_line(h)
+      str  = h[:plugin]
+      str += " #{h[:arguments].join(' ')}" unless emptyish?(h[:arguments])
+      str += " # #{h[:comment]}"           unless emptyish?(h[:comment])
+
+      # explicitly return full str
+      str
+    end
+
+    # if there's a comment sign, we can split on that
+    def post_parse(h)
+      conf, comment = h[:line_match].split('#', 2) # catch comments in comments ;)
+      h[:plugin], *h[:arguments] = conf.split
+      h[:comment]                = comment.strip unless emptyish?(comment)
+
+      h[:ensure] = :present
+      h[:name]   = h[:plugin]
+    end
+  end
 end

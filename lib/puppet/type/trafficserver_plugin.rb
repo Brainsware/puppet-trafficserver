@@ -1,4 +1,4 @@
-#   Copyright 2015 Brainsware
+#   Copyright 2016 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -13,30 +13,27 @@
 #   limitations under the License.
 
 Puppet::Type.newtype(:trafficserver_plugin) do
-
   ensurable
 
-  newparam(:plugin, :namevar => true) do
-    desc "Name (path) to the plugin"
+  newparam(:plugin, namevar: true) do
+    desc 'Name (path) to the plugin'
   end
 
   # this is taken from postgresql_conf
   newproperty(:target) do
-    desc "The path to plugin.config"
+    desc 'The path to plugin.config'
     defaultto do
       if @resource.class.defaultprovider.ancestors.include?(Puppet::Provider::ParsedFile)
         @resource.class.defaultprovider.default_target
-      else
-        nil
       end
     end
   end
 
-  newproperty(:arguments, :array_matching => :all) do
-    desc "optional list of arguments to the plugin"
+  newproperty(:arguments, array_matching: :all) do
+    desc 'optional list of arguments to the plugin'
   end
 
   newproperty(:comment) do
-    desc "optional comment"
+    desc 'optional comment'
   end
 end

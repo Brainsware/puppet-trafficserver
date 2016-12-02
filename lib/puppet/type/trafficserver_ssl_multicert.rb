@@ -1,4 +1,4 @@
-#   Copyright 2015 Brainsware
+#   Copyright 2016 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -13,48 +13,45 @@
 #   limitations under the License.
 
 Puppet::Type.newtype(:trafficserver_ssl_multicert) do
-
   ensurable
 
-  newparam(:ssl_cert_name, :namevar => true) do
-    desc "Name (path) of the file containing the TLS certificate"
+  newparam(:ssl_cert_name, namevar: true) do
+    desc 'Name (path) of the file containing the TLS certificate'
   end
 
   # this is taken from postgresql_config
   newproperty(:target) do
-    desc "The path to ssl_multicert.config"
+    desc 'The path to ssl_multicert.config'
     defaultto do
       if @resource.class.defaultprovider.ancestors.include?(Puppet::Provider::ParsedFile)
         @resource.class.defaultprovider.default_target
-      else
-        nil
       end
     end
   end
 
   newproperty(:dest_ip) do
-    desc "The IPv4 or IPv6 address that the certificate should be presented on"
+    desc 'The IPv4 or IPv6 address that the certificate should be presented on'
   end
 
   newproperty(:ssl_key_name) do
-    desc "The name of the file containing the private key for this certificate"
+    desc 'The name of the file containing the private key for this certificate'
   end
 
   newproperty(:ssl_key_dialog) do
-    desc "Method used to provide a pass-phrase for encrypted private keys"
-    newvalues(/builtin|exec:/)
+    desc 'Method used to provide a pass-phrase for encrypted private keys'
+    newvalues(%r{builtin|exec:})
   end
 
   newproperty(:ssl_ca_name) do
-    desc "If the certificates have different Certificate Authorities, they can be specified with this option"
+    desc 'If the certificates have different Certificate Authorities, they can be specified with this option'
   end
 
   newproperty(:action) do
-    desc "If the tunnel matches this line, traffic server will not participate in the handshake. But rather it will blind tunnel the SSL connection."
-    newvalues(/tunnel/) # so far, tunnel is the only valid value...
+    desc 'If the tunnel matches this line, traffic server will not participate in the handshake. But rather it will blind tunnel the SSL connection.'
+    newvalues(%r{tunnel}) # so far, tunnel is the only valid value...
   end
 
   newproperty(:comment) do
-    desc "optional comment"
+    desc 'optional comment'
   end
 end

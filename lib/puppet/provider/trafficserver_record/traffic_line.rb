@@ -1,4 +1,4 @@
-#   Copyright 2015 Brainsware
+#   Copyright 2016 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -13,14 +13,13 @@
 #   limitations under the License.
 
 Puppet::Type.type(:trafficserver_record).provide(:traffic_line) do
-
   desc 'Manage traffic server records.config entries using traffic_line command'
 
-  commands :traffic_line => 'traffic_line'
+  commands traffic_line: 'traffic_line'
 
   mk_resource_methods
 
-  ConfigPattern = 'proxy.(config|local|cluster).*'
+  ConfigPattern = 'proxy.(config|local|cluster).*'.freeze
 
   # this method is only called when value isn't insync?
   def value=(value)
@@ -35,21 +34,20 @@ Puppet::Type.type(:trafficserver_record).provide(:traffic_line) do
   # get all records.config entries at the beginning
   def self.instances
     records = traffic_line('-m', ConfigPattern)
-    records.split("\n").collect do |line|
+    records.split("\n").map do |line|
       name, value = line.split(' ', 2)
       # and initialize @property_hash
-      new( :name   => name,
-           :record => name,
-           :value  => value.to_s)
+      new(name: name,
+          record: name,
+          value: value.to_s)
     end
   end
 
   def self.prefetch(resources)
     instances.each do |prov|
-      if resource = resources[prov.name]
+      if resource = resources[prov.name] # rubocop:disable Lint/AssignmentInCondition
         resource.provider = prov
       end
     end
   end
-
 end

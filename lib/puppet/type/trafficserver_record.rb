@@ -1,4 +1,4 @@
-#   Copyright 2015 Brainsware
+#   Copyright 2016 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -13,15 +13,13 @@
 #   limitations under the License.
 
 Puppet::Type.newtype(:trafficserver_record) do
-
   desc 'trafficserver_record is a type to manage records.config entries'
 
-  newparam(:record, :namevar => true) do
-    desc "record entry"
+  newparam(:record, namevar: true) do
+    desc 'record entry'
   end
 
   newproperty(:value) do
-    desc "Value of this record"
+    desc 'Value of this record'
   end
-
 end

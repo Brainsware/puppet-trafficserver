@@ -14,7 +14,7 @@
 
 require 'spec_helper'
 
-describe 'trafficserver', :type => :class do
+describe 'trafficserver', type: :class do
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
       context "on #{os}" do
