@@ -1,4 +1,4 @@
-#   Copyright 2015 Brainsware
+#   Copyright 2016 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -14,6 +14,16 @@
 
 require 'spec_helper'
 
-# describe 'trafficserver', :type => :class do
-#  let(:title) { 'trafficserver' }
-# end
+describe 'trafficserver', :type => :class do
+  context 'supported operating systems' do
+    on_supported_os.each do |os, facts|
+      context "on #{os}" do
+        let(:facts) do
+          facts
+        end
+
+        it { is_expected.to compile }
+      end
+    end
+  end
+end

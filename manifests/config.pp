@@ -43,10 +43,7 @@ class trafficserver::config {
     refreshonly => true,
   }
 
-  anchor { '::trafficserver::config::end': }
-
-  Anchor['::trafficserver::config::start'] ->
-  Class['::trafficserver::storage'] ->
-  Anchor['::trafficserver::config::end']
-
+  Class[trafficserver::config::storage] -> Class[trafficserver::config]
+  Class[trafficserver::config::remap]   -> Class[trafficserver::config]
+  Class[trafficserver::config::records] -> Class[trafficserver::config]
 }
