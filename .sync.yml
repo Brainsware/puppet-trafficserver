@@ -1,9 +1,5 @@
 ---
-# this was generated, under pain, with
-#
-#   travis encrypt -r Brainsware/puppet-tarsnap
-#
-# If all things go right, this is our puppet forge password :D 
+# we don't have acceptance tests
 
 spec/acceptance/nodesets/debian-78-x64.yml:
   unmanaged: true
@@ -40,5 +36,10 @@ spec/acceptance/nodesets/ubuntu-server-1204-x64.yml:
 spec/acceptance/nodesets/centos-72-x64.yml:
   unmanaged: true
 
+# this was generated with
+#
+#   travis encrypt -r Brainsware/puppet-tarsnap
+
 .travis.yml:
-  secure: "GpJtOasaHmxgHmA+PZ4w/KdYNIa4//PiO6F2qa58888cfK/7/9rCwZ5mbh+qsChMAy1QbVeDQZGFAgqxcL7Ix4uEf4QeQOpgOwAMPBl7SjctDb23iAAGU/qWmG2+nPAFqUdsA1zQafu89/ou0M/Ye0cJpG0vRb6YhrhhRRXuw3M="
+  user: brainsware
+  secure: "SHaHYZEcPKDLHkwUSxdHXfZQ9Vg1G1CFsEuYM7oOLpbklJBF9LKOYHRg//MCfjPiQNP1XVq3ymBeA9/p1nlubTaK6SIo64K+lksrayzjmwE2FOsKjyGEkLGpt2Tos/19Yjt2VM4HlOZwVCXJ+joW7zoC6YvvMRrHey4zS2eaWDk="
