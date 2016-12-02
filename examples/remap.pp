@@ -26,16 +26,19 @@ trafficserver::remap { 'activate delete_purge':
 }
 
 trafficserver::remap { 'foo to bar':
-  config => [ 'http://foo.example.com/', 'http://bar.example.com/' ],
+  from => 'http://foo.example.com/',
+  to   => 'http://bar.example.com/',
 }
 
 trafficserver::remap { 'map admin (internal only)':
   activatefilter   => 'internal_only',
-  config           => [ 'http://www.example.com/admin', 'http://internal.example.com/admin' ],
+  from             => 'http://www.example.com/admin',
+  to               => 'http://internal.example.com/admin',
   deactivatefilter => 'internal_only',
 }
 
 trafficserver::remap { 'example':
-  config => [ 'http://www.example.com/', 'http://internal.example.com/' ],
+  from => 'http://www.example.com/',
+  to   => 'http://internal.example.com/',
 }
 

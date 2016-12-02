@@ -14,30 +14,33 @@
 
 require 'spec_helper'
 
-describe 'trafficserver::config::remap', type: :define do
-  context 'README tests' do
-    map = {
-      'http://example.com' => 'http://backend-web01',
-      'http://example.org' => 'http://backend-web21',
-      'http://example.net' => 'http://backend-web42'
-    }
-    rev_map = {
-      'http://backend-web01' => 'http://example.com',
-      'http://backend-web21' => 'http://example.org',
-      'http://backend-web42' => 'http://example.net'
-    }
-    redirect = {
-      'http://example.co.uk' => 'http://example.com/uk'
-    }
-    let(:title) { 'README examples' }
-    let(:params) do
-      {
-        'map'      => map,
-        'rev_map'  => rev_map,
-        'redirect' => redirect
-      }
-    end
+describe 'trafficserver::remap', type: :define do
+  let(:facts) do
+    on_supported_os.first
+  end
+  let(:pre_condition) { 'include ::trafficserver' }
 
-    it { is_expected.to contain_augeas('Trafficserver_remap.lns_README examples') }
+  {
+    example_com: { from: 'http://example.com', to: 'http://backend-web01' },
+    example_org: { from: 'http://example.org', to: 'http://backend-web21' },
+    example_net: { from: 'http://example.net', to: 'http://backend-web42' },
+    # reverse maps
+    rev_example_com: { type: 'reverse_map', from: 'http://backend-web01', to: 'http://example.com' },
+    rev_example_org: { type: 'reverse_map', from: 'http://backend-web21', to: 'http://example.org' },
+    rev_example_net: { type: 'reverse_map', from: 'http://backend-web42', to: 'http://example.net' },
+    # redirects
+    redirect_co_uk: { type: 'redirect', from: 'http://example.co.uk', to: 'http://example.com/uk' }
+  }.map do |remap, maps|
+    context "README examples: #{remap}" do
+      let(:title) { "#{maps[:type]} from #{maps[:from]} to #{maps[:to]}" }
+      let(:params) do
+        {
+          type: maps[:type],
+          from: maps[:from],
+          to:   maps[:to]
+        }
+      end
+      it { is_expected.to compile }
+    end
   end
 end
