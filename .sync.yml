@@ -1,0 +1,44 @@
+---
+# this was generated, under pain, with
+#
+#   travis encrypt -r Brainsware/puppet-tarsnap
+#
+# If all things go right, this is our puppet forge password :D 
+
+spec/acceptance/nodesets/debian-78-x64.yml:
+  unmanaged: true
+spec/acceptance/nodesets/ubuntu-server-1404-x64.yml:
+  unmanaged: true
+spec/acceptance/nodesets/centos-66-x64-pe.yml:
+  unmanaged: true
+spec/acceptance/nodesets/debian-82-x64.yml:
+  unmanaged: true
+spec/acceptance/nodesets/centos-511-x64.yml:
+  unmanaged: true
+spec/acceptance/nodesets/centos-66-x64.yml:
+  unmanaged: true
+spec/acceptance/nodesets/docker/debian-8.yml:
+  unmanaged: true
+spec/acceptance/nodesets/docker/debian-7.yml:
+  unmanaged: true
+spec/acceptance/nodesets/docker/ubuntu-14.04.yml:
+  unmanaged: true
+spec/acceptance/nodesets/docker/centos-6.yml:
+  unmanaged: true
+spec/acceptance/nodesets/docker/ubuntu-16.04.yml:
+  unmanaged: true
+spec/acceptance/nodesets/docker/centos-5.yml:
+  unmanaged: true
+spec/acceptance/nodesets/docker/ubuntu-12.04.yml:
+  unmanaged: true
+spec/acceptance/nodesets/docker/centos-7.yml:
+  unmanaged: true
+spec/acceptance/nodesets/ubuntu-server-1604-x64.yml:
+  unmanaged: true
+spec/acceptance/nodesets/ubuntu-server-1204-x64.yml:
+  unmanaged: true
+spec/acceptance/nodesets/centos-72-x64.yml:
+  unmanaged: true
+
+.travis.yml:
+  secure: "GpJtOasaHmxgHmA+PZ4w/KdYNIa4//PiO6F2qa58888cfK/7/9rCwZ5mbh+qsChMAy1QbVeDQZGFAgqxcL7Ix4uEf4QeQOpgOwAMPBl7SjctDb23iAAGU/qWmG2+nPAFqUdsA1zQafu89/ou0M/Ye0cJpG0vRb6YhrhhRRXuw3M="
