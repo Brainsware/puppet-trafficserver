@@ -1,4 +1,4 @@
-#   Copyright 2015 Brainsware
+#   Copyright 2016 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -26,10 +26,12 @@ define trafficserver::remap::definefilter (
   # used variables in this template
   # * name
   # * filter
-  concat::fragment { "ensure ${name} filter ${ensure} in remap.config":
-    ensure  => $ensure,
-    order   => 5,
-    target  => $trafficserver::params::remap_config,
-    content => template($trafficserver::params::definefilter_template),
+  if $ensure == 'present' {
+    concat::fragment { "ensure ${name} filter ${ensure} in remap.config":
+      ensure  => $ensure,
+      order   => 5,
+      target  => $trafficserver::params::remap_config,
+      content => template($trafficserver::params::definefilter_template),
+    }
   }
 }

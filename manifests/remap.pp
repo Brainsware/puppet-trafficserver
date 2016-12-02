@@ -1,4 +1,4 @@
-#   Copyright 2015 Brainsware
+#   Copyright 2016 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -50,11 +50,12 @@ define trafficserver::remap (
   # * config
   # * activatefilter
   # * deactivatefilter
-  concat::fragment { "ensure ${title} ${ensure} in remap.config":
-    ensure  => $ensure,
-    order   => $type_order + $order,
-    target  => $trafficserver::params::remap_config,
-    content => template($trafficserver::params::remap_template),
+  if $ensure == 'present' {
+    concat::fragment { "ensure ${title} ${ensure} in remap.config":
+      order   => $type_order + $order,
+      target  => $trafficserver::params::remap_config,
+      content => template($trafficserver::params::remap_template),
+    }
   }
 
 }

@@ -1,4 +1,4 @@
-#   Copyright 2015 Brainsware
+#   Copyright 2016 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -24,10 +24,11 @@ define trafficserver::storage (
 
   validate_re($ensure, '^(present|absent)$')
 
-  concat::fragment { "ensure ${title} ${ensure} in storage.config":
-    ensure  => $ensure,
-    target  => $trafficserver::params::storage_config,
-    content => template($trafficserver::params::storage_template),
+  if $ensure == 'present' {
+    concat::fragment { "ensure ${title} ${ensure} in storage.config":
+      target  => $trafficserver::params::storage_config,
+      content => template($trafficserver::params::storage_template),
+    }
   }
 
   $provider = $size? {
