@@ -1,4 +1,4 @@
-#   Copyright 2015 Brainsware
+#   Copyright 2016 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -70,9 +70,9 @@ class trafficserver (
 
   validate_re ($mode, $trafficserver::params::valid_modes)
 
-  include 'trafficserver::install'
-  include 'trafficserver::config'
-  include 'trafficserver::service'
+  include ::trafficserver::install
+  include ::trafficserver::config
+  include ::trafficserver::service
 
   anchor { 'traffiserver::begin': } ->
   Class['trafficserver::install'] ->

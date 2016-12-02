@@ -1,4 +1,4 @@
-class { 'trafficserver':
+class { '::trafficserver':
   user  => 'igalic',
   group => 'igalic',
 }

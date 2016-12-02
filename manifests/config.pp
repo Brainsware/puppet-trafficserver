@@ -1,4 +1,4 @@
-#   Copyright 2015 Brainsware
+#   Copyright 2016 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -18,10 +18,10 @@
 class trafficserver::config {
 
   # basic (concat) setup for trafficserver storage and remap
-  include trafficserver::config::storage
-  include trafficserver::config::remap
+  include ::trafficserver::config::storage
+  include ::trafficserver::config::remap
   # configure (most basic) records parameters, exposed through init.pp
-  include trafficserver::config::records
+  include ::trafficserver::config::records
 
   # trafficserver_record operates on the beating heart, but these files here
   # need a reload:
