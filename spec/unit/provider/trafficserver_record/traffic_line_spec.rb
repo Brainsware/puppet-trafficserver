@@ -1,3 +1,4 @@
+# coding: utf-8
 #   Copyright 2016 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,17 +16,21 @@
 require 'spec_helper'
 
 describe Puppet::Type.type(:trafficserver_record).provider(:traffic_line) do
-  let(:name) { 'proxy.config.reverse_proxy.enabled' }
+  let(:record_name) { 'proxy.config.reverse_proxy.enabled' }
   let(:resource_properties) do
     {
-      name: name,
-      value: '1'
+      record: record_name,
+      value: '1',
+      provider: described_class.name
     }
   end
-  let(:resource) { Puppet::Type::Trafficserver_record.new(resource_properties) }
+  let(:resource) { Puppet::Type.type(:trafficserver_record).new(resource_properties) }
   let(:provider) { described_class.new(resource) }
   let(:prefetch_output) do
-    <<PREFETCH
+# because of ``provider.class.instances.first``
+# we move our ``proxy.config.reverse_proxy.enabled 0`` to the top;)
+    <<-PREFETCH
+proxy.config.reverse_proxy.enabled 0
 proxy.config.ssl.enabled 0
 proxy.config.ssl.SSLv2 0
 proxy.config.ssl.SSLv3 0
@@ -33,17 +38,22 @@ proxy.config.ssl.TLSv1 1
 proxy.config.ssl.TLSv1_1 1
 proxy.config.ssl.TLSv1_2 1
 proxy.config.ssl.compression 0
-proxy.config.reverse_proxy.enabled 0
 PREFETCH
   end
 
   before do
     Puppet::Util.stubs(:which).with('traffic_line').returns('/usr/bin/traffic_line')
     provider.class.stubs(:traffic_line).with('-m', 'proxy.(config|local|cluster).*').returns(prefetch_output)
-    provider.class.stubs(:traffic_line).with('-s', name, '-v', '1')
+    provider.class.stubs(:traffic_line).with('-s', record_name, '-v', '1')
   end
 
   let(:instance) { provider.class.instances.first }
+
+  describe 'self.instances' do
+    it 'returns an array of record => value pairs' do
+      provider.class.stubs(:traffic_line).with(['-m', 'proxy.(config|local|cluster).*']).returns(prefetch_output)
+    end
+  end
 
   describe 'self.prefetch' do
     it 'exists' do
@@ -54,23 +64,15 @@ PREFETCH
 
   describe 'value=' do
     it 'sets a traffic record' do
-      provider.expects(:traffic_line).with('-s', name, '-v', '1')
-      provider.expects(:exists?).returns true
-      expect(provider.value).to be '1'
+      provider.expects(:traffic_line).with([ '-s', record_name, '-v', '1' ]).returns('0')
+      provider.record=(record_name)
+      provider.value=('1')
     end
   end
 
-  context 'default example' do
-    describe '#record' do
-      it 'set #record to #name' do
-        expect(provider.record).to be name
-      end
-    end
-
-    describe '#value' do
-      it 'set #value to 1' do
-        expect(provider.value).to be '1'
-      end
+  describe '#record' do
+    it 'set #record to #name' do
+      expect(instance.name).to eq(record_name)
     end
   end
 end
