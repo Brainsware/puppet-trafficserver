@@ -1,4 +1,3 @@
-# coding: utf-8
 #   Copyright 2016 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,9 +25,10 @@ describe Puppet::Type.type(:trafficserver_record).provider(:traffic_line) do
   end
   let(:resource) { Puppet::Type.type(:trafficserver_record).new(resource_properties) }
   let(:provider) { described_class.new(resource) }
+
+  # because of ``provider.class.instances.first``
+  # we move our ``proxy.config.reverse_proxy.enabled 0`` to the top;)
   let(:prefetch_output) do
-# because of ``provider.class.instances.first``
-# we move our ``proxy.config.reverse_proxy.enabled 0`` to the top;)
     <<-PREFETCH
 proxy.config.reverse_proxy.enabled 0
 proxy.config.ssl.enabled 0
@@ -44,7 +44,7 @@ PREFETCH
   before do
     Puppet::Util.stubs(:which).with('traffic_line').returns('/usr/bin/traffic_line')
     provider.class.stubs(:traffic_line).with('-m', 'proxy.(config|local|cluster).*').returns(prefetch_output)
-    provider.class.stubs(:traffic_line).with('-s', record_name, '-v', '1')
+    provider.class.stubs(:traffic_line).with(['-s', record_name, '-v', '1'])
   end
 
   let(:instance) { provider.class.instances.first }
@@ -64,9 +64,9 @@ PREFETCH
 
   describe 'value=' do
     it 'sets a traffic record' do
-      provider.expects(:traffic_line).with([ '-s', record_name, '-v', '1' ]).returns('0')
-      provider.record=(record_name)
-      provider.value=('1')
+      # unit testing providers is special, and rubocop doesn't understand :(
+      provider.record=(record_name) # rubocop:disable Style/SpaceAroundOperators, Style/RedundantParentheses
+      provider.value=('1') # rubocop:disable Style/SpaceAroundOperators, Style/RedundantParentheses
     end
   end
 
