@@ -16,14 +16,14 @@ require 'spec_helper'
 
 describe 'trafficserver::remap', type: :define do
   let(:facts) do
-    on_supported_os.first
+    on_supported_os.first[1]
   end
   let(:pre_condition) { 'include ::trafficserver' }
 
   {
-    example_com: { from: 'http://example.com', to: 'http://backend-web01' },
-    example_org: { from: 'http://example.org', to: 'http://backend-web21' },
-    example_net: { from: 'http://example.net', to: 'http://backend-web42' },
+    example_com: { type: 'map', from: 'http://example.com', to: 'http://backend-web01' },
+    example_org: { type: 'map', from: 'http://example.org', to: 'http://backend-web21' },
+    example_net: { type: 'map', from: 'http://example.net', to: 'http://backend-web42' },
     # reverse maps
     rev_example_com: { type: 'reverse_map', from: 'http://backend-web01', to: 'http://example.com' },
     rev_example_org: { type: 'reverse_map', from: 'http://backend-web21', to: 'http://example.org' },
