@@ -56,7 +56,7 @@ PREFETCH
   end
 
   describe 'self.prefetch' do
-    it 'exists' do
+    it 'prefetch' do
       provider.class.instances
       provider.class.prefetch({})
     end
