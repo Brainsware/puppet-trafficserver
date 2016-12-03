@@ -1,4 +1,4 @@
-#   Copyright 2013 Brainsware
+#   Copyright 2016 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -12,22 +12,17 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-# setup of concat for ssl_multicert.config
-class trafficserver::ssl inherits trafficserver {
+require 'spec_helper'
 
+describe Puppet::Type.type(:trafficserver_record) do
+  let(:resource) do
+    Puppet::Type.type(:trafficserver_record).new(
+      record: 'proxy.config.reverse_proxy.enabled',
+      value:  '1'
+    )
+  end
 
-  $configfile  = "${::trafficserver::sysconfdir}/${::trafficserver::params::ssl_config}"
-  $conf_header = $::trafficserver::params::ssl_config_header
-
-  # creates the configuration
-  concat { $configfile:
-    owner   => $user,
-    group   => $group,
-  }
-
-  concat::fragment { "${configfile}_header":
-    target => $configfile,
-    source => $conf_header,
-    order  => '00',
-  }
-}
+  it { expect(resource[:name]).to eq 'proxy.config.reverse_proxy.enabled' }
+  it { expect(resource[:record]).to eq 'proxy.config.reverse_proxy.enabled' }
+  it { expect(resource[:value]).to eq '1' }
+end

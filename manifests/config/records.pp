@@ -1,34 +1,47 @@
-#   Copyright 2013 Brainsware
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# private class to handle basic records
+class trafficserver::config::records {
 
-# This type handles adding values to records.config
-define trafficserver::config::records (
-  $changes = [ $title ],
-) {
-  include 'trafficserver'
+  if $trafficserver::ssl and $trafficserver::listen == $trafficserver::params::listen {
+    $port = $trafficserver::params::listen_ssl
+  } else {
+    $port = $trafficserver::listen
+  }
+  trafficserver_record { 'proxy.config.http.server_ports':
+    value  => $port,
+    notify => Class[::trafficserver::service],
+  }
 
-  $configfile = "${::trafficserver::sysconfdir}/records.config"
+  trafficserver_record { 'proxy.config.admin.user_id':
+    value  => $trafficserver::user,
+    notify => Class[::trafficserver::service],
+  }
 
-  $lens    = 'Trafficserver_records.lns'
-  $context = "/files${configfile}"
-  $incl    = $configfile
+  trafficserver_record {
+    'proxy.config.http.insert_request_via_str':
+      value => $trafficserver::debug;
+    'proxy.config.http.insert_response_via_str':
+      value =>  $trafficserver::debug;
+  }
 
-  augeas { "${lens}_${title}":
-    lens    => $lens,
-    context => $context,
-    incl    => $incl,
-    changes => $changes,
-    notify  => Exec[trafficserver-config-reload],
+  case $trafficserver::mode {
+    'forward': {
+      $remap_required         = '0'
+      $reverse_proxy_enabled  = '0'
+    }
+    'both': {
+      $remap_required         = '0'
+      $reverse_proxy_enabled  = '1'
+    }
+    # Default is reverse
+    default: {
+      $remap_required         = '1'
+      $reverse_proxy_enabled  = '1'
+    }
+  }
+  trafficserver_record {
+    'proxy.config.url_remap.remap_required':
+      value => $remap_required;
+    'proxy.config.reverse_proxy.enabled':
+      value => $reverse_proxy_enabled;
   }
 }

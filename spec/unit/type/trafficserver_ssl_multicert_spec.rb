@@ -14,16 +14,17 @@
 
 require 'spec_helper'
 
-describe 'trafficserver', type: :class do
-  context 'supported operating systems' do
-    on_supported_os.each do |os, facts|
-      context "on #{os}" do
-        let(:facts) do
-          facts
-        end
-
-        it { is_expected.to compile }
-      end
-    end
+describe Puppet::Type.type(:trafficserver_ssl_multicert) do
+  let(:resource) do
+    Puppet::Type.type(:trafficserver_ssl_multicert).new(
+      ssl_cert_name: 'example.com.pem',
+      ssl_key_name:  'example.com.key',
+      comment: 'our default test'
+    )
   end
+
+  it { expect(resource[:name]).to eq 'example.com.pem' }
+  it { expect(resource[:ssl_cert_name]).to eq 'example.com.pem' }
+  it { expect(resource[:ssl_key_name]).to eq 'example.com.key' }
+  it { expect(resource[:comment]).to eq 'our default test' }
 end

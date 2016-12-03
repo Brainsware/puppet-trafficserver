@@ -1,4 +1,4 @@
-#   Copyright 2013 Brainsware
+#   Copyright 2015 Brainsware
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -14,7 +14,12 @@
 
 # install traffic server
 class trafficserver::install {
-  package { 'trafficserver':
-    ensure => 'latest',
+
+  package { $trafficserver::package_name:
+    ensure => $trafficserver::package_ensure,
+  }
+
+  package { $trafficserver::plugins_package_name:
+    ensure => $trafficserver::plugins_package_ensure,
   }
 }

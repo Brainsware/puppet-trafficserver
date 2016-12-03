@@ -12,18 +12,14 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-require 'spec_helper'
+Puppet::Type.newtype(:trafficserver_record) do
+  desc 'trafficserver_record is a type to manage records.config entries'
 
-describe 'trafficserver', type: :class do
-  context 'supported operating systems' do
-    on_supported_os.each do |os, facts|
-      context "on #{os}" do
-        let(:facts) do
-          facts
-        end
+  newparam(:record, namevar: true) do
+    desc 'record entry'
+  end
 
-        it { is_expected.to compile }
-      end
-    end
+  newproperty(:value) do
+    desc 'Value of this record'
   end
 end

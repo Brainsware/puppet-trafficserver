@@ -1,0 +1,12 @@
+<%- if !@activatefilter.nil? and !@activatefilter.empty? -%>
+.activatefilter <%= @activatefilter %>
+<%- end -%>
+<%- a = [@from, @to, @config].compact.flatten -%>
+<%- if ! a.empty? -%>
+<%= @type %> <%= a.join(' ')  %>
+<%- else -%>
+
+<%- end -%>
+<%- if !@deactivatefilter.nil? and !@deactivatefilter.empty? -%>
+.deactivatefilter <%= @deactivatefilter %>
+<%- end -%>

@@ -12,18 +12,28 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-require 'spec_helper'
+Puppet::Type.newtype(:trafficserver_plugin) do
+  ensurable
 
-describe 'trafficserver', type: :class do
-  context 'supported operating systems' do
-    on_supported_os.each do |os, facts|
-      context "on #{os}" do
-        let(:facts) do
-          facts
-        end
+  newparam(:plugin, namevar: true) do
+    desc 'Name (path) to the plugin'
+  end
 
-        it { is_expected.to compile }
+  # this is taken from postgresql_conf
+  newproperty(:target) do
+    desc 'The path to plugin.config'
+    defaultto do
+      if @resource.class.defaultprovider.ancestors.include?(Puppet::Provider::ParsedFile)
+        @resource.class.defaultprovider.default_target
       end
     end
+  end
+
+  newproperty(:arguments, array_matching: :all) do
+    desc 'optional list of arguments to the plugin'
+  end
+
+  newproperty(:comment) do
+    desc 'optional comment'
   end
 end
