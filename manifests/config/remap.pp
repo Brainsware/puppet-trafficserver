@@ -9,7 +9,7 @@ class trafficserver::config::remap {
     owner  => $owner,
     group  => $group,
     order  => 'numeric',
-    notify => Exec['trafficserver-config-reload'],
+    notify => Class[trafficserver::service],
   }
 
   concat::fragment { 'remap_header':
