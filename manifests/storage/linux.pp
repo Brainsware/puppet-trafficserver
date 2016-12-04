@@ -10,10 +10,11 @@ define trafficserver::storage::linux (
   # the "name" in udev..
   $kernel = regsubst($path, '^/dev/(.+)$', '\1')
 
-  concat::fragment { "ensure ${path} ${ensure} in device file":
-    ensure  => $ensure,
-    target  => $trafficserver::params::device_file,
-    content => template($trafficserver::params::device_template),
-    notify  => Exec['update udev rules'],
+  if $ensure == 'present' {
+    concat::fragment { "ensure ${path} ${ensure} in device file":
+      target  => $trafficserver::params::device_file,
+      content => template($trafficserver::params::device_template),
+      notify  => Exec['update udev rules'],
+    }
   }
 }
