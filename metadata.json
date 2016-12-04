@@ -1,6 +1,6 @@
 {
   "name": "brainsware-trafficserver",
-  "version": "1.0.5-rc0",
+  "version": "1.0.5",
   "source": "https://github.com/Brainsware/puppet-trafficserver",
   "author": "brainsware",
   "license": "Apache-2.0",
