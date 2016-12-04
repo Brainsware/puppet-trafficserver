@@ -44,7 +44,7 @@ deploy:
   provider: puppetforge
   user: brainsware
   password:
-  secure: "iipgIL9icn8g2nHtx13PZVen7Cq2+/t/f+daZCtbXBLF/t89vktL48FoYoKBARHc7c1NEiMD9xcXIE9SWz4xM0d/5jcGiUc0uN7vnasE/xebDrJTD6LGPRzO2CkJ2bDdAe4e3afInIoWroed34qEYQ5+AWVFN0m/kVJGxbCit6c="
+    secure: "iipgIL9icn8g2nHtx13PZVen7Cq2+/t/f+daZCtbXBLF/t89vktL48FoYoKBARHc7c1NEiMD9xcXIE9SWz4xM0d/5jcGiUc0uN7vnasE/xebDrJTD6LGPRzO2CkJ2bDdAe4e3afInIoWroed34qEYQ5+AWVFN0m/kVJGxbCit6c="
   on:
     tags: true
     # all_branches is required to use tags

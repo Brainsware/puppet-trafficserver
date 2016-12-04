@@ -1,4 +1,4 @@
-# 2016-12-03 Releasing v1.0.1
+# 2016-12-03 Releasing v1.0.2
 
 This took longer than expected.
 
