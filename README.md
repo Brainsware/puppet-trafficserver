@@ -117,7 +117,7 @@ trafficserver_ssl_multicert { 'example.com':
   ssl_cert_name => 'www.example.com.crt',
   ssl_key_name  => 'www.example.com.key',
 }
-trafficserver_ssl_multicert { mail.'example.com':
+trafficserver_ssl_multicert { 'mail.example.com':
   ssl_cert_name => 'mail.example.com.crt',
   ssl_key_name  => 'mail.example.com.key',
 }

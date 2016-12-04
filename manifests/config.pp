@@ -32,15 +32,7 @@ class trafficserver::config {
     ensure => file,
     owner  => $trafficserver::user,
     group  => $trafficserver::group,
-    notify => Exec['trafficserver-config-reload'],
-  }
-
-  # And finally, create an exec here to reload
-  exec { 'trafficserver-config-reload':
-    path        => $trafficserver::bindir,
-    command     => 'traffic_line -x',
-    cwd         => '/',
-    refreshonly => true,
+    notify => Class[trafficserver::service],
   }
 
   Class[trafficserver::config::storage] -> Class[trafficserver::config]

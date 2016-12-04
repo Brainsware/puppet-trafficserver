@@ -9,7 +9,7 @@ class trafficserver::config::storage {
   concat { $trafficserver::params::storage_config:
     owner  => $owner,
     group  => $group,
-    notify => Exec['trafficserver-config-reload'],
+    notify => Class[trafficserver::service],
   }
 
   concat::fragment { 'storage_header':
