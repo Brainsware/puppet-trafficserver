@@ -42,4 +42,4 @@ spec/acceptance/nodesets/centos-72-x64.yml:
 
 .travis.yml:
   user: brainsware
-  secure: "SHaHYZEcPKDLHkwUSxdHXfZQ9Vg1G1CFsEuYM7oOLpbklJBF9LKOYHRg//MCfjPiQNP1XVq3ymBeA9/p1nlubTaK6SIo64K+lksrayzjmwE2FOsKjyGEkLGpt2Tos/19Yjt2VM4HlOZwVCXJ+joW7zoC6YvvMRrHey4zS2eaWDk="
+  secure: "iipgIL9icn8g2nHtx13PZVen7Cq2+/t/f+daZCtbXBLF/t89vktL48FoYoKBARHc7c1NEiMD9xcXIE9SWz4xM0d/5jcGiUc0uN7vnasE/xebDrJTD6LGPRzO2CkJ2bDdAe4e3afInIoWroed34qEYQ5+AWVFN0m/kVJGxbCit6c="
