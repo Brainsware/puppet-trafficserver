@@ -1,4 +1,9 @@
-# 2016-12-03 Releasing v1.0.4
+# 2016-12-05 Releasing v1.0.6
+
+Add support for *restarting* Trafficserver 7.x. This version of Trafficserver
+removed the `traffic_line` utility. So in this release of
+`brainsware-trafficserver`, notifies the service class to reload the service.
+
 # 2016-12-04 Releasing v1.0.5
 
 Add support for Trafficserver 7.x. This version of Trafficserver removed the
